@@ -33,6 +33,18 @@ builder.Services.AddMySqlDataSource(ApplicationConfiguration.DbSettings.MysqlCon
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+            .AllowCredentials()     
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithExposedHeaders("Authorization");
+    });
+});
+
 var app = builder.Build();
 
 
@@ -63,6 +75,7 @@ app.Use(async (context, next) =>
 app.UseHttpsRedirection();
 // app.UseAuthentication();
 // app.UseAuthorization();
+app.UseCors("AllowReactApp");
 app.MapHealthChecks("/health");
 app.MapControllerRoute(
     name: "default",
