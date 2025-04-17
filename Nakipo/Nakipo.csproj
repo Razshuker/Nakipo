@@ -3,6 +3,13 @@
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+        <IsPackable>false</IsPackable>
+        <SpaRoot>../nakipo-client</SpaRoot>
+        <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+        <SpaProxyServerUrl>https://localhost:3000</SpaProxyServerUrl>
+        <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
@@ -10,6 +17,7 @@
         <PackageReference Include="Dapper" Version="2.1.66" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="9.0.4" />
         <PackageReference Include="MySqlConnector" Version="2.4.0" />
         <PackageReference Include="MySqlConnector.DependencyInjection" Version="2.4.0" />
         <PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />

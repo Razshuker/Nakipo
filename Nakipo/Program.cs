@@ -66,7 +66,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 app.UseRouting();
 app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Weights Tracker"));
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nakipo"));
 app.Use(async (context, next) =>
 {
     context.Response.Headers["Cache-Control"] = "no-store, must-revalidate";
