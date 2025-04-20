@@ -4,6 +4,8 @@ namespace Nakipo.Repositories;
 
 public interface IUserRepository
 {
-    Task<User?> GetUser(string username);
+    Task<User?> GetUser(string userIdentify);
     Task<User?> insertUser(User user);
+    void UpdateUserWallet(string userId);
+    
 }
