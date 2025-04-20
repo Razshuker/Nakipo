@@ -18,9 +18,22 @@ namespace Nakipo.Models
 
     [BsonElement("phone")]
     public string? Phone { get; set; }
+    [BsonElement("wallet")]
+    public int? Wallet { get; set; }
+    [BsonElement("wallet-history")]
+    public List<WalletHistoryItem> WalletHistory { get; set; } = new();
 
   
 }
+
+    public class WalletHistoryItem
+    {
+        [BsonElement("month")]
+        public string? MonthYear { get; set; }
+
+        [BsonElement("wallet")]
+        public int? Wallet { get; set; }
+    }
 
     public class LoginUser
     {
