@@ -10,8 +10,10 @@ public class ApplicationConfiguration
     }
     public static class DbSettings
     {
-        public static string MysqlConnectionString { get; } = Get("ConnectionString");
+        public static string MongodbConnectionString { get; } = Get("MongoDbConnectionString");
+        public static string MongodbDatabase { get; } = Get("MongodbDatabase");
     }
+    
     
     public static string HashToken { get; } = Get("HashToken");
 }

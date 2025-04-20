@@ -97,7 +97,7 @@ public static class HashExtensions
         var id = dToken.Claims.First(c => c.Type == "nameid").Value;
         return new User
         {
-            Id = int.Parse(id),
+            Id = int.Parse(id).ToString(),
             Username = username,
         };
     }

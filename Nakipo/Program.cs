@@ -1,14 +1,34 @@
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using Nakipo.Configurations;
+using Nakipo.Models;
 using Nakipo.Repositories;
 using Nakipo.Services;
 using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ApplicationConfiguration.HashToken))
+        };
+    });
 
 builder.Host.UseNLog();
 
@@ -29,7 +49,9 @@ builder.Services.AddHealthChecks()
 
 
 
-builder.Services.AddMySqlDataSource(ApplicationConfiguration.DbSettings.MysqlConnectionString);
+// builder.Services.AddMySqlDataSource(ApplicationConfiguration.DbSettings.MysqlConnectionString);
+builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection(nameof(MongoDBSettings)));
+builder.Services.AddSingleton<MongoDbContext>(_ => new MongoDbContext(ApplicationConfiguration.DbSettings.MongodbConnectionString, ApplicationConfiguration.DbSettings.MongodbDatabase));
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
@@ -85,3 +107,4 @@ app.MapFallbackToFile("index.html");
 
 
 app.Run();
+

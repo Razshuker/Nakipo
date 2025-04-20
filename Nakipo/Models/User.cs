@@ -1,26 +1,35 @@
 
 using System.Text.Json.Serialization;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Nakipo.Models
 {
     public class User:LoginUser
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
 
-    [JsonPropertyName("email")]
-    public string Email { get; set; }
+    [BsonElement("email")]
+    public string? Email { get; set; }
+
+   
+
+    [BsonElement("phone")]
+    public string? Phone { get; set; }
+
   
 }
 
     public class LoginUser
     {
-        [JsonPropertyName("username")]
-
+        [BsonElement("username")]
         public string Username { get; set; }
     
 
-        [JsonPropertyName("password")]
+        [BsonElement("password")]
+        public string Password { get; set; }
 
-        public string Password { get; set; } 
     }
 }
