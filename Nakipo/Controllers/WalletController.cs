@@ -31,12 +31,12 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
     {
         try
         {
-            var getCuponEvery = 50;
+            var walletAmountToGetCupon = 5;
             var wallet = await walletService.GetUserWalletByUserId(userId);
             if (wallet != null)
             {
-                if(wallet< getCuponEvery) return Content("No enough money");
-                var cupon = await walletService.GetCupon(userId);
+                if(wallet< walletAmountToGetCupon) return Content("No enough money");
+                var cupon = await walletService.GetCupon(userId,walletAmountToGetCupon);
                 if (cupon != null) return Ok(cupon.CuponCode);
                 return NotFound("No cupon code");
             }

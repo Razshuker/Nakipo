@@ -11,12 +11,10 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
     {
         try
         {
-            var userInfo = await userRepository.GetUser(userId);
-            if (userInfo != null)
-            {
-                return userInfo.Wallet;
-            }
-            return null;
+            var date = DateTime.Now;
+            var month = date.Month;
+            var year = date.Year;
+            return await userRepository.GetUserWalletByReports(userId, month, year);
         }
         catch (Exception e)
         {
@@ -25,15 +23,19 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
         }
     }
 
-    public async Task<Cupon> GetCupon(string userId)
+    public async Task<Cupon> GetCupon(string userId, int walletAmountToGetCupon)
     {
         try
         {
+            var month = DateTime.Now.Month;
+            var year = DateTime.Now.Year;
             var cupon = await walletRepository.GetCupon();
             if (cupon != null)
             { 
                 walletRepository.CuponUsed(cupon.Id);
-                userRepository.UpdateUserWallet(userId);
+                userRepository.UpdateUserReports(userId,month, year, walletAmountToGetCupon);
+                var walletNewValue = await userRepository.GetUserWalletByReports(userId, month, year);
+                userRepository.UpdateUserWallet(userId, walletNewValue);
                 return cupon;
             }
 
