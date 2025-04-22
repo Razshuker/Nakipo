@@ -35,6 +35,7 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
             {
                 var hashedPassword = user.Password.ComputeMD5Hash();
                 user.Password = hashedPassword;
+                user.Wallet = 0;
                 return await userRepository.insertUser(user);
             }
             return null;
