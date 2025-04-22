@@ -47,8 +47,6 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHealthChecks()
     .AddCheck("default", () => HealthCheckResult.Healthy());
 
-builder.Services.AddHostedService<MonthlyUserUpdaterService>();
-
 
 // builder.Services.AddMySqlDataSource(ApplicationConfiguration.DbSettings.MysqlConnectionString);
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection(nameof(MongoDBSettings)));
@@ -57,6 +55,7 @@ builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IWalletService, WalletService>();
 builder.Services.AddSingleton<IWalletRepository, WalletRepository>();
+builder.Services.AddSingleton<IRatingService, RatingService>();
 
 builder.Services.AddCors(options =>
 {
