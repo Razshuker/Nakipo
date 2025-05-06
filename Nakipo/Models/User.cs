@@ -12,19 +12,26 @@ namespace Nakipo.Models
     public string? Id { get; set; }
 
     [BsonElement("email")]
-    public string? Email { get; set; }
-
-   
+    public string Email { get; set; }
+  [BsonElement("first_name")]
+    public string FirstName { get; set; }
+  [BsonElement("last_name")]
+    public string LastName { get; set; }
+ [BsonElement("image")]
+    public string? Image { get; set; }
 
     [BsonElement("phone")]
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
     [BsonElement("wallet")]
     public int? Wallet { get; set; }
-    [BsonElement("wallet-history")]
+    [BsonElement("wallet_history")]
     public List<WalletHistoryItem>? WalletHistory { get; set; } = new();
     [BsonElement("reports")]
 
     public List<WalletReport>? Reports { get; set; } = new();
+    
+    [BsonElement("dog_name")]
+    public string DogName { get; set; }
 
   
 }
