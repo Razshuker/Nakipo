@@ -7,7 +7,7 @@ namespace Nakipo.Controllers;
 public class WalletController(IWalletService walletService, ILogger<WalletController> logger) : ControllerBase
 {
     [HttpGet("getWallet")]
-    public async Task<ActionResult<int>>GetUserWallet([FromQuery(Name = "userId")]string userId)
+    public async Task<ActionResult<int>>GetUserWallet([FromHeader(Name = "userId")]string userId)
     {
         try
         {
