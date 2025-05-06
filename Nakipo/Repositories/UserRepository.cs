@@ -14,7 +14,14 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
     {
         try
         {
-            return mongoContext.Users.Find(u => u.Username == userIdentify || u.Id == userIdentify).FirstOrDefault();
+            if (ObjectId.TryParse(userIdentify, out _))
+            {
+                return mongoContext.Users.Find(u => u.Id == userIdentify).FirstOrDefault();            }
+            else
+            {
+                return mongoContext.Users.Find(u => u.Username == userIdentify).FirstOrDefault();
+            }
+           
         }
         catch (Exception e)
         {
@@ -94,7 +101,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         }
     }
 
-    public async Task<User?> insertUser(User user)
+    public async Task<User?> InsertUser(User user)
     {
         try
         {
@@ -171,4 +178,26 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         return topUsers;
     }
 
+    public async Task<User> InsertReport(WalletReport report, string userId)
+    {
+        try
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+
+            var update = Builders<User>.Update.Push(u => u.Reports, report);
+
+            var options = new FindOneAndUpdateOptions<User>
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+
+           return await mongoContext.Users.FindOneAndUpdateAsync(filter, update, options);
+
+        }
+        catch (Exception e)
+        {
+           logger.LogError(e,"failed to insert report - userRepository");
+            throw;
+        }
+    }
 }
