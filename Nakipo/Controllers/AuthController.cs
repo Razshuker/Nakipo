@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nakipo.Models;
 using Nakipo.Services;
@@ -9,6 +10,7 @@ namespace Nakipo.Controllers;
 [Route("[controller]")]
 public class AuthController(ILogger<AuthController> logger, IAuthService authService):ControllerBase
 {
+    
     [HttpPost("login")]
     public async Task<ActionResult<User>> Login([FromBody] LoginUser user)
     {
@@ -52,5 +54,23 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         Response.RemoveAccessToken();
         Response.RemoveTokenCookie();
         return Unauthorized();
+    }
+    
+    [Authorize]
+    [HttpGet("getUser")]
+    public async Task<ActionResult<User>> GetUser([FromHeader(Name = "userId")]string userId)
+    {
+        try
+        {
+            if(string.IsNullOrEmpty(userId)) return Unauthorized();
+            var user = await authService.GetUser(userId);
+            user.Password = null;
+            return user;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e.Message);
+            throw;
+        }
     }
 }
