@@ -12,7 +12,12 @@ using Nakipo.Repositories;
 using Nakipo.Services;
 using NLog.Web;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    WebRootPath = "wwwroot" 
+});
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -55,7 +60,10 @@ builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IWalletService, WalletService>();
 builder.Services.AddSingleton<IWalletRepository, WalletRepository>();
+builder.Services.AddSingleton<IBrandService, BrandService>();
+builder.Services.AddSingleton<IBrandRepository, BrandRepository>();
 builder.Services.AddSingleton<IRatingService, RatingService>();
+builder.Services.AddSingleton<IImageService, ImageService>();
 
 builder.Services.AddCors(options =>
 {
@@ -97,8 +105,8 @@ app.Use(async (context, next) =>
     await next();
 });
 app.UseHttpsRedirection();
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseCors("AllowReactApp");
 app.MapHealthChecks("/health");
 app.MapControllerRoute(
