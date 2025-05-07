@@ -21,7 +21,7 @@ const {data:ratingList} = useGetRatingQuery();
                     <tr key={index}>
                         <td className="row align-items-center">
                             <div className="col-4">
-                            <img src={user.image ? baseUrl + "/images/" + user.image : baseUrl+"/images/photo_638819697942684460.jpg"} alt="user-image" height={45} width={45} className="border rounded-circle border-2 border"/>
+                            <img src={user.image ? baseUrl + "/images/" + user.image : "/files/profile.png"} alt="user-image" height={45} width={45} className="rounded-circle"/>
                             </div>
                             <div className="col-8">
                             <p>{user.dogName}</p>
