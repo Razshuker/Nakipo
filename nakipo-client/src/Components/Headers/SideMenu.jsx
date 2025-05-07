@@ -1,0 +1,116 @@
+import React from 'react';
+import MenuItem from "./MenuItem";
+import {useGetUserQuery, useGetUserWalletQuery} from "../Auth/AuthApiSlice";
+import {baseUrl} from "../../Services/CommonConfigurations";
+
+export default function SideMenu({ open, setOpen }) {
+    const links = [
+        {
+            label: 'הארנק שלי',
+            href: '/account?wallet',
+            iconPath: "/files/5_1_off.png"
+        },
+        {
+            label: 'טבלת העיר',
+            href: '/account?rating',
+            iconPath: "/files/5_2_off.png"
+        },
+        {
+            label: 'אתגר החודש',
+            href: '/account?challange',
+            iconPath: "/files/5_3_off.png"
+        },
+        {
+            label: 'מוצרים לכלבים',
+            href: 'https://peteat.co.il/',
+            traget:'_blank',
+            iconPath: "/files/6_4.png"
+        },
+        {
+            label: 'עקבו אחרינו',
+            href: '#',
+            iconPath: "/files/6_5.png"
+        },
+        {
+            label: 'קצת עלינו',
+            href: '#',
+            iconPath: "/files/6_6.png"
+        },
+        {
+            label: 'הגדרות',
+            href: '#',
+            iconPath: "/files/6_7.png"
+        },
+    ]
+    const { data:user, isLoading: userLoading } = useGetUserQuery();
+    const { data:userWallet, isLoading: walletLoading } = useGetUserWalletQuery();
+
+
+    return (
+        <>
+            {/* Overlay */}
+            {open && (
+                <>
+                    <div
+                        onClick={() => setOpen(false)}
+                        className="white"
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            zIndex: 9998,
+                            pointerEvents: 'auto'
+                        }}
+                    >
+                        <button onClick={() => setOpen(false)} className="close btn" style={{zIndex: 999}}>
+                            <img src="/files/1_1.png" alt="mobile-menu" height={25}/>
+                        </button>
+                    </div>
+
+
+                    {/* Side Menu */}
+                    <div
+                        className="denim"
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            right: 0,
+                            height: '100%',
+                            width: "80vw",
+                            boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+                            zIndex: 9999,
+                            transform: open ? 'translateX(0)' : 'translateX(-100%)',
+                            transition: 'transform 0.3s ease-in-out',
+                        }}
+                    >
+                        <div className="row align-items-center text-dark-coral text-center dark-blue top-section px-2 py-4">
+                            <div className="col-4">
+                                <img src={user.image ? baseUrl+"/images/"+user.image : ""} alt="user-image" width={70} height={70} className="rounded-circle border border-2"/>
+                            </div>
+
+                        <div className="col-8">
+                            <p className="text-sm">היי {user && user.firstName}</p>
+                            {/*<p className="text-xs">קוד לשיתוף: 4KLY565</p>*/}
+                            <p className="text-xs">צברת החודש {userWallet} נקודות</p>
+
+                        </div>
+                        </div>
+                        <nav className="p-4">
+                            <ul className="space-y-4">
+                                {links.map((link, index) => (
+                                    <li key={index} className="link-li">
+                                <MenuItem label={link.label} href={link.href} icon={link.iconPath} setOpen={setOpen} traget={link.traget} />
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    </div>
+                </>
+            )}
+
+        </>
+    );
+}
+
