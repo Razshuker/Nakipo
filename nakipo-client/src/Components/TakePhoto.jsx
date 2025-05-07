@@ -66,6 +66,7 @@ export default function TakePhoto() {
                     formData.append("longitude", position.coords.longitude.toString());
 
                     const result = await uploadPhoto(formData).unwrap();
+                    console.log(result)
                     alert("✅ הועלה בהצלחה: " + result.file);
                     setIsCameraOpen(false);
                 });
@@ -100,7 +101,9 @@ export default function TakePhoto() {
                     />
                     <canvas ref={canvasRef} width="300" height="225" style={{display: "none"}}/>
                     <div className="take-photo-btn">
-                        <button onClick={takePhotoAndUpload} disabled={isLoading} className="dark-blue border-0">
+                        <button style={{
+                            background: "transparent",
+                        }} onClick={takePhotoAndUpload} disabled={isLoading} className=" border-0">
                             <img className="mb-3" src={"/files/2.png"} height={70}/>
                         </button>
                         <h4 className="text-dark-coral"> {isLoading ? "מעלה..." : "צלם תמונה"}</h4>

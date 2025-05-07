@@ -6,14 +6,14 @@ import React from "react";
 export default function Rating(){
 const {data:ratingList} = useGetRatingQuery();
 
-
+    console.log(ratingList);
 
             return (
             <table className="text-dark-blue" style={{ width: '100%', direction: 'rtl', borderCollapse: 'collapse' }}>
                 <thead className="text-center">
                 <tr className="row">
                     <th className="col-6">הגיבור</th>
-                    <th className="col-6">המקום</th>
+                    <th className="col-6">מיקומך כרגע</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -25,7 +25,7 @@ const {data:ratingList} = useGetRatingQuery();
                             </div>
                             <div className="col-8">
                             <p>{user.dogName}</p>
-                            {/*<p>{cities[index] ? `ב${cities[index]}` : 'טוען עיר...'}</p>*/}
+                            <p>{user.city}</p>
                             <p className="text-dark-blue">חודש {formatDate(Date.now())}</p>
                             </div>
                         </td>

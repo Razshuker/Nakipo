@@ -18,7 +18,7 @@ export default function AccountHeader() {
             <Header />
             <div className="user-info dark-blue text-dark-coral py-4 text-center">
                 {isLoading ? <h2>Loading...</h2> :
-                <h2>היי {user && user.firstName}</h2>
+                <h2>היי {user && user.username}</h2>
                 }
             </div>
 

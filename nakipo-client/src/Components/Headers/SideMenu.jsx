@@ -92,7 +92,7 @@ export default function SideMenu({ open, setOpen }) {
                             </div>
 
                         <div className="col-8">
-                            <p className="text-sm">היי {user && user.firstName}</p>
+                            <p className="text-sm">היי {user && user.username}</p>
                             {/*<p className="text-xs">קוד לשיתוף: 4KLY565</p>*/}
                             <p className="text-xs">צברת החודש {userWallet} נקודות</p>
 
