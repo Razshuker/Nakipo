@@ -31,13 +31,13 @@ export default function Register() {
             <form onSubmit={handleSubmit(handleRegister)} className="mt-1">
 
                 <TextField
-                    label="שם פרטי"
+                    label="שם מלא"
                     variant="standard"
                     fullWidth
                     margin="normal"
-                    error={!!errors.firstName}
-                    helperText={errors.firstName?.message}
-                    {...register("firstName", {
+                    error={!!errors.fullName}
+                    helperText={errors.fullName?.message}
+                    {...register("fullName", {
                         required: "שדה חובה",
                         minLength: {
                             value: 2,
@@ -46,21 +46,6 @@ export default function Register() {
                     })}
                 />
 
-                <TextField
-                    label="שם משפחה"
-                    variant="standard"
-                    fullWidth
-                    margin="normal"
-                    error={!!errors.lastName}
-                    helperText={errors.lastName?.message}
-                    {...register("lastName", {
-                        required: "שדה חובה",
-                        minLength: {
-                            value: 2,
-                            message: "יש להזין לפחות שני תווים",
-                        },
-                    })}
-                />
 
                 <TextField
                     label="שם משתמש"
@@ -128,6 +113,23 @@ export default function Register() {
                 />
 
                 <TextField
+                    label="עיר"
+                    variant="standard"
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.city}
+                    helperText={errors.city?.message}
+                    {...register("city", {
+                        required: "שדה חובה",
+                        minLength: {
+                            value: 2,
+                            message: "יש להזין לפחות שני תווים",
+                        },
+                    })}
+                />
+
+
+                <TextField
                     label="סיסמה"
                     type="password"
                     variant="standard"
@@ -185,6 +187,9 @@ export default function Register() {
                     כן, אני רוצה
                 </button>
             </form>
+            <img style={{
+                width: "100%",
+            }} src="/files/q_1_1.png" alt="or" className="my-5"/>
             <div className="mt-3 text-center">
                 <p className="text-center">הרשמה באמצעות</p>
                 <div className="register-with row">
