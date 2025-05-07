@@ -3,6 +3,7 @@ import Register from "./Components/Auth/Register";
 import TakePhoto from "./Components/TakePhoto";
 import MissionDone from "./Components/MissionDone";
 import MainAccount from "./Components/Account/MainAccount";
+import About from "./Components/About";
 
 
 const AppRoutes =[
@@ -25,6 +26,10 @@ const AppRoutes =[
     {
     path: "/account",
     element: <MainAccount/>
+},
+    {
+    path: "/about-us",
+    element: <About/>
 },
 
 ]

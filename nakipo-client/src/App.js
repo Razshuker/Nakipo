@@ -13,8 +13,8 @@ function App() {
 
         if (path.includes("mission-done") || path.includes("takePhoto")) {
             document.body.classList.add("dark-blue");
-        } else if(path.includes("login") || path.includes("register")) {
-            document.body.classList.remove("dark-coral");
+        } else if(path.includes("login") || path.includes("register") || path.includes("about")) {
+            document.body.classList.add("dark-coral");
         }
 
     }, [location]);
