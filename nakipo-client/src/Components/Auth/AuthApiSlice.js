@@ -1,0 +1,127 @@
+import { createApi } from "@reduxjs/toolkit/query/react";
+import BaseQuery from "../../Services/BaseQuery";
+import { deleteCookie, setCookie } from "../../Services/CommonConfigurations";
+
+export const authApiSlice = createApi({
+    reducerPath: "authApi",
+    tagTypes: ['User'],
+    baseQuery: BaseQuery,
+    endpoints: (builder) => ({
+        getUser: builder.query({
+            query: (user) => ({
+                url: 'Auth/getUser',
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }),
+            providesTags: [{ type: 'User', id: 'CURRENT' }],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                } catch (err) {
+                    console.error("Error:", err);
+                }
+            }
+        }),
+        getUserWallet: builder.query({
+            query: (user) => ({
+                url: '/getWallet',
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }),
+            providesTags: [{ type: 'Wallet', id: 'CURRENT' }],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                } catch (err) {
+                    console.error("Error:", err);
+                }
+            }
+        }),
+
+        login: builder.mutation({
+            query: (user) => ({
+                url: 'Auth/login',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: user,
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+
+                    setCookie("userId", data.id, 1);
+
+                    // ✅ manually update cached user
+                    dispatch(
+                        authApiSlice.util.updateQueryData('getUser', data.id, (draft) => {
+                            Object.assign(draft, data);
+                        })
+                    );
+
+                    if (arg.nav) {
+                        arg.nav("/takePhoto");
+                    }
+                } catch (err) {
+                    console.error("Error:", err);
+                }
+            },
+            invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
+        }),
+
+        register: builder.mutation({
+            query: (user) => ({
+                url: 'Auth/register',
+                method: 'POST',
+                body: user,
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+
+                    setCookie("userId", data.id, 1);
+
+                    // ✅ manually update cached user
+                    dispatch(
+                        authApiSlice.util.updateQueryData('getUser', data.id, (draft) => {
+                            Object.assign(draft, data);
+                        })
+                    );
+
+                    window.location.href = '/takePhoto';
+                } catch (err) {
+                    console.error("Error:", err);
+                }
+            },
+            invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
+        }),
+
+        logout: builder.mutation({
+            query: () => ({
+                url: 'Auth/logout',
+                method: 'POST',
+            }),
+            async onQueryStarted(arg, { dispatch }) {
+                try {
+                    deleteCookie("userId");
+                } catch (err) {
+                    console.error("Error:", err);
+                }
+            },
+            invalidatesTags: [{ type: 'User', id: 'CURRENT' }],
+        }),
+    }),
+});
+
+export const {
+    useLoginMutation,
+    useRegisterMutation,
+    useLogoutMutation,
+    useGetUserQuery,
+    useGetUserWalletQuery
+} = authApiSlice;
