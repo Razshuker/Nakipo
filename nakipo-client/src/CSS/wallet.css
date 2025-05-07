@@ -1,0 +1,27 @@
+thead tr{
+    background: #dddddd;
+    border-bottom: none;
+}
+thead tr th{
+  padding: 8px;
+}
+tr td p{
+ margin: 0;
+}
+
+tbody{
+    margin: 0 8px;
+}
+
+td{
+    padding: 8px;
+    width: 50%;
+}
+
+tbody tr {
+    margin: 0 8px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    width: 100vw;
+}
