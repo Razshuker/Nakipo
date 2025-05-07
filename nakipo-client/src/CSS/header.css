@@ -32,3 +32,11 @@
     left: 2%;
     top: 2%;
 }
+h2 {
+    font-size: 50px;
+    font-weight: 900;
+}
+
+.header-wallet{
+    font-size: 22px;
+}

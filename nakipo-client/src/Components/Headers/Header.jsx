@@ -12,11 +12,11 @@ export default function Header() {
 
     return (
         <header className="header dark-blue text-center text-white">
-            <div className="top-bar row justify-content-between dark-blue py-3">
+            <div className="top-bar row justify-content-between align-items-center dark-blue py-3">
                 <div className="col-auto side-menu px-4" onClick={() => setOpen(true)}>
                    <img src="/files/1.png" alt="mobile-menu" height={25} />
                 </div>
-                <div className="col-auto right row px-4">
+                <div className="col-auto right row px-4 header-wallet align-items-center">
                     <img className="col-auto" src={"/files/Face_02.gif"} height={30}/>
                     {isLoading ?
                     <div className="col-auto wallet white text-dark-blue d-flex align-items-center">Loading...</div>:

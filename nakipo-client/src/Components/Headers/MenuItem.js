@@ -4,7 +4,7 @@ export default function MenuItem({label ,href ,icon ,setOpen, target = null }) {
 
     const nav = useNavigate();
 
-    console.log(icon);
+    console.log(target);
     const navRedirect =(path)=>{
         if (target === "_blank") {
             window.open(path, "_blank");

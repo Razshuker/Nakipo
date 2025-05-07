@@ -23,17 +23,18 @@ export default function SideMenu({ open, setOpen }) {
         {
             label: 'מוצרים לכלבים',
             href: 'https://peteat.co.il/',
-            traget:'_blank',
+            target:'_blank',
             iconPath: "/files/6_4.png"
         },
         {
             label: 'עקבו אחרינו',
-            href: '#',
+            href: 'https://www.instagram.com/peteat.online/',
+            target:'_blank',
             iconPath: "/files/6_5.png"
         },
         {
             label: 'קצת עלינו',
-            href: '#',
+            href: '/about-us',
             iconPath: "/files/6_6.png"
         },
         {
@@ -100,10 +101,12 @@ export default function SideMenu({ open, setOpen }) {
                         <nav className="p-4">
                             <ul className="space-y-4">
                                 {links.map((link, index) => (
-                                    <li key={index} className="link-li">
-                                <MenuItem label={link.label} href={link.href} icon={link.iconPath} setOpen={setOpen} traget={link.traget} />
-                                    </li>
-                                ))}
+                                        <li key={index} className="link-li">
+                                            <MenuItem label={link.label} href={link.href} icon={link.iconPath}
+                                                      setOpen={setOpen} target={link.target}/>
+                                        </li>
+                                    )
+                                )}
                             </ul>
                         </nav>
                     </div>
