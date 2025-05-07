@@ -16,7 +16,7 @@ let userFirstName = user ? user.firstName : null;
            תודה {userFirstName}!
     <br/>
            צברת עוד מטבע לשימוש</h1>
-            <img className="col-auto" src={"/files/Face_01.gif"} />
+            <img className="col-6 mx-auto" src={"/files/Face_05.gif"} />
             </div>
 
         </div>
