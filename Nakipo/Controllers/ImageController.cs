@@ -23,6 +23,12 @@ public class ImageController(IImageService imageService, ILogger<ImageController
         {
             return BadRequest("no photo uploaded");
         }
+        var userHasReportToday = await imageService.HasUserUploadedToday(userId);
+        if(userHasReportToday) return Ok(new
+        {
+            success = false,
+            message = "User already uploaded photo today",
+        });
 
         var location = new Location
         {
@@ -32,11 +38,15 @@ public class ImageController(IImageService imageService, ILogger<ImageController
         
         var updatedUser = await imageService.InsertUserReport(photo,location,userId);
        
-        return Ok(updatedUser);
+        return Ok(new
+        {
+            success = true,
+            updatedUser
+        });
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+           logger.LogError(e.Message);
             throw;
         }
     }

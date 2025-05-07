@@ -14,4 +14,5 @@ public interface IUserRepository
     Task<List<User>> GetTopUsersForMonth(int month, int year);
 
     Task<User> InsertReport(WalletReport report, string userId);
+    
 }

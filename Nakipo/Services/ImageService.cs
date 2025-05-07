@@ -44,8 +44,22 @@ public class ImageService(ILogger<ImageService> logger, IWebHostEnvironment env,
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+         logger.LogError(e, e.Message);
             throw;
         }
+    }
+    
+    public async Task<bool> HasUserUploadedToday(string userId)
+    {
+        var user = await userRepository.GetUser(userId); 
+
+        if (user?.Reports == null || user.Reports.Count == 0)
+            return false;
+
+        var today = DateTime.Now.Date;
+
+        var hasReportToday = user.Reports.Any(r => r.Date.Date == today);
+
+        return hasReportToday;
     }
 }

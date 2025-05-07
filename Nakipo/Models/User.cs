@@ -13,10 +13,10 @@ namespace Nakipo.Models
 
     [BsonElement("email")]
     public string Email { get; set; }
-  [BsonElement("first_name")]
-    public string FirstName { get; set; }
-  [BsonElement("last_name")]
-    public string LastName { get; set; }
+  [BsonElement("full_name")]
+    public string FullName { get; set; }
+  [BsonElement("city")]
+    public string City { get; set; }
  [BsonElement("image")]
     public string? Image { get; set; }
 
