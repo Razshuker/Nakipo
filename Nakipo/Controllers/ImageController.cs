@@ -19,6 +19,7 @@ public class ImageController(IImageService imageService, ILogger<ImageController
     {
         try
         {
+            if(userId == null) return Unauthorized();
         if (photo == null || photo.Length == 0)
         {
             return BadRequest("no photo uploaded");
