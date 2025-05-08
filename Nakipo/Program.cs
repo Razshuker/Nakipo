@@ -85,6 +85,8 @@ if (app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseDefaultFiles();
+
 app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>
