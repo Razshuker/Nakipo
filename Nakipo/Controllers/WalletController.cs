@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nakipo.Repositories;
 using Nakipo.Services;
 
 namespace Nakipo.Controllers;
 
+[ApiController]
+[Route("[controller]")]
+[Authorize]
 public class WalletController(IWalletService walletService, ILogger<WalletController> logger) : ControllerBase
 {
     [HttpGet("getWallet")]
@@ -11,12 +15,13 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
     {
         try
         {
+            if (userId == null) return Unauthorized();
             var wallet = await walletService.GetUserWalletByUserId(userId);
             if (wallet != null)
             {
                 return Ok(wallet);
             }
-            return NotFound("user not found");
+            return Unauthorized("user not found");
         }
         catch (Exception e)
         {
@@ -27,10 +32,11 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
     }
 
     [HttpPost("getCuponCode")]
-    public async Task<ActionResult<string>> getCuponCode(string userId = "dddd")
+    public async Task<ActionResult<string>> getCuponCode([FromHeader] string userId)
     {
         try
         {
+            if (userId == null) return Unauthorized();
             var walletAmountToGetCupon = 5;
             var wallet = await walletService.GetUserWalletByUserId(userId);
             if (wallet != null)
@@ -40,7 +46,7 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
                 if (cupon != null) return Ok(cupon.CuponCode);
                 return NotFound("No cupon code");
             }
-            return NotFound("user not found");
+            return Unauthorized("user not found");
         }
         catch (Exception e)
         {
