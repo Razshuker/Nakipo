@@ -1,5 +1,6 @@
 
-export const baseUrl = 'http://localhost:5195/';
+export const baseUrl = 'https://wedogood.co.il/';
+// export const baseUrl = 'http://localhost:5195/';
 
 
 export function getCookie(name) {
