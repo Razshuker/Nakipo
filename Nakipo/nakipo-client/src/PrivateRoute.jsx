@@ -4,10 +4,10 @@ import {getCookie} from "./Services/CommonConfigurations";
 
 
 const PrivateRoute = ({ children }) => {
-    const accessToken = getCookie('access-token');
-    const userId = getCookie('user-id');
+    const accessToken = getCookie('accessToken');
+    const userId = getCookie('userId');
 
-    const isAuthenticated = (!accessToken || accessToken != null || accessToken!= "") && (!userId || userId != null || userId != "");
+    const isAuthenticated = accessToken != null &&  userId != null;
 
     return isAuthenticated ? children : <Navigate to="/login" replace />;
 };

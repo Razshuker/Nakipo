@@ -18,11 +18,19 @@ const AppRoutes =[
 },
     {
     path: "/takePhoto",
-    element: <TakePhoto/>
+    element: (
+        <PrivateRoute>
+        <TakePhoto/>
+        </PrivateRoute>
+        )
 },
     {
     path: "/mission-done",
-    element: <MissionDone/>
+    element:(
+        <PrivateRoute>
+    <MissionDone/>
+        </PrivateRoute>
+)
 },
     {
     path: "/",
@@ -34,7 +42,11 @@ const AppRoutes =[
 },
     {
     path: "/about-us",
-    element: <About/>
+    element:(
+        <PrivateRoute>
+        <About/>
+        </PrivateRoute>
+    )
 },
 
 ]
