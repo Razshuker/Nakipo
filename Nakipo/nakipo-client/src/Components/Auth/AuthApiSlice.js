@@ -26,7 +26,7 @@ export const authApiSlice = createApi({
         }),
         getUserWallet: builder.query({
             query: (user) => ({
-                url: '/getWallet',
+                url: '/Wallet/getWallet',
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json",
