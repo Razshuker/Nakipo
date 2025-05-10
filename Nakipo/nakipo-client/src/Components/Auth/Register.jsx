@@ -36,6 +36,8 @@ export default function Register() {
                     fullWidth
                     margin="normal"
                     error={!!errors.fullName}
+                    inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                    InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     helperText={errors.fullName?.message}
                     {...register("fullName", {
                         required: "שדה חובה",
@@ -54,6 +56,8 @@ export default function Register() {
                     margin="normal"
                     error={!!errors.username}
                     helperText={errors.username?.message}
+                    inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                    InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     {...register("username", {
                         required: "שדה חובה",
                         minLength: {
@@ -69,6 +73,8 @@ export default function Register() {
                     margin="normal"
                     error={!!errors.dogName}
                     helperText={errors.dogName?.message}
+                    inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                    InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     {...register("dogName", {
                         required: "שדה חובה",
                         minLength: {
@@ -86,6 +92,8 @@ export default function Register() {
                     margin="normal"
                     error={!!errors.email}
                     helperText={errors.email?.message}
+                    inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                    InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     {...register("email", {
                         required: "שדה חובה",
                         pattern: {
@@ -103,6 +111,8 @@ export default function Register() {
                     margin="normal"
                     error={!!errors.phone}
                     helperText={errors.phone?.message}
+                    inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                    InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     {...register("phone", {
                         required: "שדה חובה",
                         pattern: {
@@ -119,6 +129,8 @@ export default function Register() {
                     margin="normal"
                     error={!!errors.city}
                     helperText={errors.city?.message}
+                    inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                    InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     {...register("city", {
                         required: "שדה חובה",
                         minLength: {
@@ -137,6 +149,8 @@ export default function Register() {
                     margin="normal"
                     error={!!errors.password}
                     helperText={errors.password?.message}
+                    inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                    InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     {...register("password", {
                         required: "שדה חובה",
                         minLength: {
@@ -154,6 +168,8 @@ export default function Register() {
                     margin="normal"
                     error={!!errors.passwordConfirmation}
                     helperText={errors.passwordConfirmation?.message}
+                    inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                    InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     {...register("passwordConfirmation", {
                         required: "שדה חובה",
                         minLength: {

@@ -46,9 +46,8 @@ export default function Login() {
                                 message: "יש להזין לפחות שני תווים",
                             },
                         })}
-                        inputProps={{
-                            style: {textAlign: 'right'},
-                        }}
+                        inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                        InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     />
 
                     <TextField
@@ -62,9 +61,8 @@ export default function Login() {
                         {...register("password", {
                             required: "שדה חובה",
                         })}
-                        inputProps={{
-                            style: {textAlign: 'right'},
-                        }}
+                        inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                        InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
                     />
 
                     <div className="d-grid mt-4">
