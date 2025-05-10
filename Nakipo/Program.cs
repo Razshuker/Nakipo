@@ -46,8 +46,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Nakipo", Version = "v1" });
-});
+        c.SwaggerDoc("v1", new OpenApiInfo() { Title = "dogood", Version = "v1" });
+   });
 
 builder.Services.AddHealthChecks()
     .AddCheck("default", () => HealthCheckResult.Healthy());
