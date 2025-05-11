@@ -34,7 +34,7 @@
 .camera-page{
     text-align: center;
     padding: 8px;
-    min-height: 95vh;
+    min-height: 90vh;
     display:flex;
     flex-direction:column;
     justify-content:center;
