@@ -39,7 +39,7 @@ export default function SideMenu({ open, setOpen }) {
         },
         {
             label: 'הגדרות',
-            href: '#',
+            href: '/settings',
             iconPath: "/files/6_7.png"
         },
     ]

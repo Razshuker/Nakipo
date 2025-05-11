@@ -44,6 +44,7 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
             {
                 if(wallet< walletAmountToGetCupon) return Content("No enough money");
                 var user = await walletService.GetCupon(userId,walletAmountToGetCupon);
+                user.Password = null;
                 if (user != null) return Ok(user);
                 return NotFound("No cupon code");
             }

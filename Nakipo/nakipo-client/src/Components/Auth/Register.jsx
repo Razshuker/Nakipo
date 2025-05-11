@@ -9,7 +9,8 @@ export default function Register() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();    const [handleRegisterApi] = useRegisterMutation();
+    } = useForm();
+    const [handleRegisterApi] = useRegisterMutation();
 
     function handleRegister(userData) {
         if (userData.password !== userData.passwordConfirmation) {

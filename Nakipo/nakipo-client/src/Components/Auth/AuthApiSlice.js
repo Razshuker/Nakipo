@@ -97,6 +97,24 @@ export const authApiSlice = createApi({
             },
             invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
         }),
+        updateUser: builder.mutation({
+            query: (user) => ({
+                url: 'Auth/UpdateUser',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: user,
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                } catch (err) {
+                    console.log("error", err);
+                }
+            },
+            invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
+        }),
 
         register: builder.mutation({
             query: (user) => ({
@@ -147,6 +165,7 @@ export const {
     useRegisterMutation,
     useLogoutMutation,
     useGetCuponMutation,
+    useUpdateUserMutation,
     useGetUserQuery,
     useGetUserWalletQuery
 } = authApiSlice;

@@ -6,6 +6,8 @@ import MainAccount from "./Components/Account/MainAccount";
 import About from "./Components/About";
 import PrivateRoute from "./PrivateRoute";
 import GetCupon from "./Components/Account/GetCupon";
+import Settings from "./Components/Auth/Settings"
+
 
 
 const AppRoutes =[
@@ -54,6 +56,13 @@ const AppRoutes =[
     element:(
         <PrivateRoute>
         <GetCupon/>
+        </PrivateRoute>
+    )
+}, {
+    path: "/settings",
+    element:(
+        <PrivateRoute>
+        <Settings/>
         </PrivateRoute>
     )
 },

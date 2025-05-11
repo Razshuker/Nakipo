@@ -209,7 +209,19 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
             if (user != null)
             {
                 var filter = Builders<User>.Filter.Eq(u => u.Id, user.Id);
-                var updateResult = await mongoContext.Users.ReplaceOneAsync(filter, user);
+
+                var update = Builders<User>.Update
+                    .Set(u => u.Email, user.Email)
+                    .Set(u => u.FullName, user.FullName)
+                    .Set(u => u.Phone, user.Phone)
+                    .Set(u => u.Username, user.Username)
+                    .Set(u => u.DogName, user.DogName)
+                    .Set(u => u.City, user.City)
+                    .Set(u=> u.Image, user.Image)
+                    .Set(u=> u.Cupons, user.Cupons);
+                // Add any other fields you want to update
+
+                var updateResult = await mongoContext.Users.UpdateOneAsync(filter, update);
 
                 if (updateResult.IsAcknowledged && updateResult.ModifiedCount > 0)
                 {
@@ -221,8 +233,9 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         }
         catch (Exception e)
         {
-            logger.LogError(e,"failed to update user - userRepository");
+            logger.LogError(e, "Failed to update user - userRepository");
             return null;
         }
+
     }
 }
