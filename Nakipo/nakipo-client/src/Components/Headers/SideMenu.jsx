@@ -1,6 +1,6 @@
 import React from 'react';
 import MenuItem from "./MenuItem";
-import {useGetUserQuery, useGetUserWalletQuery} from "../Auth/AuthApiSlice";
+import {useGetUserQuery, useGetUserWalletQuery, useLogoutMutation} from "../Auth/AuthApiSlice";
 import {baseUrl} from "../../Services/CommonConfigurations";
 
 export default function SideMenu({ open, setOpen }) {
@@ -28,7 +28,7 @@ export default function SideMenu({ open, setOpen }) {
         },
         {
             label: 'עקבו אחרינו',
-            href: 'https://www.instagram.com/peteat.online/',
+            href: 'https://www.facebook.com/people/dogood/61575715186147/',
             target:'_blank',
             iconPath: "/files/6_5.png"
         },
@@ -45,6 +45,16 @@ export default function SideMenu({ open, setOpen }) {
     ]
     const { data:user, isLoading: userLoading } = useGetUserQuery();
     const { data:userWallet, isLoading: walletLoading } = useGetUserWalletQuery();
+    const [logout] = useLogoutMutation();
+
+    const handleLogout = async () => {
+        try {
+          await logout().unwrap();
+          setOpen(false);
+        } catch (err) {
+            console.error("Logout failed", err);
+        }
+    };
 
 
     return (
@@ -107,6 +117,9 @@ export default function SideMenu({ open, setOpen }) {
                                         </li>
                                     )
                                 )}
+                                <li onClick={handleLogout}>
+                                    <p className="col-auto m-0">התנתקות</p>
+                                </li>
                             </ul>
                         </nav>
                     </div>
