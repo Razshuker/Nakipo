@@ -28,9 +28,9 @@ export default function Login() {
             <img className="flipped col-auto" src={"/files/Face_02.gif"} height={100}/>
         </div>
 
-            <div className="p-5">
+            <div className="pt-2 px-5">
                 <h1 className="text-dark-blue text-center">נרשמים ומתחילים</h1>
-                <form onSubmit={handleSubmit(handleLogin)}>
+                <form onSubmit={handleSubmit(handleLogin)} className="pt-3">
                     <TextField
                         label="שם משתמש"
                         type="text"
@@ -46,8 +46,24 @@ export default function Login() {
                                 message: "יש להזין לפחות שני תווים",
                             },
                         })}
-                        inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
-                        InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                        inputProps={{
+                            style: {
+                                textAlign: 'right',
+                                direction: 'rtl',
+                                fontFamily: "MyCustomFont, sans-serif",
+                                color: '#25115d'
+                            }
+                        }}
+                        InputLabelProps={{
+                            style: {
+                                right: 0,
+                                left: 'unset',
+                                direction: 'rtl',
+                                textAlign: 'right',
+                                fontFamily: "MyCustomFont, sans-serif",
+                                color: '#25115d'
+                            }
+                        }}
                     />
 
                     <TextField
@@ -61,31 +77,59 @@ export default function Login() {
                         {...register("password", {
                             required: "שדה חובה",
                         })}
-                        inputProps={{ style: { textAlign: 'right', direction: 'rtl', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
-                        InputLabelProps={{ style: { right: 0, left: 'unset', direction: 'rtl', textAlign: 'right', fontFamily:"MyCustomFont, sans-serif", color: '#25115d' } }}
+                        inputProps={{
+                            style: {
+                                textAlign: 'right',
+                                direction: 'rtl',
+                                fontFamily: "MyCustomFont, sans-serif",
+                                color: '#25115d'
+                            }
+                        }}
+                        InputLabelProps={{
+                            style: {
+                                right: 0,
+                                left: 'unset',
+                                direction: 'rtl',
+                                textAlign: 'right',
+                                fontFamily: "MyCustomFont, sans-serif",
+                                color: '#25115d'
+                            }
+                        }}
                     />
 
                     <div className="d-grid mt-4">
-                        <button className="btn denim text-white btn-block" type="submit">
+                        <button className="btn denim text-white btn-block  w-100 py-3 mt-4" type="submit">
                             התחבר
                         </button>
                     </div>
                 </form>
+                <a style={{
+                    color:"#000",
+                }} href="#">
+                <p className="text-center mt-4">שכחתי סיסמה</p>
+                </a>
 
-            <div className="mt-3 text-center">
-                <p className="text-center">התחברות באמצעות</p>
-                <div className="register-with row">
-                    <div className="col google"><div className="blue-dianne p-3 m-2">GOOGLE</div></div>
-                    <div className="col facebook"><div className="blue-dianne p-3 m-2">FACEBOOK</div>
+                <img style={{
+                    width: "100%",
+                }} src="/files/q_1_1.png" alt="or" className="my-3"/>
+
+                <div className="mt-2 text-center">
+                    <p className="text-center">התחברות באמצעות</p>
+                    <div className="register-with row">
+                        <div className="col google">
+                            <div className="blue-dianne p-3 m-2">GOOGLE</div>
+                        </div>
+                        <div className="col facebook">
+                            <div className="blue-dianne p-3 m-2">FACEBOOK</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="mt-3 text-center">
-                <p>חדש פה? <a href="/register" className="text-primary">צור חשבון</a></p>
-            </div>
+                <div className="mt-3 text-center">
+                    <p>חדש פה? <a href="/register" className="text-primary">צור חשבון</a></p>
+                </div>
             </div>
 
-</div>
+        </div>
 
-)
+    )
 }
