@@ -9,7 +9,7 @@ export default function TakePhoto() {
     const [streaming, setStreaming] = useState(false);
     const [isCameraOpen, setIsCameraOpen] = useState(false);
     const [error, setError] = useState(null);
-    const [uploadPhoto, { isLoading }] = useUploadPhotoMutation();
+    const [uploadPhoto, {isLoading }] = useUploadPhotoMutation();
 
 
     useEffect(() => {
@@ -67,8 +67,13 @@ export default function TakePhoto() {
 
                     const result = await uploadPhoto(formData).unwrap();
                     console.log(result)
+                    if(result.success) {
                     alert("✅ הועלה בהצלחה: " + result.file);
                     setIsCameraOpen(false);
+                    }else{
+                        setError("אין אפשרות להעלות תמונה נוספת היום");
+                        setIsCameraOpen(false);
+                    }
                 });
             } catch (err) {
                 setError("שגיאה בהעלאה: " + err.message);
@@ -82,11 +87,11 @@ export default function TakePhoto() {
         <div className="dark-blue camera-page">
             {!isCameraOpen ? (
                 <>
-                    <h1 className="text-dark-coral take-photo-title">צלם תמונה</h1>
-                    {error && <p className="text-danger">{error}</p>}
                     <button onClick={handleOpenCamera} className="dark-blue border-0">
                         <img className="" src={"/files/Face_01.gif"} height={100}/>
                     </button>
+                    <h1 className="text-dark-coral take-photo-title">צלם תמונה</h1>
+                    {error && <p className="text-danger">{error}</p>}
                 </>
             ) : (
                 <div className="dark-blue camera-screen">

@@ -15,8 +15,9 @@ export const photoApiSlice = createApi({
                 }),
                 async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                     try {
-                        await queryFulfilled;
-                        window.location.href = "/mission-done";
+                        var result = await queryFulfilled;
+                        console.log("uploaded:",result.data.success);
+                        if(result.data.success) window.location.href = "/mission-done";
                     } catch (err) {
                         console.error("Error:", err);
                     }
