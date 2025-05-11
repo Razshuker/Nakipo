@@ -74,6 +74,30 @@ export const authApiSlice = createApi({
             invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
         }),
 
+  getCupon: builder.mutation({
+            query: (user) => ({
+                url: 'Wallet/GetCuponCode',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: user,
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    debugger;
+                    var result = await queryFulfilled;
+                    console.log(result);
+                    debugger;
+                    window.location.href= "/share";
+
+                } catch (err) {
+                    console.log("error", err);
+                }
+            },
+            invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
+        }),
+
         register: builder.mutation({
             query: (user) => ({
                 url: 'Auth/register',
@@ -122,6 +146,7 @@ export const {
     useLoginMutation,
     useRegisterMutation,
     useLogoutMutation,
+    useGetCuponMutation,
     useGetUserQuery,
     useGetUserWalletQuery
 } = authApiSlice;
