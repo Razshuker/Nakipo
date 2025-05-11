@@ -1,11 +1,15 @@
 import {useGetBrandsQuery} from "./brandApiSlice";
 import {formatDate} from "../../Services/CommonConfigurations";
 import React from "react";
-import {useGetUserWalletQuery} from "../Auth/AuthApiSlice";
+import {useGetCuponMutation, useGetUserWalletQuery} from "../Auth/AuthApiSlice";
+import {useNavigate} from "react-router-dom";
 
 export default function Challange() {
     const {data: brands} = useGetBrandsQuery();
     const {data:userWallet} = useGetUserWalletQuery();
+    const [getCupon, {data:user}] = useGetCuponMutation();
+    const nav = useNavigate();
+
     const date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     const formattedDate = new Intl.DateTimeFormat('en-GB', {
         day: '2-digit',
@@ -13,14 +17,24 @@ export default function Challange() {
         year: 'numeric'
     }).format(date);
 
+    const  onGetCupon =async (brand_name)=>{
+        if(brand_name.toLowerCase() === "peteat"){
+            await getCupon().unwrap();
+        }else {
+            alert("no cupons yet!")
+        }
+    }
+
 
     console.log(brands);
     return (
         <>
-            <div className="row m-1">
+            <div className="row m-1 g-2 justify-content-center">
                 {brands && brands.length > 0 && brands.map((brand) => (
-                    <div className="col-6 border border-1 text-center position-relative" key={brand.id}>
-                        <div className="m-2 p-2">
+                    <div onClick={()=>onGetCupon(brand.name)} className="col-5 m-2 border border-1 text-center position-relative" key={brand.id}>
+                        <div style={{
+                            minHeight:"150px"
+                        }} className="m-2 p-2">
                             <div className="logo">
                                 {brand.logo ? <img src={brand.logo} alt="" /> : <h2>{brand.name}</h2>}
                             </div>
@@ -31,8 +45,10 @@ export default function Challange() {
                         </div>
 
                         {/* ✅ Add overlay conditionally (e.g. if brand.blocked is true) */}
-                        {userWallet < 3  && (
-                            <div style={{
+                        {(userWallet < 50 || brand?.name?.toLowerCase() !== 'peteat')  && (
+                            <div
+                                onClick={(e) => e.stopPropagation()}
+                                style={{
                                 position: "absolute",
                                 top: 0,
                                 left: 0,
