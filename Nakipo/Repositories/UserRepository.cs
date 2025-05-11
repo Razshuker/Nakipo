@@ -31,23 +31,23 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
     }
 
 
-    public async void UpdateUserWallet(string userId ,int? newWalletValue)
-    {
-        try
-        {
-            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
-            var update = Builders<User>.Update.Set(u => u.Wallet, newWalletValue);
-
-            var usersCollection = mongoContext.Users;
-            
-            await usersCollection.UpdateOneAsync(filter, update);
-        }
-        catch (Exception e)
-        {
-           logger.LogError(e,"failed to update userWallet by report");
-            throw;
-        }
-    }
+    // public async void UpdateUserWallet(string userId ,int? newWalletValue)
+    // {
+    //     try
+    //     {
+    //         var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+    //         var update = Builders<User>.Update.Set(u => u.Wallet, newWalletValue);
+    //
+    //         var usersCollection = mongoContext.Users;
+    //         
+    //         await usersCollection.UpdateOneAsync(filter, update);
+    //     }
+    //     catch (Exception e)
+    //     {
+    //        logger.LogError(e,"failed to update userWallet by report");
+    //         throw;
+    //     }
+    // }
 
     public async Task<int?> GetUserWalletByReports(string userIdentify, int month, int year)
     {
@@ -115,7 +115,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         }
     }
 
-    public async void UpdateUserReports(string userId, int month, int year, int usedReportsForCupon)
+    public async Task<bool> UpdateUserReports(string userId, int month, int year, int usedReportsForCupon)
     {
         try
         {
@@ -144,7 +144,8 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
             }
 
             
-            await usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+           var result = await usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+           return result.IsAcknowledged && result.ModifiedCount > 0;
         }
         catch (Exception e)
         {
@@ -200,5 +201,28 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
             throw;
         }
     }
-    
+
+    public async Task<User?> UpdateUser(User user)
+    {
+        try
+        {
+            if (user != null)
+            {
+                var filter = Builders<User>.Filter.Eq(u => u.Id, user.Id);
+                var updateResult = await mongoContext.Users.ReplaceOneAsync(filter, user);
+
+                if (updateResult.IsAcknowledged && updateResult.ModifiedCount > 0)
+                {
+                    return user;
+                }
+            }
+
+            return null;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e,"failed to update user - userRepository");
+            return null;
+        }
+    }
 }

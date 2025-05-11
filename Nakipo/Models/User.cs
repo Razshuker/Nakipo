@@ -32,6 +32,9 @@ namespace Nakipo.Models
     
     [BsonElement("dog_name")]
     public string DogName { get; set; }
+    
+    [BsonElement("cupons")]
+    public List<Cupon> Cupons { get; set; } = new();
 
   
 }

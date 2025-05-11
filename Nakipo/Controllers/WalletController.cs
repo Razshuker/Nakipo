@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Nakipo.Models;
 using Nakipo.Repositories;
 using Nakipo.Services;
 
@@ -32,18 +33,18 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
     }
 
     [HttpPost("getCuponCode")]
-    public async Task<ActionResult<string>> getCuponCode([FromHeader] string userId)
+    public async Task<ActionResult<User?>> getCuponCode([FromHeader] string userId)
     {
         try
         {
             if (userId == null) return Unauthorized();
-            var walletAmountToGetCupon = 5;
+            var walletAmountToGetCupon = 50;
             var wallet = await walletService.GetUserWalletByUserId(userId);
             if (wallet != null)
             {
                 if(wallet< walletAmountToGetCupon) return Content("No enough money");
-                var cupon = await walletService.GetCupon(userId,walletAmountToGetCupon);
-                if (cupon != null) return Ok(cupon.CuponCode);
+                var user = await walletService.GetCupon(userId,walletAmountToGetCupon);
+                if (user != null) return Ok(user);
                 return NotFound("No cupon code");
             }
             return Unauthorized("user not found");
@@ -51,7 +52,7 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
         catch (Exception e)
         {
            logger.LogError(e, e.Message);
-            throw;
+            return null;
         }
     }
    

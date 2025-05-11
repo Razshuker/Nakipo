@@ -23,7 +23,7 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
         }
     }
 
-    public async Task<Cupon> GetCupon(string userId, int walletAmountToGetCupon)
+    public async Task<User?> GetCupon(string userId, int walletAmountToGetCupon)
     {
         try
         {
@@ -33,10 +33,12 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
             if (cupon != null)
             { 
                 walletRepository.CuponUsed(cupon.Id);
-                userRepository.UpdateUserReports(userId,month, year, walletAmountToGetCupon);
-                var walletNewValue = await userRepository.GetUserWalletByReports(userId, month, year);
-                userRepository.UpdateUserWallet(userId, walletNewValue);
-                return cupon;
+                if (await userRepository.UpdateUserReports(userId, month, year, walletAmountToGetCupon))
+                {
+                var user = await userRepository.GetUser(userId);
+             user.Cupons.Add(cupon);
+            return await userRepository.UpdateUser(user);
+                }
             }
 
             return null;
@@ -44,7 +46,7 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
         catch (Exception e)
         {
            logger.LogError(e, "failed to get cupon code - walletService");
-            throw;
+            return null;
         }
     }
 }
