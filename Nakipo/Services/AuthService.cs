@@ -59,4 +59,17 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
             throw;
         }
     }
+
+    public async Task<User?> Update(User user)
+    {
+        try
+        {
+          return await userRepository.UpdateUser(user);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, $"Failed to update user with id {user.Id}");
+            return null;
+        }
+    }
 }

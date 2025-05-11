@@ -8,4 +8,5 @@ public interface IAuthService
     
     Task<User> Register(User user);
     Task<User> GetUser(string userId);
+    Task<User?> Update(User user);
 }

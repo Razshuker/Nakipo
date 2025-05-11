@@ -73,4 +73,23 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
             throw;
         }
     }
+
+    [Authorize]
+    [HttpPost("updateUser")]
+    public async Task<ActionResult<User?>> UpdateUser([FromBody] User user)
+    {
+        try
+        {
+            if (user == null) return BadRequest();
+            var updatedUser = await authService.Update(user);
+            if (updatedUser == null) return BadRequest();
+            updatedUser.Password = null;
+            return Ok(updatedUser);
+        }
+        catch (Exception e)
+        {
+           logger.LogError(e,"Failed to update user");
+            return null;
+        }
+    }
 }
