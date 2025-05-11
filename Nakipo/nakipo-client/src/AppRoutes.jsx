@@ -5,6 +5,7 @@ import MissionDone from "./Components/MissionDone";
 import MainAccount from "./Components/Account/MainAccount";
 import About from "./Components/About";
 import PrivateRoute from "./PrivateRoute";
+import GetCupon from "./Components/Account/GetCupon";
 
 
 const AppRoutes =[
@@ -45,6 +46,14 @@ const AppRoutes =[
     element:(
         <PrivateRoute>
         <About/>
+        </PrivateRoute>
+    )
+},
+    {
+    path: "/share",
+    element:(
+        <PrivateRoute>
+        <GetCupon/>
         </PrivateRoute>
     )
 },
