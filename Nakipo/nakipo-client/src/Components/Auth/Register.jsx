@@ -26,9 +26,9 @@ export default function Register() {
             <div className="row justify-content-center dark-coral w-100 m-0">
             <img className="flipped col-auto" src={"/files/Face_03.gif"} height={100}/>
             </div>
-        <div dir={"rtl"} className="p-5 register-page dark-coral">
+        <div dir={"rtl"} className="p-1 register-page dark-coral">
             <h1 className="text-dark-blue text-center">יש מצב  שתרוויח</h1>
-            <form onSubmit={handleSubmit(handleRegister)} className="mt-1">
+            <form onSubmit={handleSubmit(handleRegister)} className="mt-1 px-5">
 
                 <TextField
                     label="שם מלא"
@@ -50,7 +50,7 @@ export default function Register() {
 
 
                 <TextField
-                    label="שם משתמש"
+                    label="בחירת שם משתמש"
                     variant="standard"
                     fullWidth
                     margin="normal"
@@ -203,9 +203,9 @@ export default function Register() {
                     כן, אני רוצה
                 </button>
             </form>
-            <img style={{
-                width: "100%",
-            }} src="/files/q_1_1.png" alt="or" className="my-5"/>
+            {/*<img style={{*/}
+            {/*    width: "100%",*/}
+            {/*}} src="/files/q_1_1.png" alt="or" className="my-3"/>*/}
             <div className="mt-3 text-center">
                 <p className="text-center">הרשמה באמצעות</p>
                 <div className="register-with row">
