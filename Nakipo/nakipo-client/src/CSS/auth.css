@@ -27,3 +27,7 @@ h1{
     line-height: 65px;
     font-weight: 800;
 }
+
+.MuiFormControl-root.MuiFormControl-marginNormal.MuiFormControl-fullWidth.MuiTextField-root.css-16bevx5-MuiFormControl-root-MuiTextField-root {
+    margin: 4px;
+}
