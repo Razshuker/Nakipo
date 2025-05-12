@@ -19,7 +19,7 @@ td{
 }
 
 tbody tr {
-    margin: 0 8px;
+    padding: 0 28px;
     border-bottom: 1px solid #eee;
     display: flex;
     align-items: center;
