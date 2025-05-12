@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MySqlConnector;
 using Nakipo.Configurations;
 using Nakipo.Models;
 using Nakipo.Repositories;
@@ -64,6 +63,8 @@ builder.Services.AddSingleton<IBrandService, BrandService>();
 builder.Services.AddSingleton<IBrandRepository, BrandRepository>();
 builder.Services.AddSingleton<IRatingService, RatingService>();
 builder.Services.AddSingleton<IImageService, ImageService>();
+builder.Services.AddSingleton<ISpaceService, SpaceService>();
+
 
 builder.Services.AddCors(options =>
 {
