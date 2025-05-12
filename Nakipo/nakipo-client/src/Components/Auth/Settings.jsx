@@ -30,6 +30,7 @@ const nav = useNavigate();
         };
         console.log(updatedUser);
         await updateUser(updatedUser).unwrap();
+        alert("פרטי המשתמש עודכנו בהצלחה!");
        window.location.href ="/";
     }
 
