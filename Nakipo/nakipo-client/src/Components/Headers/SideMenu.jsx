@@ -1,7 +1,7 @@
 import React from 'react';
 import MenuItem from "./MenuItem";
 import {useGetUserQuery, useGetUserWalletQuery, useLogoutMutation} from "../Auth/AuthApiSlice";
-import {baseUrl} from "../../Services/CommonConfigurations";
+import {baseUrl, s3Url} from "../../Services/CommonConfigurations";
 
 export default function SideMenu({ open, setOpen }) {
     const links = [
@@ -98,7 +98,7 @@ export default function SideMenu({ open, setOpen }) {
                     >
                         <div className="row align-items-center text-dark-coral text-center dark-blue top-section px-2 py-4">
                             <div className="col-4">
-                                <img src={user.image ? (baseUrl+"/images/"+user.image) : "/files/profile.png"} alt="user-image" width={70} height={70} className={user.image ? "rounded-circle" : "rounded-circle white p-2" }/>
+                                <img src={user.image ? (s3Url+user.image) : "/files/profile.png"} alt="user-image" width={70} height={70} className={user.image ? "rounded-circle" : "rounded-circle white p-2" }/>
                             </div>
 
                         <div className="col-8">
