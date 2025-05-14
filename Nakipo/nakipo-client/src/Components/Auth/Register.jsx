@@ -9,6 +9,7 @@ export default function Register() {
         register,
         handleSubmit,
         formState: { errors },
+        watch,
     } = useForm();
     const [handleRegisterApi] = useRegisterMutation();
 
@@ -35,7 +36,6 @@ export default function Register() {
         for (let pair of formData.entries()) {
             console.log(pair[0], pair[1]);
         }
-        debugger;
         handleRegisterApi(formData).unwrap();
     }
 
@@ -329,6 +329,8 @@ export default function Register() {
                             value: 2,
                             message: "יש להזין לפחות שני תווים",
                         },
+                        validate: (value) =>
+                            value === watch("password") || "הסיסמאות אינן תואמות"
                     })}
                 />
 
@@ -346,7 +348,7 @@ export default function Register() {
                     }
                     label={
                         <span>
-      אני מאשר.ת <a href="#">תנאי שימוש</a>
+      אני מאשר.ת <a href="/terms" target={"_blank"}>תנאי שימוש</a>
     </span>
                     }
                 />
