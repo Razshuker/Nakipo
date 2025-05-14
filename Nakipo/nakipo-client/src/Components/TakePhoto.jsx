@@ -68,7 +68,7 @@ export default function TakePhoto() {
                     const result = await uploadPhoto(formData).unwrap();
                     console.log(result)
                     if(result.success) {
-                    alert("✅ הועלה בהצלחה: " + result.file);
+                    alert("✅ הועלה בהצלחה: ");
                     setIsCameraOpen(false);
                     }else{
                         setError("אין אפשרות להעלות תמונה נוספת היום");
