@@ -9,7 +9,6 @@ export default function Explanation() {
     return (
         <div>
             {step === 1 && <FirstStep nextToStep02={() => {
-                debugger;
                 setStep(2);
             }} />}
             {step === 2 && <SecondStep nextToStep03={() => setStep(3)} />}

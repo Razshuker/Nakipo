@@ -1,6 +1,5 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {s3Url} from "../../Services/CommonConfigurations";
 import '../../CSS/explanation.css'
 
 export default function ThirdStep() {
@@ -8,7 +7,7 @@ export default function ThirdStep() {
 
     return (
         <div>
-            <img src={s3Url+"peteat.png"} height={70} className="d-flex mx-auto mt-2"/>
+            <img src={"/files/Logo_1.png"} height={55} className="d-flex mx-auto mt-4"/>
             <div className="explantion-container">
             <h1 className="text-center text-dark-blue my-5 col-auto">
               המטבעות

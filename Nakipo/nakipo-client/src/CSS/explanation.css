@@ -10,3 +10,7 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.btn:hover{
+    color:#ebe5d9;
+}
