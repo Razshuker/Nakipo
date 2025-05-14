@@ -234,4 +234,28 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         }
 
     }
+
+    public async Task<User?> UpdateUserPassword(string userId, string newPassword)
+    {
+        try
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+
+            var update = Builders<User>.Update
+                .Set(u => u.Password, newPassword);
+                
+            return await mongoContext.Users.FindOneAndUpdateAsync(
+                filter,
+                update,
+                new FindOneAndUpdateOptions<User>
+                {
+                    ReturnDocument = ReturnDocument.After 
+                });
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e,"failed to update user password - userRepository");
+            throw;
+        }
+    }
 }

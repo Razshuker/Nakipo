@@ -9,7 +9,7 @@ using Nakipo.Utillties;
 namespace Nakipo.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class AuthController(ILogger<AuthController> logger, IAuthService authService, ISpaceService spaceService):ControllerBase
+public class AuthController(ILogger<AuthController> logger, IAuthService authService):ControllerBase
 {
     
     [HttpPost("login")]
@@ -34,6 +34,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         }
     }
     
+    [ApiExplorerSettings(IgnoreApi = true)] 
     [HttpPost("register")]
     public async Task<ActionResult<User>> Register([FromForm] User user)
     {
@@ -76,6 +77,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
     }
 
     [Authorize]
+    [ApiExplorerSettings(IgnoreApi = true)] 
     [HttpPost("updateUser")]
     public async Task<ActionResult<User?>> UpdateUser([FromForm] User user,[FromForm] string? Cupons)
     {
@@ -99,5 +101,27 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         }
     }
 
-   
+    [Authorize]
+    [HttpPost("updateUserPassword")]
+    public async Task<ActionResult<User?>> UpdateUserPassword([FromHeader(Name = "userId")] string userId, UpdatePassword passwords)
+    {
+        try
+        {
+         var user = await authService.UpdatePassword(userId, passwords);
+         if (user != null)
+         {
+             var jwtToken = user.GenerateJwtToken();
+             Response.SetAccessToken(jwtToken);
+             Response.SetTokenCookie(jwtToken);
+             return Ok(user);
+         }
+
+         return null;
+        }
+        catch (Exception e)
+        {
+           logger.LogError(e.Message);
+            return null;
+        }
+    }
 }

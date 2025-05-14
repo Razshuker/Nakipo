@@ -16,4 +16,6 @@ public interface IUserRepository
     Task<User> InsertReport(WalletReport report, string userId);
     
     Task<User?> UpdateUser(User user);
+    
+    Task<User?> UpdateUserPassword(string userId, string newPassword);
 }

@@ -83,5 +83,25 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
             return null;
         }
     }
-    
+
+    public async Task<User?> UpdatePassword(string userId, UpdatePassword passwords)
+    {
+        try
+        {
+            var user = await userRepository.GetUser(userId);
+            if (user != null && user.Password == passwords.CurrentPassword.ComputeMD5Hash())
+            {
+            var hashedPassword = passwords.NewPassword.ComputeMD5Hash();
+           var newPassword = hashedPassword;
+               var updatedUser = await userRepository.UpdateUserPassword(userId, newPassword);
+               return updatedUser;
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, $"Failed to update password for user {userId}");
+            return null;
+        }
+    }
 }

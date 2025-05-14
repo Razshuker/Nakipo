@@ -75,6 +75,23 @@ export const authApiSlice = createApi({
             },
             invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
         }),
+        updatePassword: builder.mutation({
+            query: (passwords) => ({
+                url: 'Auth/updateUserPassword',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: passwords,
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                } catch (err) {
+                    console.error("Error:", err);
+                }
+            }
+        }),
 
   getCupon: builder.mutation({
             query: (user) => ({
@@ -87,10 +104,8 @@ export const authApiSlice = createApi({
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
-                    debugger;
                     var result = await queryFulfilled;
                     console.log(result);
-                    debugger;
                     window.location.href= "/share";
 
                 } catch (err) {
@@ -167,6 +182,7 @@ export const {
     useLogoutMutation,
     useGetCuponMutation,
     useUpdateUserMutation,
+    useUpdatePasswordMutation,
     useGetUserQuery,
     useGetUserWalletQuery
 } = authApiSlice;
