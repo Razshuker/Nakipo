@@ -1,5 +1,5 @@
 import {useGetBrandsQuery} from "./brandApiSlice";
-import {formatDate} from "../../Services/CommonConfigurations";
+import {formatDate, s3Url} from "../../Services/CommonConfigurations";
 import React from "react";
 import {useGetCuponMutation, useGetUserWalletQuery} from "../Auth/AuthApiSlice";
 import {useNavigate} from "react-router-dom";
@@ -36,7 +36,7 @@ export default function Challange() {
                             minHeight:"150px"
                         }} className="m-2 p-2">
                             <div className="logo">
-                                {brand.logo ? <img src={brand.logo} alt="" /> : <h2>{brand.name}</h2>}
+                                {brand.logo ? <img src={s3Url+brand.logo} alt="" height={80}/> : <h2>{brand.name}</h2>}
                             </div>
                             <div className="brand-info">
                                 <p className="text-dark-blue p-0 m-0">חודש {formatDate(Date.now())} <span className="text-denim">{brand.gift}</span></p>
