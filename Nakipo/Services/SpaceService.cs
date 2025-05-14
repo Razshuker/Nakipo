@@ -46,6 +46,8 @@ private const string Host = Bucket + ".ams3.digitaloceanspaces.com";
         request.Headers.TryAddWithoutValidation("Authorization", authHeader);
         request.Headers.TryAddWithoutValidation("x-amz-date", amzDate);
         request.Headers.TryAddWithoutValidation("x-amz-content-sha256", payloadHash);
+        // public files
+        request.Headers.TryAddWithoutValidation("x-amz-acl", "public-read");
         request.Headers.Host = Host;
 
         request.Content = new ByteArrayContent(payloadBytes);
