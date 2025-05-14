@@ -1,4 +1,5 @@
 
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -19,6 +20,10 @@ namespace Nakipo.Models
     public string City { get; set; }
  [BsonElement("image")]
     public string? Image { get; set; }
+    
+    [NotMapped]
+    [BsonIgnore] 
+    public IFormFile? ImageFile { get; set; }
 
     [BsonElement("phone")]
     public string Phone { get; set; }
