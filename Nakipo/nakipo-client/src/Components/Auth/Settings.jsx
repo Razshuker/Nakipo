@@ -4,6 +4,7 @@ import {useForm} from "react-hook-form";
 import {useGetUserQuery, useUpdateUserMutation} from "./AuthApiSlice";
 import Header from "../Headers/Header";
 import {useNavigate} from "react-router-dom";
+import {s3Url} from "../../Services/CommonConfigurations";
 
 export default function Settings(){
     const {data:user,isLoading} = useGetUserQuery();
@@ -18,6 +19,7 @@ const nav = useNavigate();
 
 
     const handleForm =async (data)=>{
+        console.log(data);
         const updatedUser = {
             ...user,
             email: data.email,
@@ -26,10 +28,31 @@ const nav = useNavigate();
             phone: data.phone,
             dogName: data.dogName,
             username: data.username,
-            password: "",
+            password: "***", // or data.password if needed
+            imageFile: data.imageFile, // 👈 include image from file input if exists
         };
-        console.log(updatedUser);
-        await updateUser(updatedUser).unwrap();
+
+        const formData = new FormData();
+
+        formData.append("email", updatedUser.email);
+        formData.append("image", updatedUser.image);
+        formData.append("id", updatedUser.id);
+        formData.append("fullName", updatedUser.fullName);
+        formData.append("city", updatedUser.city);
+        formData.append("phone", updatedUser.phone);
+        formData.append("username", updatedUser.username);
+        formData.append("password", updatedUser.password);
+        formData.append("dogName", updatedUser.dogName);
+
+        if (updatedUser.cupons.length>0) {
+            formData.append("cupons", JSON.stringify(updatedUser.cupons));
+        }
+
+        if (updatedUser.imageFile && updatedUser.imageFile.length > 0) {
+            formData.append("imageFile", updatedUser.imageFile[0]);
+        }
+
+        await updateUser(formData).unwrap();
         alert("פרטי המשתמש עודכנו בהצלחה!");
        window.location.href ="/";
     }
@@ -45,6 +68,12 @@ const nav = useNavigate();
         </div>
             {user &&
                 <form onSubmit={handleSubmit(handleForm)} className="mt-5 px-5">
+                    <div className="mb-3">
+                        <label htmlFor="formFile" className="mx-auto d-flex justify-content-center">
+                            <img src={user.image ? s3Url+user.image :"/files/profile.png"} alt="profile image" height={80} className={"white rounded-circle p-1 "} />
+                        </label>
+                        <input className="" type="file" id="formFile" {...register("imageFile")}/>
+                    </div>
 
             <TextField
                 label="שם מלא"
