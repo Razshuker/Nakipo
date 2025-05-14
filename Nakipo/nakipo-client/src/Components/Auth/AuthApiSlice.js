@@ -56,6 +56,8 @@ export const authApiSlice = createApi({
                     const { data } = await queryFulfilled;
 
                     setCookie("userId", data.id, 1);
+                    setCookie("hasVisited", true, 182);
+
 
                     // ✅ manually update cached user
                     dispatch(
@@ -101,9 +103,6 @@ export const authApiSlice = createApi({
             query: (user) => ({
                 url: 'Auth/UpdateUser',
                 method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
                 body: user,
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -127,6 +126,8 @@ export const authApiSlice = createApi({
                     const { data } = await queryFulfilled;
 
                     setCookie("userId", data.id, 1);
+                    setCookie("hasVisited", true, 182);
+
 
                     // ✅ manually update cached user
                     dispatch(
