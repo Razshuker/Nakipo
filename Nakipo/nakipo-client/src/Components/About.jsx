@@ -1,21 +1,39 @@
 import Header from "./Headers/Header";
 import '../CSS/About.css'
+import React from "react";
 
 export default function About(){
 
     return (
         <>
             <Header/>
-            <div className="dark-blue text-dark-coral py-4 text-center">
-                <h2>פטאיט</h2>
-                <p>אוכל לחברים לחיים</p>
-            </div>
-            <div className="about dark-coral text-dark-blue p-3">
-                <h3>כחלק מיוזמה עירונית להפחתת פסולת חיות מחמד במרחב הציבורי, גם אנחנו הצטרפנו למאמץ.</h3>
-                <p className='p-about'>איסוף נקודות: כל שקית פסולת שמושלכת לפח - מזכה אותך במטבע</p>
-                <p className='p-about'>כל 50 מטבעות = 50 שקלים למימוש אצלנו באונליין, עם שליח עד הבית</p>
-                <a href="https://peteat.co.il/" target="_blank" className="peteatBtn denim text-dark-coral">www.peteat.co.il</a>
-                <img src="/files/peteat-logo.png" alt="peteatLogo" height={100} className="d-flex justify-content-center mx-auto"/>
+            <img src={"/files/Logo_1.png"} height={55} className="d-flex mx-auto mt-4"/>
+            <div className="about px-3 py-2">
+            <p className="text-center">תכנית נאמנות לבעלי כלבים, השתתפות בהגרלות, הנחות שוות ואפילו מוצרים במתנה!</p>
+            <p className="bold">שומרים יחד על עיר נקייה – בכל טיול!
+            </p>
+            <p>הקהילה שלנו נוצרה מתוך שיתוף פעולה ייחודי עם עיריות ומועצות ברחבי ישראל, במטרה להציע פתרון יצירתי, קהילתי וחדשני לבעיה מוכרת בכל עיר: פסולת כלבים במרחב הציבורי.
+                באמצעות הסמארטפון, אנו מאפשרים לבעלי כלבים לשתף מיקומים של איסוף צרכים בזמן אמת, לצבור נקודות, לזכות בפרסים – ובעיקר, לקחת חלק בשמירה על עיר נקייה ונעימה יותר לכולנו.
+            </p>
+            <p className="bold">איך זה עובד?
+            </p>
+            <ul>
+                <li>יוצרים פרופיל אישי (לכלב!)</li>
+                <li>משתפים תמונה של שקית האיסוף</li>
+                <li>צוברים נקודות שמזכות בפרסים</li>
+                <li>משתתפים בתחרויות ואתגרים בין תושבים</li>
+                <li>מממשים את המטבעות בעסקים ברחבי העיר</li>
+            </ul>
+            <p>למה להצטרף?</p>
+            <ul>
+                <li>להיות חלק מקהילה אכפתית ופעילה</li>
+                <li>לקבל מבצעים מותאמים אישית והטבות בלעדיות</li>
+                <li>לתרום לסביבה ירוקה ובריאה יותר</li>
+                <li>לעזור לעירייה באכיפה חכמה וממוקדת</li>
+                <li>לקדם מודעות ואחריות חברתית</li>
+            </ul>
+<p>באמצעות שילוב בין אחריות סביבתית, גישה טכנולוגית חכמה ומעורבות קהילתית, האפליקציה יוצרת חוויית טיול חדשה – כזו שמטיבה עם כולם: כלבים, בני אדם והסביבה.</p>
+            <p className="bold text-center">כיף שאתם איתנו (:</p>
             </div>
         </>
     )
