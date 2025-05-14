@@ -12,7 +12,7 @@ const InitialRoute = ({ children }) => {
 
     // If not visited and not on explanation page, force redirect to explanation
     if (!hasVisited && location.pathname !== '/01') {
-        return <Navigate to="/01" replace />;
+        return <Navigate to="/explanation" replace />;
     }
 
     // If visited but not logged in and not already on login page, redirect
