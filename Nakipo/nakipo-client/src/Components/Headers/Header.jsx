@@ -21,7 +21,7 @@ export default function Header() {
                     <img onClick={()=> nav("/takePhoto")} className="col-auto" src={"/files/Face_02.gif"} height={30}/>
                     {isLoading ?
                     <div className="col-auto wallet white text-dark-blue d-flex align-items-center">Loading...</div>:
-                    <div className="col-auto wallet white text-dark-blue d-flex align-items-center">{userWallet} מטבעות</div>
+                    <div onClick={()=>nav("/?wallet")} className="col-auto wallet white text-dark-blue d-flex align-items-center">{userWallet} מטבעות</div>
                     }
                 </div>
 
