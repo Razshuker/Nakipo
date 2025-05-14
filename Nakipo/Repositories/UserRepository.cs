@@ -19,7 +19,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
                 return mongoContext.Users.Find(u => u.Id == userIdentify).FirstOrDefault();            }
             else
             {
-                return mongoContext.Users.Find(u => u.Username == userIdentify).FirstOrDefault();
+                return mongoContext.Users.Find(u => u.Username.ToLowerInvariant() == userIdentify.ToLowerInvariant()).FirstOrDefault();
             }
            
         }
@@ -220,13 +220,9 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
                     .Set(u=> u.Image, user.Image)
                     .Set(u=> u.Cupons, user.Cupons);
                 // Add any other fields you want to update
-
-                var updateResult = await mongoContext.Users.UpdateOneAsync(filter, update);
-
-                if (updateResult.IsAcknowledged && updateResult.ModifiedCount > 0)
-                {
-                    return user;
-                }
+                
+                await mongoContext.Users.UpdateOneAsync(filter, update);
+                return await GetUser(user.Username);
             }
 
             return null;
