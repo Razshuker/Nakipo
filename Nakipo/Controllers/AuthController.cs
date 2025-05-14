@@ -1,4 +1,5 @@
 
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nakipo.Models;
@@ -8,7 +9,7 @@ using Nakipo.Utillties;
 namespace Nakipo.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class AuthController(ILogger<AuthController> logger, IAuthService authService):ControllerBase
+public class AuthController(ILogger<AuthController> logger, IAuthService authService, ISpaceService spaceService):ControllerBase
 {
     
     [HttpPost("login")]
@@ -34,7 +35,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
     }
     
     [HttpPost("register")]
-    public async Task<ActionResult<User>> Register([FromBody] User user)
+    public async Task<ActionResult<User>> Register([FromForm] User user)
     {
         var registerUser = await authService.Register(user);
 
@@ -76,11 +77,16 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
 
     [Authorize]
     [HttpPost("updateUser")]
-    public async Task<ActionResult<User?>> UpdateUser([FromBody] User user)
+    public async Task<ActionResult<User?>> UpdateUser([FromForm] User user,[FromForm] string? Cupons)
     {
         try
         {
             if (user == null) return BadRequest();
+            if (!string.IsNullOrWhiteSpace(Cupons))
+            {
+                user.Cupons = JsonSerializer.Deserialize<List<Cupon>>(Cupons);
+
+            }
             var updatedUser = await authService.Update(user);
             if (updatedUser == null) return BadRequest();
             updatedUser.Password = null;
@@ -92,4 +98,6 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
             return null;
         }
     }
+
+   
 }

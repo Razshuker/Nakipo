@@ -6,7 +6,7 @@ using Nakipo.Utillties;
 
 namespace Nakipo.Services;
 
-public class AuthService(ILogger<AuthService> logger,IUserRepository userRepository): IAuthService
+public class AuthService(ILogger<AuthService> logger,IUserRepository userRepository, ISpaceService spaceService): IAuthService
 {
     public async Task<User> Login(string username, string password)
     {
@@ -33,10 +33,15 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
             var userToRegister = await userRepository.GetUser(user.Username);
             if (userToRegister == null)
             {
+                var photoPath = $"profile.jpg";
                 var hashedPassword = user.Password.ComputeMD5Hash();
                 user.Password = hashedPassword;
                 user.Wallet = 0;
-                return await userRepository.InsertUser(user);
+                    var newUser = await userRepository.InsertUser(user);
+                    await spaceService.UploadFileAsync(user.ImageFile,newUser.Id, photoPath);
+                    newUser.Image = $"{newUser.Id}/{photoPath}";
+                   return await userRepository.UpdateUser(newUser);
+                
             }
             return null;
         }
@@ -64,6 +69,12 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
     {
         try
         {
+            if (user.ImageFile != null)
+            {
+                var photoPath = $"profile.jpg";
+                await spaceService.UploadFileAsync(user.ImageFile,user.Id, photoPath);
+                user.Image = $"{user.Id}/{photoPath}";
+            }
           return await userRepository.UpdateUser(user);
         }
         catch (Exception e)
@@ -72,4 +83,5 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
             return null;
         }
     }
+    
 }
