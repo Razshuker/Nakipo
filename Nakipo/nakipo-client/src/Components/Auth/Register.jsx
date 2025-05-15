@@ -13,7 +13,7 @@ export default function Register() {
     } = useForm();
     const [handleRegisterApi] = useRegisterMutation();
 
-    function handleRegister(userData) {
+    const handleRegister = async (userData)=> {
         if (userData.password !== userData.passwordConfirmation) {
             alert("unmatched password");
             return;
@@ -28,15 +28,11 @@ export default function Register() {
         formData.append("password", userData.password);
         formData.append("dogName", userData.dogName);
 
-        // File input is stored as array -> get the first file
         if (userData.imageFile && userData.imageFile.length > 0) {
             formData.append("imageFile", userData.imageFile[0]);
         }
-        console.log(formData);
-        for (let pair of formData.entries()) {
-            console.log(pair[0], pair[1]);
-        }
-        handleRegisterApi(formData).unwrap();
+
+        await handleRegisterApi(formData).unwrap();
     }
 
     return (
