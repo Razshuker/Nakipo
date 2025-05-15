@@ -38,8 +38,11 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
                 user.Password = hashedPassword;
                 user.Wallet = 0;
                     var newUser = await userRepository.InsertUser(user);
+                    if (user.ImageFile != null)
+                    {
                     await spaceService.UploadFileAsync(user.ImageFile,newUser.Id, photoPath);
                     newUser.Image = $"{newUser.Id}/{photoPath}";
+                    }
                    return await userRepository.UpdateUser(newUser);
                 
             }
