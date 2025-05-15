@@ -17,7 +17,7 @@ export default function About(){
             </p>
             <p className="bold">איך זה עובד?
             </p>
-            <ul>
+            <ul className="ul-about">
                 <li>יוצרים פרופיל אישי (לכלב!)</li>
                 <li>משתפים תמונה של שקית האיסוף</li>
                 <li>צוברים נקודות שמזכות בפרסים</li>
