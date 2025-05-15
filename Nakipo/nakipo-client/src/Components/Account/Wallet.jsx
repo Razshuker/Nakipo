@@ -1,5 +1,6 @@
 import '../../CSS/wallet.css'
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import {s3Url} from "../../Services/CommonConfigurations";
 
 
 
@@ -50,10 +51,15 @@ export default function Wallet({ userReports = [] }) {
                         const originalIndex = userReports.findIndex(r => r === report); // get index for cities
                         return (
                             <tr key={sortedIndex}>
-                                <td className="text-dark-blue">
+                                <td className="text-dark-blue row align-items-center">
+                                    <div className="col-4 p-0 mx-auto text-center">
+                                        <img src={report.image ? s3Url + report.image : ""} alt="user-image" height={45} width={45} className="rounded-circle"/>
+                                    </div>
+                                    <div className="col-8">
                                     <p>ניקיון</p>
                                     <p>{cities[originalIndex] ? cities[originalIndex] : 'טוען עיר...'}</p>
                                     <p className="text-gray">{formatDate(report.date)}</p>
+                                    </div>
                                 </td>
                                 <td className="row justify-content-center text-dark">
                                     <img src="/files/3.png" height={25} className="col-auto p-0" alt="currency"/>
