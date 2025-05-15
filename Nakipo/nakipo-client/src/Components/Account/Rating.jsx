@@ -1,6 +1,6 @@
 import '../../CSS/wallet.css'
 import {useGetRatingQuery} from "./ratingApiSlice";
-import {baseUrl, formatDate} from "../../Services/CommonConfigurations";
+import {formatDate, s3Url} from "../../Services/CommonConfigurations";
 import React from "react";
 
 export default function Rating(){
@@ -20,8 +20,8 @@ const {data:ratingList} = useGetRatingQuery();
                 {ratingList && ratingList.map((user, index) => (
                     <tr key={index}>
                         <td className="row align-items-center">
-                            <div className="col-4">
-                            <img src={user.image ? baseUrl + "/images/" + user.image : "/files/profile.png"} alt="user-image" height={45} width={45} className="rounded-circle"/>
+                            <div className="col-4 p-0 mx-auto text-center">
+                            <img src={user.image ? s3Url + user.image : "/files/profile.png"} alt="user-image" height={45} width={45} className="rounded-circle"/>
                             </div>
                             <div className="col-8">
                             <p>{user.dogName}</p>
