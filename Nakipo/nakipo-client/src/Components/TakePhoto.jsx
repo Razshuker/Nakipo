@@ -1,121 +1,108 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useUploadPhotoMutation } from "./photoApiSlice";
 import Header from "./Headers/Header";
-import '../CSS/takePhoto.css'
+import '../CSS/takePhoto.css';
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export default function TakePhoto() {
-    const videoRef = useRef(null);
-    const canvasRef = useRef(null);
-    const [streaming, setStreaming] = useState(false);
-    const [isCameraOpen, setIsCameraOpen] = useState(false);
+    const [uploadPhoto, { isLoading }] = useUploadPhotoMutation();
+    const { handleSubmit } = useForm();
+    const nav = useNavigate();
     const [error, setError] = useState(null);
-    const [uploadPhoto, {isLoading }] = useUploadPhotoMutation();
+    const fileInputRef = useRef(null); // ← useRef for file input
 
+    const getLocation = () =>
+        new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    resolve({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    });
+                },
+                (err) => {
+                    if (err.code === 1) {
+                        setError("כדי להמשיך, יש לאפשר גישה למיקום שלך");
+                    } else if (err.code === 2) {
+                        setError("לא הצלחנו לקבל את המיקום שלך. נסה שוב.");
+                    } else if (err.code === 3) {
+                        setError("חיפוש המיקום לקח יותר מדי זמן. ודא שיש לך קליטה ונסה שוב.");
+                    } else {
+                        setError("שגיאה בקבלת מיקום. נסה שוב.");
+                    }
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                }
+            );
+        });
 
-    useEffect(() => {
-        if (!isCameraOpen) return;
+    const HandleTakePhoto = async () => {
+        const fileInput = fileInputRef.current;
+        const file = fileInput?.files?.[0];
 
-        const startCamera = async () => {
+        if (!file) {
+            setError("לא נבחרה תמונה");
+            return;
+        }
+        const { latitude, longitude } = await getLocation();
+
+        const formData = new FormData();
+        formData.append("photo", file);
+        formData.append("latitude", latitude.toString());
+        formData.append("longitude", longitude.toString());
+
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                    setStreaming(true);
+                const { latitude, longitude } = await getLocation(); // ← Wait for location
+
+                const formData = new FormData();
+                formData.append("photo", file);
+                formData.append("latitude", latitude);
+                formData.append("longitude", longitude);
+
+                const result = await uploadPhoto(formData).unwrap();
+
+                if (result.success) {
+                    alert("✅ הועלה בהצלחה");
+                } else {
+                    setError("אין אפשרות להעלות תמונה נוספת היום");
                 }
             } catch (err) {
-                setError("לא ניתן להפעיל את המצלמה: " + err.message);
+                console.error(err);
+                setError("לא ניתן להמשיך בלי שיתוף מיקום");
             }
-        };
-
-        startCamera();
-
-        return () => {
-            if (videoRef.current?.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-                setStreaming(false);
-            }
-        };
-    }, [isCameraOpen]);
-
-    const handleOpenCamera = () => {
-        setIsCameraOpen(true);
-    };
-
-    const handleCloseCamera = () => {
-        setIsCameraOpen(false);
-    };
-
-    const takePhotoAndUpload = () => {
-        const canvas = canvasRef.current;
-        const video = videoRef.current;
-        if (!video || !canvas) return;
-
-        const context = canvas.getContext("2d");
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        canvas.toBlob(async (blob) => {
-            if (!blob) return;
-
-            try {
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
-
-                    const formData = new FormData();
-                    formData.append("photo", file);
-                    formData.append("latitude", position.coords.latitude.toString());
-                    formData.append("longitude", position.coords.longitude.toString());
-
-                    const result = await uploadPhoto(formData).unwrap();
-                    console.log(result)
-                    if(result.success) {
-                    alert("✅ הועלה בהצלחה: ");
-                    setIsCameraOpen(false);
-                    }else{
-                        setError("אין אפשרות להעלות תמונה נוספת היום");
-                        setIsCameraOpen(false);
-                    }
-                });
-            } catch (err) {
-                setError("שגיאה בהעלאה: " + err.message);
-            }
-        }, "image/jpeg");
     };
 
     return (
         <>
-            <Header/>
-        <div className="dark-blue camera-page">
-            {!isCameraOpen ? (
-                <>
-                    <button onClick={handleOpenCamera} className="dark-blue border-0">
-                        <img className="" src={"/files/Face_01.gif"} height={100}/>
-                    </button>
-                    <h1 className="text-dark-coral take-photo-title">צלם תמונה</h1>
-                    {error && <p className="text-danger">{error}</p>}
-                </>
-            ) : (
-                <div className="dark-blue camera-screen">
-                    <button onClick={handleCloseCamera} className="back text-dark-coral">אחורה</button>
-                    <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        width="100%"
-                        height="100%"
-                        style={{objectFit: "cover"}}
+            <Header />
+            <div className="camera-page">
+                <form id="take-photo-form" onSubmit={(e) => {
+                    e.preventDefault(); // ← prevent default so we can control it
+                    HandleTakePhoto();
+                }}>
+                    <label htmlFor="formFile" className="mx-auto d-flex flex-column justify-content-center text-center">
+                        <img className="col-4 mx-auto" src={"/files/Face_01.gif"} alt="camera" />
+                        <h1 className="text-dark-coral take-photo-title">צלם תמונה</h1>
+                    </label>
+
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        id="formFile"
+                        style={{ display: "none" }}
+                        onChange={() => {
+                            document.getElementById("take-photo-form").requestSubmit();
+                        }}
                     />
-                    <canvas ref={canvasRef} width="300" height="225" style={{display: "none"}}/>
-                    <div className="take-photo-btn">
-                        <button style={{
-                            background: "transparent",
-                        }} onClick={takePhotoAndUpload} disabled={isLoading} className=" border-0">
-                            <img className="mb-3" src={"/files/2.png"} height={70}/>
-                        </button>
-                        <h4 className="text-dark-coral"> {isLoading ? "מעלה..." : "צלם תמונה"}</h4>
-                    </div>
-                </div>
-            )}
-        </div>
+                </form>
+
+                {error && <p className="text-danger">{error}</p>}
+            </div>
         </>
     );
 }
