@@ -16,7 +16,7 @@ public class ImageService(ILogger<ImageService> logger, IWebHostEnvironment env,
 
             var report = new WalletReport
             {
-                Image = fileName,
+                Image = $"{userId}/{fileName}",
                 Location = location,
                 Date = DateTime.Now,
                 ExpirationDate = DateTime.Now.AddMonths(1),
