@@ -15,10 +15,11 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         {
             if (ObjectId.TryParse(userIdentify, out _))
             {
-                return await mongoContext.Users.Find(u => u.Id == userIdentify).FirstOrDefault();            }
+                  return await mongoContext.Users.Find(u => u.Id == userIdentify).FirstOrDefaultAsync();            }
+            
             else
             {
-                return await mongoContext.Users.Find(u => u.Username.ToLowerInvariant() == userIdentify.ToLowerInvariant() || u.Email.ToLowerInvariant() == userIdentify.ToLowerInvariant()).FirstOrDefault();
+                return await mongoContext.Users.Find(u => u.Username.ToLowerInvariant() == userIdentify.ToLowerInvariant() || u.Email.ToLowerInvariant() == userIdentify.ToLowerInvariant()).FirstOrDefaultAsync();
             }
            
         }
