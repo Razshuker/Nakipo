@@ -1,10 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useForm} from 'react-hook-form'
-import {useLoginMutation} from "./AuthApiSlice";
+import {useGoogleLoginMutation, useLoginMutation} from "./AuthApiSlice";
 import {TextField} from "@mui/material";
 import '../../CSS/auth.css'
 import {useNavigate} from "react-router-dom";
-
 
 
 export default function Login() {
@@ -13,13 +12,38 @@ export default function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const [login,{data:userInfo,loading}] = useLoginMutation();
+    const [login,{loading}] = useLoginMutation();
     const nav = useNavigate();
+    const [googleLogin] = useGoogleLoginMutation();
 
 
     const handleLogin = async (userData) => {
         console.log({...userData,nav});
         await login({...userData,nav}).unwrap();
+    };
+
+    const handleGoogleLogin = async () => {
+        try {
+            const client = window.google.accounts.id;
+            client.initialize({
+                client_id: "962429869854-7vjm85cs5nsh2urlsa3ibsgosv07qsfu.apps.googleusercontent.com",
+                callback: async (response) => {
+                    if (response.credential) {
+                        try {
+                            await googleLogin({
+                                credential: response.credential,
+                                nav
+                            }).unwrap();
+                        } catch (err) {
+                            console.error('Google login failed:', err);
+                        }
+                    }
+                },
+            });
+            client.prompt();
+        } catch (err) {
+            console.error('Google Login Failed:', err);
+        }
     };
 
     return (
@@ -116,11 +140,11 @@ export default function Login() {
                 <div className="mt-2 text-center">
                     <p className="text-center">התחברות באמצעות</p>
                     <div className="register-with row">
-                        <div className="col google">
-                            <div className="blue-dianne p-3 m-2">GOOGLE</div>
+                        <div className="col-6 google">
+                            <div className="blue-dianne p-3 m-2" onClick={handleGoogleLogin}>GOOGLE</div>
                         </div>
-                        <div className="col facebook">
-                            <div className="blue-dianne p-3 m-2">FACEBOOK</div>
+                        <div className="col-6 facebook">
+                            <div className="blue-dianne p-3 my-2">FACEBOOK</div>
                         </div>
                     </div>
                 </div>

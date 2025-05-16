@@ -1,8 +1,9 @@
 import '../../CSS/auth.css'
 import {useForm} from "react-hook-form";
-import {useRegisterMutation} from "./AuthApiSlice";
+import {useRegisterMutation, useGoogleLoginMutation} from "./AuthApiSlice";
 import {Checkbox, FormControlLabel, TextField} from "@mui/material";
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
 export default function Register() {
     const {
@@ -12,6 +13,8 @@ export default function Register() {
         watch,
     } = useForm();
     const [handleRegisterApi] = useRegisterMutation();
+    const [googleRegister] = useGoogleLoginMutation();
+    const nav = useNavigate();
 
     const handleRegister = async (userData)=> {
         if (userData.password !== userData.passwordConfirmation) {
@@ -34,6 +37,30 @@ export default function Register() {
 
         await handleRegisterApi(formData).unwrap();
     }
+
+    const handleGoogleRegister = async () => {
+        try {
+            const client = window.google.accounts.id;
+            client.initialize({
+                client_id: "962429869854-7vjm85cs5nsh2urlsa3ibsgosv07qsfu.apps.googleusercontent.com",
+                callback: async (response) => {
+                    if (response.credential) {
+                        try {
+                            await googleRegister({
+                                credential: response.credential,
+                                nav
+                            }).unwrap();
+                        } catch (err) {
+                            console.error('Google login failed:', err);
+                        }
+                    }
+                },
+            });
+            client.prompt();
+        } catch (err) {
+            console.error('Google Login Failed:', err);
+        }
+    };
 
     return (
         <>
@@ -360,8 +387,8 @@ export default function Register() {
             <div className="mt-3 text-center">
                 <p className="text-center">הרשמה באמצעות</p>
                 <div className="register-with row">
-                    <div className="col google">
-                        <div className="blue-dianne p-3 m-2">GOOGLE</div>
+                    <div className="col-6 google">
+                        <div className="blue-dianne p-3 m-2" onClick={handleGoogleRegister}>GOOGLE</div>
                     </div>
                     <div className="col facebook">
                         <div className="blue-dianne p-3 m-2">FACEBOOK</div>

@@ -173,6 +173,36 @@ export const authApiSlice = createApi({
             },
             invalidatesTags: [{ type: 'User', id: 'CURRENT' }],
         }),
+    googleLogin: builder.mutation({
+        query: ({credential, nav}) => ({
+            url: '/Auth/google',
+            method: 'POST',
+            body: { credential },
+        }),
+        async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+            try {
+                const { data } = await queryFulfilled;
+
+                setCookie("userId", data.id, 1);
+                setCookie("hasVisited", true, 182);
+
+                // ✅ manually update cached user
+                dispatch(
+                    authApiSlice.util.updateQueryData('getUser', data.id, (draft) => {
+                        Object.assign(draft, data);
+                    })
+                );
+
+                if (arg.nav) {
+                    arg.nav("/takePhoto");
+                }
+
+            } catch (err) {
+                console.error("Error:", err);
+            }
+        },
+        invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
+    }),
     }),
 });
 
@@ -180,6 +210,7 @@ export const {
     useLoginMutation,
     useRegisterMutation,
     useLogoutMutation,
+    useGoogleLoginMutation,
     useGetCuponMutation,
     useUpdateUserMutation,
     useUpdatePasswordMutation,
