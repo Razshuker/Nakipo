@@ -21,7 +21,8 @@ const {data:ratingList} = useGetRatingQuery();
                     <tr key={index}>
                         <td className="row align-items-center">
                             <div className="col-4 p-0 mx-auto text-center">
-                            <img src={user.image ? s3Url + user.image : "/files/profile.png"} alt="user-image" height={45} width={45} className="rounded-circle"/>
+                            <img src={user.image ?  (user.image.startsWith('https://') ? user.image : s3Url + user.image)
+                                : "/files/profile.png"} alt="user-image" height={45} width={45} className="rounded-circle"/>
                             </div>
                             <div className="col-8">
                             <p>{user.dogName}</p>

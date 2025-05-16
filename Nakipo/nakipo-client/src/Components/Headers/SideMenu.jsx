@@ -98,7 +98,15 @@ export default function SideMenu({ open, setOpen }) {
                     >
                         <div className="row align-items-center text-dark-coral text-center dark-blue top-section px-2 py-4">
                             <div className="col-4">
-                                <img src={user.image ? (s3Url+user.image) : "/files/profile.png"} alt="user-image" width={70} height={70} className={user.image ? "rounded-circle" : "rounded-circle white p-2" }/>
+                                <img 
+                                    src={user.image ? 
+                                        (user.image.startsWith('https://') ? user.image : s3Url + user.image) 
+                                        : "/files/profile.png"} 
+                                    alt="user-image" 
+                                    width={70} 
+                                    height={70} 
+                                    className={user.image ? "rounded-circle" : "rounded-circle white p-2" }
+                                />
                             </div>
 
                         <div className="col-8">

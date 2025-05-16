@@ -62,7 +62,8 @@ return (
             <form onSubmit={handleSubmit(handleForm)} className="mt-2 px-5">
                 <div className="mb-3">
                     <label htmlFor="formFile" className="mx-auto d-flex justify-content-center">
-                        <img src={user.image ? s3Url+user.image :"/files/profile.png"} alt="profile image" height={80} className={"white rounded-circle p-1 "} />
+                        <img src={user.image ?  (user.image.startsWith('https://') ? user.image : s3Url + user.image)
+                            : "/files/profile.png"} alt="profile image" height={80} className={"white rounded-circle p-1 "} />
                     </label>
                     <input className="" type="file" id="formFile" {...register("imageFile")}/>
                 </div>
