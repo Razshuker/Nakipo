@@ -13,6 +13,13 @@ public class ApplicationConfiguration
         public static string MongodbConnectionString { get; } = Get("MongoDbConnectionString");
         public static string MongodbDatabase { get; } = Get("MongodbDatabase");
     }
+
+    public static class GoogleSettings
+    {
+        public static string GoogleClientId { get; } = Get("GoogleClientId");
+        public static string GoogleClientSecret { get; } = Get("GoogleClientSecret");
+        
+    }
     
     
     public static string HashToken { get; } = Get("HashToken");

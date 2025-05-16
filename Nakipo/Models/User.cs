@@ -17,7 +17,7 @@ namespace Nakipo.Models
   [BsonElement("full_name")]
     public string FullName { get; set; }
   [BsonElement("city")]
-    public string City { get; set; }
+    public string? City { get; set; }
  [BsonElement("image")]
     public string? Image { get; set; }
     
@@ -26,7 +26,7 @@ namespace Nakipo.Models
     public IFormFile? ImageFile { get; set; }
 
     [BsonElement("phone")]
-    public string Phone { get; set; }
+    public string? Phone { get; set; }
     [BsonElement("wallet")]
     public int? Wallet { get; set; }
     [BsonElement("wallet_history")]
@@ -36,7 +36,7 @@ namespace Nakipo.Models
     public List<WalletReport>? Reports { get; set; } = new();
     
     [BsonElement("dog_name")]
-    public string DogName { get; set; }
+    public string? DogName { get; set; }
     
     [BsonElement("cupons")]
     public List<Cupon> Cupons { get; set; } = new();

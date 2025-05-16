@@ -11,4 +11,5 @@ public interface IAuthService
     Task<User?> Update(User user);
     
     Task<User?> UpdatePassword(string userId, UpdatePassword passwords);
+    Task<User> LoginOrRegisterWithGoogle(GoogleLoginDto dto);
 }

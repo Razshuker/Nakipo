@@ -1,4 +1,3 @@
-
 using Dapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using MongoDB.Bson;
@@ -16,17 +15,17 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         {
             if (ObjectId.TryParse(userIdentify, out _))
             {
-                return mongoContext.Users.Find(u => u.Id == userIdentify).FirstOrDefault();            }
+                return await mongoContext.Users.Find(u => u.Id == userIdentify).FirstOrDefault();            }
             else
             {
-                return mongoContext.Users.Find(u => u.Username.ToLowerInvariant() == userIdentify.ToLowerInvariant()).FirstOrDefault();
+                return await mongoContext.Users.Find(u => u.Username.ToLowerInvariant() == userIdentify.ToLowerInvariant() || u.Email.ToLowerInvariant() == userIdentify.ToLowerInvariant()).FirstOrDefault();
             }
            
         }
         catch (Exception e)
         {
             logger.LogError(e,"failed to get user - userRepository");
-            throw;
+            return null;
         }
     }
 
@@ -105,7 +104,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
     {
         try
         {
-            mongoContext.Users.InsertOneAsync(user);
+            await mongoContext.Users.InsertOneAsync(user);
             return user;
         }
         catch (Exception e)

@@ -1,5 +1,6 @@
 
 
+using Google.Apis.Auth;
 using Nakipo.Models;
 using Nakipo.Repositories;
 using Nakipo.Utillties;
@@ -105,6 +106,35 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
         {
             logger.LogError(e, $"Failed to update password for user {userId}");
             return null;
+        }
+    }
+
+    public async Task<User> LoginOrRegisterWithGoogle(GoogleLoginDto dto)
+    {
+        try
+        {
+            var payload = await GoogleJsonWebSignature.ValidateAsync(dto.Credential);
+            var userEmail = payload.Email;
+            var user = await userRepository.GetUser(userEmail);
+            if (user == null)
+            {
+                var newUser = new User
+                {
+                    Email = userEmail,
+                    FullName = payload.Name,
+                    Username = userEmail.Split('@')[0],
+                    Image = payload.Picture
+                };
+                    return await userRepository.InsertUser(newUser);
+            }
+
+            return user;
+
+        }
+        catch (Exception e)
+        {
+           logger.LogError(e,"Failed to login or create user - google");
+           return null;
         }
     }
 }

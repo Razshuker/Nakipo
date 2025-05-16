@@ -1,5 +1,6 @@
 
 using System.Text.Json;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nakipo.Models;
@@ -66,7 +67,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         {
             if(string.IsNullOrEmpty(userId)) return Unauthorized();
             var user = await authService.GetUser(userId);
-            user.Password = null;
+            if(user!= null) user.Password = null;
             return user;
         }
         catch (Exception e)
@@ -122,6 +123,24 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         {
            logger.LogError(e.Message);
             return null;
+        }
+    }
+    
+    [HttpPost("google")]
+    public async Task<ActionResult<User>> GoogleLogin([FromBody] GoogleLoginDto dto)
+    {
+        try
+        {
+            var user = await authService.LoginOrRegisterWithGoogle(dto);
+            var jwtToken = user.GenerateJwtToken();
+            Response.SetAccessToken(jwtToken);
+            Response.SetTokenCookie(jwtToken);
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to login - google");
+            throw;
         }
     }
 }

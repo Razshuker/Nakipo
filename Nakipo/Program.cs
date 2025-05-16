@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
@@ -33,6 +34,18 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ApplicationConfiguration.HashToken))
         };
     });
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    })
+    .AddCookie()
+    .AddGoogle("Google", options =>
+    {
+        options.ClientId = ApplicationConfiguration.GoogleSettings.GoogleClientId;
+        options.ClientSecret = ApplicationConfiguration.GoogleSettings.GoogleClientSecret;
+    });
+
 
 builder.Host.UseNLog();
 
@@ -104,6 +117,8 @@ app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nakipo"));
 app.Use(async (context, next) =>
 {
+    context.Response.Headers.Remove("Cross-Origin-Opener-Policy");
+    context.Response.Headers.Remove("Cross-Origin-Embedder-Policy");
     context.Response.Headers["Cache-Control"] = "no-store, must-revalidate";
     await next();
 });

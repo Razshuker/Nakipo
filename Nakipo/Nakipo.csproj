@@ -16,6 +16,7 @@
     <ItemGroup>
         <PackageReference Include="AWSSDK.S3" Version="4.0.0.3" />
         <PackageReference Include="Dapper" Version="2.1.66" />
+        <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="9.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
