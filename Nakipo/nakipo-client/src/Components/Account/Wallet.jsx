@@ -44,7 +44,7 @@ export default function Wallet({ userReports = [] }) {
             </tr>
             </thead>
             <tbody>
-            {userReports.length > 0 &&
+            {userReports.length > 0 ?
                 [...userReports]
                     .sort((a, b) => new Date(b.date) - new Date(a.date)) // sort newest to oldest
                     .map((report, sortedIndex) => {
@@ -67,7 +67,12 @@ export default function Wallet({ userReports = [] }) {
                                 </td>
                             </tr>
                         );
-                    })}
+                    })
+                :
+                <>
+            <h3 className="text-center my-5">לא נמצאו דיווחים</h3>
+                </>
+            }
 
             </tbody>
         </table>
