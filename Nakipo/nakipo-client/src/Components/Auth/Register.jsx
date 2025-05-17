@@ -5,6 +5,14 @@ import {Checkbox, FormControlLabel, TextField} from "@mui/material";
 import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import UpdateAccountDetails from "../Settings/UpdateAccountDetails";
+import {
+    FormControl,
+    Input,
+    InputLabel,
+    InputAdornment,
+    IconButton
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function Register() {
     const {
@@ -17,6 +25,14 @@ export default function Register() {
     const [googleRegister] = useGoogleLoginMutation();
     const nav = useNavigate();
     const [googleUser, setGoogleUser] = useState();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+    const handleClickShowPasswordConfirm = () => setShowPasswordConfirm((prev) => !prev);
+
+    const handleMouseDownPassword = (event) => event.preventDefault();
+    const handleMouseUpPassword = (event) => event.preventDefault();
 
     const handleRegister = async (userData)=> {
         if (userData.password !== userData.passwordConfirmation) {
@@ -292,78 +308,114 @@ export default function Register() {
                     })}
                 />
 
-
-                <TextField
-                    label="סיסמה"
-                    type="password"
+                <FormControl
+                    sx={{ m: 1, width: '100%' }}
                     variant="standard"
-                    fullWidth
-                    margin="normal"
                     error={!!errors.password}
-                    helperText={errors.password?.message}
-                    inputProps={{
-                        style: {
-                            textAlign: 'right',
-                            direction: 'rtl',
-                            fontFamily: "MyCustomFont, sans-serif",
-                            color: '#25115d'
-                        }
-                    }}
-                    InputLabelProps={{
-                        style: {
+                >
+                    <InputLabel
+                        htmlFor="register-password"
+                        style={{
                             right: 0,
                             left: 'unset',
                             direction: 'rtl',
                             textAlign: 'right',
                             fontFamily: "MyCustomFont, sans-serif",
-                            color: '#25115d'
+                            color: '#25115d',
+                        }}
+                    >
+                        סיסמה
+                    </InputLabel>
+                    <Input
+                        id="register-password"
+                        type={showPassword ? 'text' : 'password'}
+                        {...register("password", {
+                            required: "שדה חובה",
+                            minLength: {
+                                value: 2,
+                                message: "יש להזין לפחות שני תווים",
+                            },
+                        })}
+                        style={{
+                            textAlign: 'right',
+                            direction: 'rtl',
+                            fontFamily: "MyCustomFont, sans-serif",
+                            color: '#25115d',
+                        }}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    onMouseUp={handleMouseUpPassword}
+                                >
+                                    {!showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
                         }
-                    }}
-                    {...register("password", {
-                        required: "שדה חובה",
-                        minLength: {
-                            value: 2,
-                            message: "יש להזין לפחות שני תווים",
-                        },
-                    })}
-                />
+                    />
+                    {errors.password && (
+                        <span style={{ color: 'red', fontSize: '0.8em', marginTop: '4px' }}>
+      {errors.password.message}
+    </span>
+                    )}
+                </FormControl>
 
-                <TextField
-                    label="אימות סיסמה"
-                    type="password"
+
+                <FormControl
+                    sx={{ m: 1, width: '100%' }}
                     variant="standard"
-                    fullWidth
-                    margin="normal"
                     error={!!errors.passwordConfirmation}
-                    helperText={errors.passwordConfirmation?.message}
-                    inputProps={{
-                        style: {
-                            textAlign: 'right',
-                            direction: 'rtl',
-                            fontFamily: "MyCustomFont, sans-serif",
-                            color: '#25115d'
-                        }
-                    }}
-                    InputLabelProps={{
-                        style: {
+                >
+                    <InputLabel
+                        htmlFor="register-password-confirmation"
+                        style={{
                             right: 0,
                             left: 'unset',
                             direction: 'rtl',
                             textAlign: 'right',
                             fontFamily: "MyCustomFont, sans-serif",
-                            color: '#25115d'
+                            color: '#25115d',
+                        }}
+                    >
+                        אימות סיסמה
+                    </InputLabel>
+                    <Input
+                        id="register-password-confirmation"
+                        type={showPasswordConfirm ? 'text' : 'password'}
+                        {...register("passwordConfirmation", {
+                            required: "שדה חובה",
+                            minLength: {
+                                value: 2,
+                                message: "יש להזין לפחות שני תווים",
+                            },
+                            validate: (value) =>
+                                value === watch("password") || "הסיסמאות אינן תואמות"
+                        })}
+                        style={{
+                            textAlign: 'right',
+                            direction: 'rtl',
+                            fontFamily: "MyCustomFont, sans-serif",
+                            color: '#25115d',
+                        }}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={handleClickShowPasswordConfirm}
+                                    onMouseDown={handleMouseDownPassword}
+                                    onMouseUp={handleMouseUpPassword}
+                                >
+                                    {!showPasswordConfirm ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
                         }
-                    }}
-                    {...register("passwordConfirmation", {
-                        required: "שדה חובה",
-                        minLength: {
-                            value: 2,
-                            message: "יש להזין לפחות שני תווים",
-                        },
-                        validate: (value) =>
-                            value === watch("password") || "הסיסמאות אינן תואמות"
-                    })}
-                />
+                    />
+                    {errors.passwordConfirmation && (
+                        <span style={{ color: 'red', fontSize: '0.8em', marginTop: '4px' }}>
+      {errors.passwordConfirmation.message}
+    </span>
+                    )}
+                </FormControl>
 
                 <FormControlLabel
                     required

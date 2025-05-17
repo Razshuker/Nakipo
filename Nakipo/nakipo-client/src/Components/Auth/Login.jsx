@@ -1,9 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useGoogleLoginMutation, useLoginMutation} from "./AuthApiSlice";
 import {TextField} from "@mui/material";
 import '../../CSS/auth.css'
 import {useNavigate} from "react-router-dom";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 
 
 export default function Login() {
@@ -15,6 +22,11 @@ export default function Login() {
     const [login,{loading}] = useLoginMutation();
     const nav = useNavigate();
     const [googleLogin] = useGoogleLoginMutation();
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+    const handleMouseDownPassword = (event) => event.preventDefault();
+    const handleMouseUpPassword = (event) => event.preventDefault();
 
 
     const handleLogin = async (userData) => {
@@ -90,36 +102,56 @@ export default function Login() {
                         }}
                     />
 
-                    <TextField
-                        label="סיסמה"
-                        type="password"
+
+                    <FormControl
+                        sx={{ m: 1, width: '100%' }}
                         variant="standard"
-                        fullWidth
-                        margin="normal"
                         error={!!errors.password}
-                        helperText={errors.password?.message}
-                        {...register("password", {
-                            required: "שדה חובה",
-                        })}
-                        inputProps={{
-                            style: {
-                                textAlign: 'right',
-                                direction: 'rtl',
-                                fontFamily: "MyCustomFont, sans-serif",
-                                color: '#25115d'
-                            }
-                        }}
-                        InputLabelProps={{
-                            style: {
+                    >
+                        <InputLabel
+                            htmlFor="login-password"
+                            style={{
                                 right: 0,
                                 left: 'unset',
                                 direction: 'rtl',
                                 textAlign: 'right',
                                 fontFamily: "MyCustomFont, sans-serif",
-                                color: '#25115d'
+                                color: '#25115d',
+                            }}
+                        >
+                            סיסמה
+                        </InputLabel>
+                        <Input
+                            id="login-password"
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label={showPassword ? 'hide password' : 'show password'}
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        onMouseUp={handleMouseUpPassword}
+                                    >
+                                        {!showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
                             }
-                        }}
-                    />
+                            {...register("password", {
+                                required: "שדה חובה",
+                            })}
+                            style={{
+                                textAlign: 'right',
+                                direction: 'rtl',
+                                fontFamily: "MyCustomFont, sans-serif",
+                                color: '#25115d',
+                            }}
+                        />
+                        {errors.password && (
+                            <span style={{ color: 'red', fontSize: '0.8em', marginTop: '4px' }}>
+            {errors.password.message}
+        </span>
+                        )}
+                    </FormControl>
 
                     <div className="d-grid mt-4">
                         <button className="btn denim text-white btn-block  w-100 py-3 mt-4" type="submit">
