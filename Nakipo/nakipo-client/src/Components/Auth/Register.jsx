@@ -73,7 +73,7 @@ export default function Register() {
             <img className="flipped col-auto" src={"/files/Face_03.gif"} height={100}/>
             </div>
             {googleUser ?
-                <UpdateAccountDetails buttonContext={"סיום הרשמה"} />
+                <UpdateAccountDetails user={googleUser} buttonContext={"סיום הרשמה"} />
                 :
         <div dir={"rtl"} className="p-1 register-page dark-coral">
             <h1 className="text-dark-blue text-center">יש מצב  שתרוויח</h1>

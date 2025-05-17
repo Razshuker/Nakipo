@@ -5,10 +5,9 @@ import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import {useGetUserQuery, useUpdateUserMutation} from "../Auth/AuthApiSlice";
 
-export default function UpdateAccountDetails({buttonContext = "עדכון פרטים"}) {
-    const {data:user,isLoading} = useGetUserQuery();
+export default function UpdateAccountDetails({user, buttonContext = "עדכון פרטים"}) {
     const [updateUser, {isLoading: updateLoading}] = useUpdateUserMutation();
-
+    const nav = useNavigate();
     const {
         register,
         handleSubmit,
@@ -53,8 +52,10 @@ const handleForm =async (data)=> {
     await updateUser(formData).unwrap();
     if(buttonContext =="עדכון פרטים"){
     alert("פרטי המשתמש עודכנו בהצלחה!");
+     nav("/");
+    }else{
+        nav("/takePhoto");
     }
-    window.location.href ="/";
 }
 
 
