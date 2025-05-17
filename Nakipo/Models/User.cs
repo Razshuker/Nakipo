@@ -27,6 +27,9 @@ namespace Nakipo.Models
 
     [BsonElement("phone")]
     public string? Phone { get; set; }
+    
+    [BsonElement("provider")]
+    public string? Provider { get; set; }
     [BsonElement("wallet")]
     public int? Wallet { get; set; }
     [BsonElement("wallet_history")]

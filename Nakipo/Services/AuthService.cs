@@ -123,7 +123,8 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
                     Email = userEmail,
                     FullName = payload.Name,
                     Username = userEmail.Split('@')[0],
-                    Image = payload.Picture
+                    Image = payload.Picture,
+                    Provider = "Google"
                 };
                     return await userRepository.InsertUser(newUser);
             }
