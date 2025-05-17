@@ -96,7 +96,7 @@ export default function SideMenu({ open, setOpen }) {
                             transition: 'transform 0.3s ease-in-out',
                         }}
                     >
-                        <div className="row align-items-center text-dark-coral text-center dark-blue top-section px-2 py-4">
+                        <div className="row align-items-center text-dark-coral text-center dark-blue top-section px-2 py-4 m-0">
                             <div className="col-4">
                                 <img 
                                     src={user.image ? 
