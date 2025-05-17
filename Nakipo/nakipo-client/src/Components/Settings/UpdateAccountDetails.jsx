@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import {useGetUserQuery, useUpdateUserMutation} from "../Auth/AuthApiSlice";
 
-export default function UpdateAccountDetails() {
+export default function UpdateAccountDetails({buttonContext = "עדכון פרטים"}) {
     const {data:user,isLoading} = useGetUserQuery();
     const [updateUser, {isLoading: updateLoading}] = useUpdateUserMutation();
 
@@ -16,7 +16,7 @@ export default function UpdateAccountDetails() {
     } = useForm();
 
 
-const handleForm =async (data)=>{
+const handleForm =async (data)=> {
     console.log(data);
     const updatedUser = {
         ...user,
@@ -42,7 +42,7 @@ const handleForm =async (data)=>{
     formData.append("password", updatedUser.password);
     formData.append("dogName", updatedUser.dogName);
 
-    if (updatedUser.cupons.length>0) {
+    if (updatedUser.cupons.length > 0) {
         formData.append("cupons", JSON.stringify(updatedUser.cupons));
     }
 
@@ -51,7 +51,9 @@ const handleForm =async (data)=>{
     }
 
     await updateUser(formData).unwrap();
+    if(buttonContext =="עדכון פרטים"){
     alert("פרטי המשתמש עודכנו בהצלחה!");
+    }
     window.location.href ="/";
 }
 
@@ -282,7 +284,7 @@ return (
 
 
                 <button type="submit" className="btn denim text-white w-100 py-3 my-3">
-                    עדכון פרטים
+                    {buttonContext}
                 </button>
             </form>
         }

@@ -2,8 +2,9 @@ import '../../CSS/auth.css'
 import {useForm} from "react-hook-form";
 import {useRegisterMutation, useGoogleLoginMutation} from "./AuthApiSlice";
 import {Checkbox, FormControlLabel, TextField} from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
+import UpdateAccountDetails from "../Settings/UpdateAccountDetails";
 
 export default function Register() {
     const {
@@ -15,6 +16,7 @@ export default function Register() {
     const [handleRegisterApi] = useRegisterMutation();
     const [googleRegister] = useGoogleLoginMutation();
     const nav = useNavigate();
+    const [googleUser, setGoogleUser] = useState();
 
     const handleRegister = async (userData)=> {
         if (userData.password !== userData.passwordConfirmation) {
@@ -46,10 +48,13 @@ export default function Register() {
                 callback: async (response) => {
                     if (response.credential) {
                         try {
-                            await googleRegister({
+                            const result = await googleRegister({
                                 credential: response.credential,
-                                nav
                             }).unwrap();
+                        if(result.dogName != null){
+                            nav("/takePhoto")
+                        }
+                            setGoogleUser(result);
                         } catch (err) {
                             console.error('Google login failed:', err);
                         }
@@ -67,6 +72,9 @@ export default function Register() {
             <div className="row justify-content-center dark-coral w-100 m-0">
             <img className="flipped col-auto" src={"/files/Face_03.gif"} height={100}/>
             </div>
+            {googleUser ?
+                <UpdateAccountDetails buttonContext={"סיום הרשמה"} />
+                :
         <div dir={"rtl"} className="p-1 register-page dark-coral">
             <h1 className="text-dark-blue text-center">יש מצב  שתרוויח</h1>
             <form onSubmit={handleSubmit(handleRegister)} className="mt-1 px-5">
@@ -399,6 +407,7 @@ export default function Register() {
                 <p>משתמש רשום? <a href="/login" className="text-primary">התחבר</a></p>
             </div>
         </div>
+            }
         </>
 
     )
