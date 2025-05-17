@@ -70,7 +70,11 @@ export default function Wallet({ userReports = [] }) {
                     })
                 :
                 <>
+                    <tr>
+                  <td className="text-center w-100">
             <h3 className="text-center my-5">לא נמצאו דיווחים</h3>
+                  </td>
+                    </tr>
                 </>
             }
 
