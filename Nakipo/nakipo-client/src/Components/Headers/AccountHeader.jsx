@@ -34,7 +34,7 @@ export default function AccountHeader() {
                             className="col-auto p-0"
                             alt="wallet"
                         />
-                        <p className="col-auto">ארנק</p>
+                        <p className="col-auto">הארנק שלי</p>
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@ export default function AccountHeader() {
                             className="col-auto p-0"
                             alt="rating"
                         />
-                        <p className="col-auto">טבלה</p>
+                        <p className="col-auto">טבלת העיר</p>
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@ export default function AccountHeader() {
                             className="col-auto p-0"
                             alt="challange"
                         />
-                        <p className="col-auto">אתגר</p>
+                        <p className="col-auto">אתגר החודש</p>
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@ export default function AccountHeader() {
                             className="col-auto p-0"
                             alt="feedo"
                         />
-                        <p className="col-auto">פידו</p>
+                        <p className="col-auto">ד״ר פידו</p>
                     </div>
                 </div>
             </div>
