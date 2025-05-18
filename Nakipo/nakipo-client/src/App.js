@@ -17,7 +17,7 @@ function App() {
 
         if (path.includes("mission-done") || path.includes("takePhoto")) {
             document.body.classList.add("dark-blue");
-        } else if(path.includes("login") || path.includes("register") || path.includes("about") || path.includes("share") || path.includes("explanation") || path.includes("terms")) {
+        } else if(path.includes("login") || path.includes("register") || path.includes("about") || path.includes("share") || path.includes("explanation") || path.includes("terms") || path.includes("reset-password") || path.includes("forgot-password")) {
             document.body.classList.add("dark-coral");
         }
 

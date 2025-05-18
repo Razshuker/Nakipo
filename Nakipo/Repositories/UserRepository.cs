@@ -258,4 +258,56 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
             throw;
         }
     }
+
+    public async Task SaveResetPasswordRequest(ResetPasswordRequest request)
+    {
+        try
+        {
+            // First, invalidate any existing reset requests for this email
+            var filter = Builders<ResetPasswordRequest>.Filter.Eq(r => r.Email, request.Email);
+            var update = Builders<ResetPasswordRequest>.Update.Set(r => r.IsUsed, true);
+            await mongoContext.ResetPasswordRequests.UpdateManyAsync(filter, update);
+
+            // Then save the new request
+            await mongoContext.ResetPasswordRequests.InsertOneAsync(request);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to save reset password request for {Email}", request.Email);
+            return;
+        }
+    }
+
+    public async Task<ResetPasswordRequest?> GetResetPasswordRequest(string email, string token)
+    {
+        try
+        {
+            return await mongoContext.ResetPasswordRequests
+                .Find(r => r.Email == email && r.Token == token)
+                .FirstOrDefaultAsync();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to get reset password request for {Email}", email);
+            return null;
+        }
+    }
+
+    public async Task MarkResetRequestAsUsed(string email, string token)
+    {
+        try
+        {
+            var filter = Builders<ResetPasswordRequest>.Filter
+                .Where(r => r.Email == email && r.Token == token);
+            var update = Builders<ResetPasswordRequest>.Update
+                .Set(r => r.IsUsed, true);
+
+            await mongoContext.ResetPasswordRequests.UpdateOneAsync(filter, update);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to mark reset request as used for {Email}", email);
+            return;
+        }
+    }
 }

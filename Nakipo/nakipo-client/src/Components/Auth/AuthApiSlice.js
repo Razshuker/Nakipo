@@ -203,12 +203,45 @@ export const authApiSlice = createApi({
         },
         invalidatesTags: (result) => [{ type: 'User', id: result?.id ?? 'CURRENT' }],
     }),
+    forgotPassword: builder.mutation({
+        query: (email) => ({
+            url: 'Auth/forgot-password',
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: { email },
+        }),
+    }),
+    validateResetToken: builder.mutation({
+        query: ({ email, token }) => ({
+            url: 'Auth/validateResetToken',
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: { email, token },
+        }),
+    }),
+    resetPassword: builder.mutation({
+        query: ({ email, token, newPassword }) => ({
+            url: 'Auth/reset-password',
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: { email, token, newPassword },
+        }),
+    }),
     }),
 });
 
 export const {
     useLoginMutation,
     useRegisterMutation,
+    useForgotPasswordMutation,
+    useValidateResetTokenMutation,
+    useResetPasswordMutation,
     useLogoutMutation,
     useGoogleLoginMutation,
     useGetCuponMutation,

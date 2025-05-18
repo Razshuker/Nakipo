@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useForm} from 'react-hook-form'
 import {useGoogleLoginMutation, useLoginMutation} from "./AuthApiSlice";
 import {TextField} from "@mui/material";
@@ -161,9 +161,12 @@ export default function Login() {
                 </form>
                 <a style={{
                     color:"#000",
-                }} href="#">
+                }} href="/forgot-password">
                 <p className="text-center mt-4">שכחתי סיסמה</p>
                 </a>
+                <div className="mt-3 text-center">
+                    <p>חדש פה? <a href="/register" className="text-primary text-dark">צור חשבון</a></p>
+                </div>
 
                 <img style={{
                     width: "100%",

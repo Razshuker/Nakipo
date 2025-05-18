@@ -76,7 +76,9 @@ builder.Services.AddSingleton<IBrandService, BrandService>();
 builder.Services.AddSingleton<IBrandRepository, BrandRepository>();
 builder.Services.AddSingleton<IRatingService, RatingService>();
 builder.Services.AddSingleton<IImageService, ImageService>();
+builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ISpaceService, SpaceService>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 
 
 builder.Services.AddCors(options =>

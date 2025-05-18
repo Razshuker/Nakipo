@@ -143,4 +143,54 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
             throw;
         }
     }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    {
+        try
+        {
+            await authService.RequestPasswordResetAsync(request.Email);
+            return Ok(new { message = "If an account exists with this email, a password reset link has been sent." });
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to process forgot password request");
+            // Don't reveal if the email exists or not
+            return Ok(new { message = "If an account exists with this email, a password reset link has been sent." });
+        }
+    }
+
+    [HttpPost("validateResetToken")]
+    public async Task<IActionResult> ValidateResetToken([FromBody] ValidateResetTokenRequest request)
+    {
+        try
+        {
+            var isValid = await authService.ValidateResetTokenAsync(request.Email, request.Token);
+            return Ok(new { isValid });
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to validate reset token");
+            return BadRequest(new { message = "Invalid or expired reset token." });
+        }
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel request)
+    {
+        try
+        {
+            var success = await authService.ResetPasswordAsync(request.Email, request.Token, request.NewPassword);
+            if (success)
+            {
+                return Ok(new { message = "Password has been reset successfully." });
+            }
+            return BadRequest(new { message = "Failed to reset password. Token may be invalid or expired." });
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to reset password");
+            return BadRequest(new { message = "Failed to reset password." });
+        }
+    }
 }

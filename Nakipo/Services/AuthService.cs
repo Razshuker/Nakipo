@@ -1,5 +1,3 @@
-
-
 using Google.Apis.Auth;
 using Nakipo.Models;
 using Nakipo.Repositories;
@@ -7,7 +5,11 @@ using Nakipo.Utillties;
 
 namespace Nakipo.Services;
 
-public class AuthService(ILogger<AuthService> logger,IUserRepository userRepository, ISpaceService spaceService): IAuthService
+public class AuthService(
+    ILogger<AuthService> logger,
+    IUserRepository userRepository, 
+    ISpaceService spaceService,
+    IEmailService emailService) : IAuthService
 {
     public async Task<User> Login(string username, string password)
     {
@@ -136,6 +138,91 @@ public class AuthService(ILogger<AuthService> logger,IUserRepository userReposit
         {
            logger.LogError(e,"Failed to login or create user - google");
            return null;
+        }
+    }
+
+    public async Task<string> RequestPasswordResetAsync(string email)
+    {
+        try
+        {
+            var user = await userRepository.GetUser(email);
+            if (user == null)
+            {
+                return null;
+            }
+
+            // Generate a random token
+            var token = Guid.NewGuid().ToString("N");
+            
+            // Store the reset request
+            var resetRequest = new ResetPasswordRequest
+            {
+                Email = email,
+                Token = token,
+                ExpiryDate = DateTime.UtcNow.AddHours(1),
+                IsUsed = false
+            };
+            
+            await userRepository.SaveResetPasswordRequest(resetRequest);
+            
+            // Send the reset email
+            await emailService.SendPasswordResetEmailAsync(email, token);
+            
+            return token;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to request password reset for {Email}", email);
+            return null;
+        }
+    }
+
+    public async Task<bool> ValidateResetTokenAsync(string email, string token)
+    {
+        try
+        {
+            var request = await userRepository.GetResetPasswordRequest(email, token);
+            return request != null && 
+                   !request.IsUsed && 
+                   request.ExpiryDate > DateTime.UtcNow;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to validate reset token for {Email}", email);
+            return false;
+        }
+    }
+
+    public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
+    {
+        try
+        {
+            if (!await ValidateResetTokenAsync(email, token))
+            {
+                return false;
+            }
+
+            var user = await userRepository.GetUser(email);
+            if (user == null)
+            {
+                return false;
+            }
+
+            // Hash the new password
+            var hashedPassword = newPassword.ComputeMD5Hash();
+            
+            // Update the password
+            await userRepository.UpdateUserPassword(user.Id, hashedPassword);
+            
+            // Mark the reset request as used
+            await userRepository.MarkResetRequestAsUsed(email, token);
+            
+            return true;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to reset password for {Email}", email);
+            return false;
         }
     }
 }

@@ -18,4 +18,7 @@ public interface IUserRepository
     Task<User?> UpdateUser(User user);
     
     Task<User?> UpdateUserPassword(string userId, string newPassword);
+    Task SaveResetPasswordRequest(ResetPasswordRequest request);
+    Task<ResetPasswordRequest?> GetResetPasswordRequest(string email, string token);
+    Task MarkResetRequestAsUsed(string email, string token);
 }

@@ -9,6 +9,8 @@ import Settings from "./Components/Settings/Settings";
 import InitialRoute from "./InitialRoute";
 import Explanation from "./Components/AppExplanation/Explanation";
 import Terms from "./Components/Terms";
+import ForgotPassword from "./Components/Auth/ForgotPassword";
+import ResetPassword from "./Components/Auth/ResetPassword";
 
 const AppRoutes = [
     {
@@ -18,6 +20,14 @@ const AppRoutes = [
     {
         path: "/register",
         element: <Register />,
+    },
+    {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+    },
+    {
+        path: "/reset-password",
+        element: <ResetPassword />,
     },
     {
         path: "/explanation",

@@ -12,4 +12,7 @@ public interface IAuthService
     
     Task<User?> UpdatePassword(string userId, UpdatePassword passwords);
     Task<User> LoginOrRegisterWithGoogle(GoogleLoginDto dto);
+    Task<string> RequestPasswordResetAsync(string email);
+    Task<bool> ValidateResetTokenAsync(string email, string token);
+    Task<bool> ResetPasswordAsync(string email, string token, string newPassword);
 }
