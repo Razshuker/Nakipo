@@ -19,11 +19,10 @@ export default function FirstStep({nextToStep02}) {
                 מעולה.
             </h1>
             <button  onClick={() => {
-                console.log("Button clicked");
                 nextToStep02();
-            }} className="btn dark-blue text-dark-coral btn-block mx-auto w-75 d-flex justify-content-center py-3 my-4">הבא</button>
+            }} className="btn dark-blue text-dark-coral btn-block mx-auto w-75 d-flex justify-content-center py-3 my-2">הבא</button>
             </div>
-            <img src="/files/Face_01.gif" alt="gif" height={200} className="d-flex mx-auto gifs"/>
+            <img src="/files/Face_01.gif" alt="gif" height={100} className="d-flex mx-auto gifs"/>
         </div>
 
     )
