@@ -8,11 +8,13 @@ namespace Nakipo.Services;
 
 public class EmailService(ILogger<EmailService> logger) : IEmailService
 {
+    private readonly string domain = "http://localhost:3000/";
+    // private readonly string domain = "https://wedogood.co.il/";
     public async Task SendPasswordResetEmailAsync(string email, string resetToken)
     {
         try
         {
-            var resetLink = $"http://localhost:3000/reset-password?token={resetToken}&email={WebUtility.UrlEncode(email)}";
+            var resetLink = $"{domain}reset-password?token={resetToken}&email={WebUtility.UrlEncode(email)}";
             var expirationTime = DateTime.UtcNow.AddHours(1).ToString("HH:mm");
             
             var message = new MailMessage
@@ -52,4 +54,9 @@ public class EmailService(ILogger<EmailService> logger) : IEmailService
             return;
         }
     }
+
+    // public async Task SendCuponCodeEmail(string email, string code)
+    // {
+    //     
+    // }
 } 
