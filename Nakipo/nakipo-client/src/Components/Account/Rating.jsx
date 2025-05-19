@@ -2,11 +2,14 @@ import '../../CSS/wallet.css'
 import {useGetRatingQuery} from "./ratingApiSlice";
 import {formatDate, s3Url} from "../../Services/CommonConfigurations";
 import React from "react";
+import Loading from "../Loading";
 
 export default function Rating(){
-const {data:ratingList} = useGetRatingQuery();
+const {data:ratingList, isLoading} = useGetRatingQuery();
 
-    console.log(ratingList);
+if(isLoading){
+    return <Loading />;
+}
 
             return (
             <table className="text-dark-blue" style={{ width: '100%', direction: 'rtl', borderCollapse: 'collapse' }}>

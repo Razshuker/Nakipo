@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import { useForgotPasswordMutation } from './AuthApiSlice';
 import '../../CSS/auth.css';
+import Loading from "../Loading";
 
 export default function ForgotPassword() {
     const {
@@ -10,7 +11,7 @@ export default function ForgotPassword() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const [forgotPassword] = useForgotPasswordMutation();
+    const [forgotPassword,{isLoading}] = useForgotPasswordMutation();
     const [submitted, setSubmitted] = useState(false);
 
     const onSubmit = async (data) => {
@@ -22,6 +23,9 @@ export default function ForgotPassword() {
         }
     };
 
+    if(isLoading) {
+        return <Loading backgroundColor={"white"}/>;
+    }
 
     return (
         <div className="auth-container">

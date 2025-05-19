@@ -13,6 +13,7 @@ import {
     IconButton
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Loading from "../Loading";
 
 export default function Register() {
     const {
@@ -21,8 +22,8 @@ export default function Register() {
         formState: { errors },
         watch,
     } = useForm();
-    const [handleRegisterApi] = useRegisterMutation();
-    const [googleRegister] = useGoogleLoginMutation();
+    const [handleRegisterApi, {isLoading: registerLoading}] = useRegisterMutation();
+    const [googleRegister,{isLoading: googleLoading}] = useGoogleLoginMutation();
     const nav = useNavigate();
     const [googleUser, setGoogleUser] = useState();
     const [showPassword, setShowPassword] = useState(false);
@@ -82,6 +83,12 @@ export default function Register() {
             console.error('Google Login Failed:', err);
         }
     };
+
+    if(registerLoading || googleLoading){
+        return (
+            <Loading backgroundColor={"white"}/>
+        )
+    }
 
     return (
         <>

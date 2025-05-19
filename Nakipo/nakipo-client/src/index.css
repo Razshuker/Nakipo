@@ -37,6 +37,9 @@ div#root {
 .white{
     background-color: #fff;
 }
+.transparent{
+    background-color: transparent;
+}
 
 .text-dark-blue{
     color: #25115d;

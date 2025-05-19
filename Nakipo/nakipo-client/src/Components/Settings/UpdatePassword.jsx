@@ -8,6 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useUpdatePasswordMutation} from "../Auth/AuthApiSlice";
+import Loading from "../Loading";
 
 export default function UpdatePassword() {
     const {register, handleSubmit,formState: { errors },watch} = useForm();
@@ -32,6 +33,10 @@ export default function UpdatePassword() {
     await updatePassword(data);
         alert("סיסמה עודכנה בהצלחה!");
         window.location.href ="/";
+    }
+
+    if(isLoading){
+        return <Loading backgroundColor={"white"} />;
     }
 
 

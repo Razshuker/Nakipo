@@ -9,7 +9,7 @@ export default function SecondStep() {
         <div>
             <img src={"/files/Logo_1.png"} height={55} className="d-flex mx-auto mt-4"/>
             <div className="explantion-container">
-                <h1 className="text-center text-dark-blue my-5 col-auto">
+                <h1 className="text-center text-dark-blue mt-3 mb-5 col-auto">
                     שלוף שקית,
                     <br/>
                     תאסוף, תצלם-
@@ -20,6 +20,7 @@ export default function SecondStep() {
                     המטבעות?
                     <br/>
                     שוות כסף ופינוקים...
+
                 </h1>
             <button onClick={()=> nav("/register")} className="btn dark-blue text-dark-coral mx-auto btn-block w-75 d-flex justify-content-center py-3 my-2 col-auto">רק קודם, בואו נירשם</button>
             </div>

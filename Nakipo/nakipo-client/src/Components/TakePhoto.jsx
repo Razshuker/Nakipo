@@ -4,6 +4,7 @@ import Header from "./Headers/Header";
 import '../CSS/takePhoto.css';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 export default function TakePhoto() {
     const [uploadPhoto, { isLoading }] = useUploadPhotoMutation();
@@ -78,6 +79,7 @@ export default function TakePhoto() {
     return (
         <>
             <Header />
+                {isLoading ? <Loading /> :
             <div className="camera-page">
                 <form id="take-photo-form" onSubmit={(e) => {
                     e.preventDefault(); // ← prevent default so we can control it
@@ -103,6 +105,7 @@ export default function TakePhoto() {
 
                 {error && <p className="text-danger">{error}</p>}
             </div>
+}
         </>
     );
 }

@@ -1,17 +1,20 @@
 import Header from "../Headers/Header";
 import React from "react";
 import {useGetUserQuery} from "../Auth/AuthApiSlice";
+import Loading from "../Loading";
 
 export default function SettingsHeader({settings, setSettings}) {
     const { data:user, isLoading } = useGetUserQuery();
+
+    if(isLoading){
+        return <Loading />;
+    }
 
     return (
         <>
         <Header/>
     <div className="user-info dark-blue text-dark-coral py-4 text-center">
-        {isLoading ? <h2>Loading...</h2> :
             <h2>היי {user && user.username}</h2>
-        }
     </div>
     <div className="bottom-bar row row-cols-2">
         <div className="col wallet p-0">

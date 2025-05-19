@@ -3,11 +3,12 @@ import {formatDate, s3Url} from "../../Services/CommonConfigurations";
 import React from "react";
 import {useGetCuponMutation, useGetUserWalletQuery} from "../Auth/AuthApiSlice";
 import {useNavigate} from "react-router-dom";
+import Loading from "../Loading";
 
 export default function Challange() {
-    const {data: brands} = useGetBrandsQuery();
-    const {data:userWallet} = useGetUserWalletQuery();
-    const [getCupon, {data:user}] = useGetCuponMutation();
+    const {data: brands, isLoading: loadingBrands} = useGetBrandsQuery();
+    const {data:userWallet, isLoading: loadingWallet} = useGetUserWalletQuery();
+    const [getCupon, {data:user, isLoading:loadingCupon}] = useGetCuponMutation();
     const nav = useNavigate();
 
     const date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -25,8 +26,10 @@ export default function Challange() {
         }
     }
 
+    if(loadingBrands || loadingWallet || loadingCupon){
+        return <Loading />;
+    }
 
-    console.log(brands);
     return (
         <>
             <div className="row m-1 g-2 justify-content-center">
@@ -44,7 +47,6 @@ export default function Challange() {
                             </div>
                         </div>
 
-                        {/* ✅ Add overlay conditionally (e.g. if brand.blocked is true) */}
                         {(userWallet < 50 || brand?.name?.toLowerCase() !== 'peteat')  && (
                             <div
                                 onClick={(e) => e.stopPropagation()}

@@ -2,6 +2,7 @@ import Header from "./Header";
 import '../../CSS/header.css';
 import { useLocation, useNavigate } from "react-router-dom";
 import {useGetUserQuery} from "../Auth/AuthApiSlice";
+import Loading from "../Loading";
 
 export default function AccountHeader() {
     const nav = useNavigate();
@@ -13,13 +14,17 @@ export default function AccountHeader() {
         nav(tabLink);
     }
 
+    if(isLoading){
+        return <Loading />;
+    }
+
     return (
         <header>
             <Header />
             <div className="user-info dark-blue text-dark-coral py-4 text-center">
-                {isLoading ? <h2>Loading...</h2> :
+
                 <h2>היי {user && user.username}</h2>
-                }
+
             </div>
 
             <div className="bottom-bar row row-cols-2">

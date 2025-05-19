@@ -10,6 +10,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Loading from "../Loading";
 
 
 
@@ -57,6 +58,12 @@ export default function Login() {
             console.error('Google Login Failed:', err);
         }
     };
+
+    if(loading){
+        return (
+            <Loading backgroundColor={"white"}/>
+        )
+    }
 
     return (
         <div className="login-page dark-coral">

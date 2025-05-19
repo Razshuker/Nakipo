@@ -7,6 +7,7 @@ import Rating from "./Rating";
 import {useSelector} from "react-redux";
 import {useEffect} from "react";
 import {useGetUserQuery} from "../Auth/AuthApiSlice";
+import Loading from "../Loading";
 
 export default function MainAccount() {
     const location = useLocation();
@@ -14,7 +15,10 @@ export default function MainAccount() {
     const { data: user, isLoading, error } = useGetUserQuery();
 
     let userReports = user ?  user.reports : [];
-    console.log(user);
+
+    if(isLoading){
+        return <Loading />;
+    }
 
     return (
         <>

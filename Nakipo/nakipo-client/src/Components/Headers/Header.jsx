@@ -3,6 +3,7 @@ import {useState} from "react";
 import SideMenu from "./SideMenu";
 import {useGetUserWalletQuery} from "../Auth/AuthApiSlice";
 import {useNavigate} from "react-router-dom";
+import Loading from "../Loading";
 
 
 export default function Header() {
@@ -10,6 +11,10 @@ export default function Header() {
     const [open, setOpen] = useState(false);
     const { data:userWallet, isLoading } = useGetUserWalletQuery();
     const nav = useNavigate();
+
+    if(isLoading){
+        return <Loading />;
+    }
 
     return (
         <header className="header dark-blue text-center text-white">
@@ -19,10 +24,7 @@ export default function Header() {
                 </div>
                 <div className="col-auto right row px-4 header-wallet align-items-center">
                     <img onClick={()=> nav("/takePhoto")} className="col-auto" src={"/files/Face_02.gif"} height={30}/>
-                    {isLoading ?
-                    <div className="col-auto wallet white text-dark-blue d-flex align-items-center">Loading...</div>:
                     <div onClick={()=>nav("/?wallet")} className="col-auto wallet white text-dark-blue d-flex align-items-center">{userWallet} מטבעות</div>
-                    }
                 </div>
 
             </div>

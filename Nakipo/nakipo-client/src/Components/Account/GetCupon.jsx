@@ -1,6 +1,7 @@
 import Header from "../Headers/Header";
 import {useGetUserQuery} from "../Auth/AuthApiSlice";
 import {useEffect, useState} from "react";
+import Loading from "../Loading";
 
 export default function GetCupon() {
     const { data: user, isLoading } = useGetUserQuery();
@@ -21,6 +22,10 @@ export default function GetCupon() {
             alert("אין קופון זמין")
         }
     };
+
+    if(isLoading) {
+        return <Loading />;
+    }
 
     return (
         <>

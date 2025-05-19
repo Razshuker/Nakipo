@@ -5,12 +5,13 @@ import { FormControl, Input, InputLabel, InputAdornment, IconButton } from '@mui
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useValidateResetTokenMutation, useResetPasswordMutation } from './AuthApiSlice';
 import '../../CSS/auth.css';
+import Loading from "../Loading";
 
 export default function ResetPassword() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const [validateToken] = useValidateResetTokenMutation();
-    const [resetPassword] = useResetPasswordMutation();
+    const [validateToken,{isLoading:loadingValidate}] = useValidateResetTokenMutation();
+    const [resetPassword,{isLoading: loadingReset}] = useResetPasswordMutation();
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const [isValidToken, setIsValidToken] = useState(false);
@@ -68,8 +69,9 @@ export default function ResetPassword() {
         }
     };
 
-    if (isLoading) {
-        return <div>טוען...</div>;
+    if (isLoading || loadingValidate || loadingReset) {
+        return <Loading backgroundColor={"white"}/>;
+
     }
 
 

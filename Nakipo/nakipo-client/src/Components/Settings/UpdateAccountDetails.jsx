@@ -4,6 +4,7 @@ import React from "react";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import {useGetUserQuery, useUpdateUserMutation} from "../Auth/AuthApiSlice";
+import Loading from "../Loading";
 
 export default function UpdateAccountDetails({user, buttonContext = "עדכון פרטים"}) {
     const [updateUser, {isLoading: updateLoading}] = useUpdateUserMutation();
@@ -58,6 +59,9 @@ const handleForm =async (data)=> {
     }
 }
 
+if (updateLoading){
+    return <Loading backgroundColor={"white"} />;
+}
 
 return (
     <>
