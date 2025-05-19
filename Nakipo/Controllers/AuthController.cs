@@ -144,7 +144,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         }
     }
 
-    [HttpPost("forgot-password")]
+    [HttpPost("forgotPassword")]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
     {
         try

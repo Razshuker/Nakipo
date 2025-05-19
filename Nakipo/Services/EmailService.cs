@@ -8,13 +8,13 @@ namespace Nakipo.Services;
 
 public class EmailService(ILogger<EmailService> logger) : IEmailService
 {
-    private readonly string domain = "http://localhost:3000/";
-    // private readonly string domain = "https://wedogood.co.il/";
+    private readonly string _domain = "https://wedogood.co.il/";
+    private readonly string _imgSrc = "https://wedogood.co.il/files/Share_image.jpg";
     public async Task SendPasswordResetEmailAsync(string email, string resetToken)
     {
         try
         {
-            var resetLink = $"{domain}reset-password?token={resetToken}&email={WebUtility.UrlEncode(email)}";
+            var resetLink = $"{_domain}reset-password?token={resetToken}&email={WebUtility.UrlEncode(email)}";
             var expirationTime = DateTime.UtcNow.AddHours(1).ToString("HH:mm");
             
             var message = new MailMessage
@@ -22,7 +22,8 @@ public class EmailService(ILogger<EmailService> logger) : IEmailService
                 From = new MailAddress(ApplicationConfiguration.EmailSettings.FromEmail),
                 Subject = "איפוס סיסמה - DoGood",
                 Body = $@"
-                    <div dir='rtl' style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
+                    <div dir='rtl' style='text-align: center; max-width: 600px; margin: 0 auto; padding: 20px;'>
+                        <img src='{_imgSrc}' alt='תמונה לשיתוף' height='150' width='auto' />
                         <h2 style='color: #25115d; text-align: center;'>איפוס סיסמה</h2>
                         <p style='text-align: right;'>שלום,</p>
                         <p style='text-align: right;'>קיבלנו בקשה לאיפוס הסיסמה שלך.</p>
