@@ -3,11 +3,15 @@ import {useGetRatingQuery} from "./ratingApiSlice";
 import {formatDate, s3Url} from "../../Services/CommonConfigurations";
 import React from "react";
 import Loading from "../Loading";
+import {useGetUserQuery} from "../Auth/AuthApiSlice";
 
 export default function Rating(){
-const {data:ratingList, isLoading} = useGetRatingQuery();
+    const { data:user, isLoading:userLoading } = useGetUserQuery();
+    const { data: ratingList, isLoading } = useGetRatingQuery(user?.city, {
+        skip: !user?.city,
+    });
 
-if(isLoading){
+if(isLoading || userLoading){
     return <Loading />;
 }
 

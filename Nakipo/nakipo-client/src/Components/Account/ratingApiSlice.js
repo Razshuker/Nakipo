@@ -8,8 +8,8 @@ export const ratingApiSlice = createApi({
     endpoints: (builder)=> {
         return {
             getRating: builder.query({
-                query: (user) => ({
-                    url: 'rating',
+                query: (city) => ({
+                    url: 'rating?city='+city,
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",

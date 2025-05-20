@@ -11,7 +11,7 @@ public interface IUserRepository
     // void UpdateUserWallet(string userId, int? newWalletValue);
 
     Task<int?> GetUserWalletByReports(string userIdentify, int month, int year);
-    Task<List<User>> GetTopUsersForMonth(int month, int year);
+    Task<List<User>> GetTopUsersForMonth(int month, int year, string city);
 
     Task<User> InsertReport(WalletReport report, string userId);
     

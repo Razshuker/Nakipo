@@ -7,11 +7,11 @@ namespace Nakipo.Controllers;
 public class RatingController(ILogger<RatingController> logger, IRatingService ratingService):ControllerBase
 {
     [HttpGet("rating")]
-    public async Task<ActionResult<List<User>>> GetRating()
+    public async Task<ActionResult<List<User>>> GetRating(string city)
     {
         try
         {
-            var rating = await ratingService.GetRating();
+            var rating = await ratingService.GetRating(city);
             return Ok(rating);
         }
         catch (Exception e)
@@ -22,11 +22,11 @@ public class RatingController(ILogger<RatingController> logger, IRatingService r
     }
     
     [HttpGet("GetRatingByMonth")]
-    public async Task<ActionResult<List<User>>> GetRatingByMonth(int month, int year)
+    public async Task<ActionResult<List<User>>> GetRatingByMonth(int month, int year, string city)
     {
         try
         {
-            var rating = await ratingService.GetRatingByMonth(month, year);
+            var rating = await ratingService.GetRatingByMonth(month, year, city);
             return Ok(rating);
         }
         catch (Exception e)

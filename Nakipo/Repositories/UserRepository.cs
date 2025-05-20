@@ -154,7 +154,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         }
     }
 
-    public async Task<List<User>> GetTopUsersForMonth(int month, int year)
+    public async Task<List<User>> GetTopUsersForMonth(int month, int year, string city)
     {
         var startOfMonth = new DateTime(year, month, 1);
         var startOfNextMonth = startOfMonth.AddMonths(1);
@@ -162,16 +162,16 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
 
         var usersCollection = mongoContext.Users;
 
-        var users = await usersCollection.Find(_ => true).ToListAsync();
+        var cityUsers = await usersCollection.Find(user => user.City == city).ToListAsync();
 
-        logger.LogInformation(users.Count.ToString());
+        logger.LogInformation(cityUsers.Count.ToString());
 
-        foreach (var user in users)
+        foreach (var user in cityUsers)
         {
             user.Wallet = user.Reports.Count(r => r.Date >= startOfMonth && r.Date < startOfNextMonth);
         }
 
-        var topUsers = users
+        var topUsers = cityUsers
             .OrderByDescending(u => u.Wallet)
             .Take(10)
             .ToList();
