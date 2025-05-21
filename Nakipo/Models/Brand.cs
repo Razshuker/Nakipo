@@ -21,5 +21,9 @@ public class Brand
     [BsonElement("gift")]
     public string Gift { get; set; }
     
+       [BsonElement("walletAmountToGetCupon")]
+    public string WalletAmountToGetCupon { get; set; }
+    
+    
     
 }

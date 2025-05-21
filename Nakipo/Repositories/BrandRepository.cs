@@ -19,4 +19,17 @@ public class BrandRepository(ILogger<BrandRepository> logger,MongoDbContext mong
             throw;
         }
     }
+    public async Task<Brand> GetBrandByName(string brandName)
+    {
+        try
+        {
+            var brand = await mongoDbContext.Brands.Find(b=>b.Name.ToLowerInvariant() == brandName.ToLowerInvariant()).FirstOrDefaultAsync();
+            return brand;
+        }
+        catch (Exception e)
+        {
+           logger.LogError(e.Message,"Faild to get brand by name - brandRepository");
+            return null;
+        }
+    }
 }
