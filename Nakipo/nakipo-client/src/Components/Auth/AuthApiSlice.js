@@ -94,13 +94,12 @@ export const authApiSlice = createApi({
         }),
 
   getCupon: builder.mutation({
-            query: (user) => ({
-                url: 'Wallet/GetCuponCode',
+            query: (walletAmountToGetCupon) => ({
+                url: 'Wallet/GetCuponCode?walletAmountToGetCupon='+walletAmountToGetCupon,
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
-                },
-                body: user,
+                }
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
