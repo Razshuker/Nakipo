@@ -8,13 +8,11 @@ import Loading from "./Loading";
 
 export default function TakePhoto() {
     const [uploadPhoto, { isLoading }] = useUploadPhotoMutation();
-    const { handleSubmit } = useForm();
-    const nav = useNavigate();
     const [error, setError] = useState(null);
-    const fileInputRef = useRef(null); // ← useRef for file input
+    const fileInputRef = useRef(null);
 
     const getLocation = () =>
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     resolve({
