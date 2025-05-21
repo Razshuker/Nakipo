@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import MenuItem from "./MenuItem";
 import {useGetUserQuery, useGetUserWalletQuery, useLogoutMutation} from "../Auth/AuthApiSlice";
 import {baseUrl, s3Url} from "../../Services/CommonConfigurations";
+import {useNavigate} from "react-router-dom";
 
 export default function SideMenu({ open, setOpen }) {
     const links = [
@@ -46,6 +47,8 @@ export default function SideMenu({ open, setOpen }) {
     const { data:user, isLoading: userLoading } = useGetUserQuery();
     const { data:userWallet, isLoading: walletLoading } = useGetUserWalletQuery();
     const [logout] = useLogoutMutation();
+    const [firstValidCoupon,setFirstValidCoupon] = useState(null);
+    const nav = useNavigate();
 
     const handleLogout = async () => {
         try {
@@ -56,6 +59,15 @@ export default function SideMenu({ open, setOpen }) {
         }
     };
 
+    useEffect(() => {
+        const cupon = user?.cupons?.find(coupon => {
+        return new Date(coupon.expiryDate) > new Date();
+    });
+        setFirstValidCoupon(cupon ? cupon?.cuponCode : null);
+    },[user])
+
+
+    console.log(firstValidCoupon);
 
     return (
         <>
@@ -111,7 +123,7 @@ export default function SideMenu({ open, setOpen }) {
 
                         <div className="col-8">
                             <p className="text-sm">היי {user && user.username}</p>
-                            {/*<p className="text-xs">קוד לשיתוף: 4KLY565</p>*/}
+                            {firstValidCoupon != null && <p onClick={()=> nav("/share")} className="text-xs">קוד לשיתוף: {firstValidCoupon}</p> }
                             <p className="text-xs">צברת החודש {userWallet} נקודות</p>
 
                         </div>

@@ -9,7 +9,6 @@ export default function Challange() {
     const {data: brands, isLoading: loadingBrands} = useGetBrandsQuery();
     const {data:userWallet, isLoading: loadingWallet} = useGetUserWalletQuery();
     const [getCupon, {data:user, isLoading:loadingCupon}] = useGetCuponMutation();
-    const nav = useNavigate();
 
     const date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     const formattedDate = new Intl.DateTimeFormat('en-GB', {
@@ -18,9 +17,9 @@ export default function Challange() {
         year: 'numeric'
     }).format(date);
 
-    const  onGetCupon =async (brand_name)=>{
-        if(brand_name.toLowerCase() === "peteat"){
-            await getCupon().unwrap();
+    const  onGetCupon =async (brand)=>{
+        if(brand.name.toLowerCase() === "peteat"){
+            await getCupon(brand.walletAmountToGetCupon).unwrap();
         }else {
             alert("no cupons yet!")
         }
@@ -34,7 +33,7 @@ export default function Challange() {
         <>
             <div className="row m-1 g-2 justify-content-center">
                 {brands && brands.length > 0 && brands.map((brand) => (
-                    <div onClick={()=>onGetCupon(brand.name)} className="col-5 m-2 border border-1 text-center position-relative" key={brand.id}>
+                    <div onClick={()=>onGetCupon(brand)} className="col-5 m-2 border border-1 text-center position-relative" key={brand.id}>
                         <div style={{
                             minHeight:"150px"
                         }} className="m-2 p-2">
@@ -47,7 +46,7 @@ export default function Challange() {
                             </div>
                         </div>
 
-                        {(userWallet < 50 || brand?.name?.toLowerCase() !== 'peteat')  && (
+                        {(userWallet < brand.walletAmountToGetCupon || brand?.name?.toLowerCase() !== 'peteat')  && (
                             <div
                                 onClick={(e) => e.stopPropagation()}
                                 style={{

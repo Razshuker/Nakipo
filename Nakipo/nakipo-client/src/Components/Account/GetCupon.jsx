@@ -9,7 +9,10 @@ export default function GetCupon() {
 
     useEffect(() => {
         if (!isLoading && user?.cupons?.length > 0) {
-            setCuponCode(user.cupons[user?.cupons?.length-1].cuponCode || "אין קופון זמין");
+            const cupon = user?.cupons?.find(coupon => {
+                return new Date(coupon.expiryDate) > new Date();
+            });
+            setCuponCode(cupon ? cupon.cuponCode : "אין קופון זמין");
         }
     }, [user, isLoading]);
 
@@ -24,7 +27,7 @@ export default function GetCupon() {
     };
 
     if(isLoading) {
-        return <Loading />;
+        return <Loading backgroundColor={"white"} />;
     }
 
     return (
