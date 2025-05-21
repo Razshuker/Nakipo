@@ -14,5 +14,7 @@ public class Cupon
 
     [BsonElement("used")]
     public bool Used { get; set; }
+    [BsonElement("expiry_date")]
+    public DateTime ExpiryDate { get; set; }
     
 }

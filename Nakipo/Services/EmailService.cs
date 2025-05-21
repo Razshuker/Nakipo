@@ -1,15 +1,24 @@
 using System.Net;
 using System.Net.Mail;
-using Microsoft.Extensions.Options;
 using Nakipo.Configurations;
-using Nakipo.Models;
+using Nakipo.Repositories;
 
 namespace Nakipo.Services;
 
-public class EmailService(ILogger<EmailService> logger) : IEmailService
+public class EmailService(ILogger<EmailService> logger, IBrandRepository brandRepository) : IEmailService
 {
     private readonly string _domain = "https://wedogood.co.il/";
     private readonly string _imgSrc = "https://wedogood.co.il/files/Share_image.jpg";
+    private readonly SmtpClient _client = new SmtpClient(
+        ApplicationConfiguration.EmailSettings.SmtpHost,
+        int.Parse(ApplicationConfiguration.EmailSettings.SmtpPort))
+    {
+        Credentials = new NetworkCredential(
+            ApplicationConfiguration.EmailSettings.SmtpUsername,
+            ApplicationConfiguration.EmailSettings.SmtpPassword),
+        EnableSsl = true
+    };
+
     public async Task SendPasswordResetEmailAsync(string email, string resetToken)
     {
         try
@@ -20,7 +29,7 @@ public class EmailService(ILogger<EmailService> logger) : IEmailService
             var message = new MailMessage
             {
                 From = new MailAddress(ApplicationConfiguration.EmailSettings.FromEmail),
-                Subject = "איפוס סיסמה - DoGood",
+                Subject = "איפוס סיסמה - Dogood",
                 Body = $@"
                     <div dir='rtl' style='text-align: center; max-width: 600px; margin: 0 auto; padding: 20px;'>
                         <img src='{_imgSrc}' alt='תמונה לשיתוף' height='150' width='auto' />
@@ -40,14 +49,8 @@ public class EmailService(ILogger<EmailService> logger) : IEmailService
             };
             
             message.To.Add(email);
-
-            using var client = new SmtpClient(ApplicationConfiguration.EmailSettings.SmtpHost, int.Parse(ApplicationConfiguration.EmailSettings.SmtpPort))
-            {
-                Credentials = new NetworkCredential(ApplicationConfiguration.EmailSettings.SmtpUsername, ApplicationConfiguration.EmailSettings.SmtpPassword),
-                EnableSsl = true
-            };
-
-            await client.SendMailAsync(message);
+            
+            await _client.SendMailAsync(message);
         }
         catch (Exception ex)
         {
@@ -56,8 +59,37 @@ public class EmailService(ILogger<EmailService> logger) : IEmailService
         }
     }
 
-    // public async Task SendCuponCodeEmail(string email, string code)
-    // {
-    //     
-    // }
+    public async Task SendCuponCodeEmail(string email, string code)
+    {
+        var brand = await brandRepository.GetBrandByName("peteat");
+        try
+        {
+            var expirationTime = DateTime.Now.AddMonths(3).ToString("dd/MM/yyyy");
+            var message = new MailMessage
+            {
+                From = new MailAddress(ApplicationConfiguration.EmailSettings.FromEmail),
+                Subject = $"קוד קופון למימוש {brand.Name}",
+                Body = $@"
+                    <div dir='rtl' style='text-align: center; max-width: 600px; margin: 0 auto; padding: 20px;'>
+                        <img src='{_imgSrc}' alt='תמונה לשיתוף' height='150' width='auto' />
+                        <h2 style='color: #25115d; text-align: center;'> קופון למימוש {brand.Name}</h2>
+                        <p style='text-align: right;'>שלום,</p>
+                        <p style='text-align: right;'>קיבלת קופון ״{brand.Gift}״</p>
+<p style='display: inline-block; background-color:#bcf3ff; padding:8px 12px; border-radius: 4px; font-weight: bold; font-size: 18px;'>{{code}}</p>
+                        <p style='text-align: right; color: #ff0000;'> שים לב תוקף הקופון עד לתאריך: {expirationTime}</p>
+                        <hr style='margin: 30px 0;'>
+                        <p style='text-align: center; color: #666;'>Dogood - כי טוב לעשות טוב</p>
+                    </div>",
+                IsBodyHtml = true
+            };
+            message.To.Add(email);
+            await _client.SendMailAsync(message);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to send cupon email to {Email}", email);
+            return;
+        }
+        
+    }
 } 

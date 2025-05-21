@@ -33,17 +33,17 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
     }
 
     [HttpPost("getCuponCode")]
-    public async Task<ActionResult<User?>> getCuponCode([FromHeader] string userId)
+    public async Task<ActionResult<User?>> getCuponCode([FromHeader] string userId, int walletAmountToGetCupon, int cuponExpiryMonths = 3)
     {
         try
         {
             if (userId == null) return Unauthorized();
-            var walletAmountToGetCupon = 50;
             var wallet = await walletService.GetUserWalletByUserId(userId);
             if (wallet != null)
             {
                 if(wallet< walletAmountToGetCupon) return Content("No enough money");
-                var user = await walletService.GetCupon(userId,walletAmountToGetCupon);
+                var user = await walletService.GetCupon(userId,walletAmountToGetCupon,cuponExpiryMonths);
+                if(user == null) return NotFound("no cupon found");
                 user.Password = null;
                 if (user != null) return Ok(user);
                 return NotFound("No cupon code");

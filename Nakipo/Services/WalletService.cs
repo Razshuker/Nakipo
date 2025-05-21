@@ -5,7 +5,7 @@ using Nakipo.Repositories;
 
 namespace Nakipo.Services;
 
-public class WalletService(IWalletRepository walletRepository,IUserRepository userRepository, ILogger<WalletService> logger, MongoDbContext mongoContext):IWalletService
+public class WalletService(IWalletRepository walletRepository,IUserRepository userRepository, ILogger<WalletService> logger, IEmailService emailService):IWalletService
 {
     public async Task<int?> GetUserWalletByUserId(string userId)
     {
@@ -23,7 +23,7 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
         }
     }
 
-    public async Task<User?> GetCupon(string userId, int walletAmountToGetCupon)
+    public async Task<User?> GetCupon(string userId, int walletAmountToGetCupon,int cuponExpiryMonths)
     {
         try
         {
@@ -32,11 +32,13 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
             var cupon = await walletRepository.GetCupon();
             if (cupon != null)
             { 
+                cupon.ExpiryDate = DateTime.Now.AddMonths(cuponExpiryMonths);
                 walletRepository.CuponUsed(cupon.Id);
                 if (await userRepository.UpdateUserReports(userId, month, year, walletAmountToGetCupon))
                 {
                 var user = await userRepository.GetUser(userId);
              user.Cupons.Add(cupon);
+             await emailService.SendCuponCodeEmail(user.Email, cupon.CuponCode);
             return await userRepository.UpdateUser(user);
                 }
             }
