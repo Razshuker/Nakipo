@@ -131,7 +131,6 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
                 throw new Exception("User not found");
             }
 
-            // Find the first 5 reports that match the month and report-used == false
             var reportsToUpdate = user.Reports
                 .Where(r => r.Date >= startOfMonth && r.Date < startOfNextMonth && r.ReportUsed == false)
                 .Take(usedReportsForCupon)
