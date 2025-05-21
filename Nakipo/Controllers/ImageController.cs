@@ -38,6 +38,7 @@ public class ImageController(IImageService imageService, ILogger<ImageController
         };
         
         var updatedUser = await imageService.InsertUserReport(photo,location,userId);
+        
        
         return Ok(new
         {

@@ -51,4 +51,23 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
             return null;
         }
     }
+
+    public async Task<User?> GetAutoCupon(string userId, int walletAmountToGetCupon, int cuponExpiryMonths)
+    {
+        try
+        {
+            var UserWallet = await userRepository.GetUserWalletByReports(userId, DateTime.Now.Month, DateTime.Now.Year);
+            if (UserWallet == 30)
+            {
+                return await GetCupon(userId, walletAmountToGetCupon, cuponExpiryMonths);
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "failed to get cupon for user");
+            return null;
+        }
+       
+    }
 }

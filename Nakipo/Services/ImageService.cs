@@ -3,7 +3,7 @@ using Nakipo.Repositories;
 
 namespace Nakipo.Services;
 
-public class ImageService(ILogger<ImageService> logger, IWebHostEnvironment env, IUserRepository userRepository, ISpaceService spaceService):IImageService
+public class ImageService(ILogger<ImageService> logger, IWebHostEnvironment env, IUserRepository userRepository, ISpaceService spaceService, IWalletService walletService):IImageService
 {
     public async Task<User> InsertUserReport(IFormFile photo, Location location, string userId)
     {
@@ -23,7 +23,12 @@ public class ImageService(ILogger<ImageService> logger, IWebHostEnvironment env,
                 ReportUsed = false
             };
 
-            return await userRepository.InsertReport(report, userId);
+                var user = await userRepository.InsertReport(report, userId);
+                var walletAmountToGetCupon = 30;
+                var cuponExpiryMonth = 3;
+                   var userWithCupon =  await walletService.GetAutoCupon(userId,walletAmountToGetCupon,cuponExpiryMonth);
+                 return userWithCupon != null ? userWithCupon : user;
+           
         }
         catch (Exception e)
         {

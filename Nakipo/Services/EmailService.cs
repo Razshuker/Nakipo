@@ -75,7 +75,7 @@ public class EmailService(ILogger<EmailService> logger, IBrandRepository brandRe
                         <h2 style='color: #25115d; text-align: center;'> קופון למימוש {brand.Name}</h2>
                         <p style='text-align: right;'>שלום,</p>
                         <p style='text-align: right;'>קיבלת קופון ״{brand.Gift}״</p>
-<p style='display: inline-block; background-color:#bcf3ff; padding:8px 12px; border-radius: 4px; font-weight: bold; font-size: 18px;'>{{code}}</p>
+<p style='display: inline-block; background-color:#bcf3ff; padding:8px 12px; border-radius: 4px; font-weight: bold; font-size: 18px;'>{code}</p>
                         <p style='text-align: right; color: #ff0000;'> שים לב תוקף הקופון עד לתאריך: {expirationTime}</p>
                         <hr style='margin: 30px 0;'>
                         <p style='text-align: center; color: #666;'>Dogood - כי טוב לעשות טוב</p>
