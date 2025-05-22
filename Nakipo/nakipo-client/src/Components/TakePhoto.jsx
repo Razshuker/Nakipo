@@ -77,7 +77,7 @@ export default function TakePhoto() {
     return (
         <>
             <Header />
-                {isLoading ? <Loading /> :
+                {isLoading ? <Loading text={"מעלה תמונה..."} /> :
             <div className="camera-page">
                 <form id="take-photo-form" onSubmit={(e) => {
                     e.preventDefault(); // ← prevent default so we can control it
