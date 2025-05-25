@@ -11,7 +11,7 @@ public class AuthService(
     ISpaceService spaceService,
     IEmailService emailService) : IAuthService
 {
-    public async Task<User> Login(string username, string password)
+    public async Task<User?> Login(string username, string password)
     {
         try
         {
@@ -24,7 +24,7 @@ public class AuthService(
         }
         catch (Exception e)
         {
-            logger.LogError(e, $"Failed to login {username} - authService");
+            logger.LogError(e, "Failed to login {Username} - authService", username);
             throw;
         }
     }

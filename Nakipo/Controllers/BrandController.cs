@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Nakipo.Models;
-using Nakipo.Repositories;
 using Nakipo.Services;
 
 namespace Nakipo.Controllers;
@@ -20,7 +19,7 @@ public class BrandController(ILogger<BrandController> logger, IBrandService bran
         catch (Exception e)
         {
         logger.LogError(e.Message);
-            throw;
+            return BadRequest(e);
         }
     }
     

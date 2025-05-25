@@ -1,6 +1,5 @@
 
 using System.Text.Json;
-using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nakipo.Models;
@@ -31,7 +30,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         catch (Exception e)
         {
             logger.LogError(e, "Failed to login - authController");
-            return Unauthorized();
+            return BadRequest(e);
         }
     }
     
@@ -73,7 +72,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         catch (Exception e)
         {
             logger.LogError(e.Message);
-            throw;
+            return BadRequest(e);
         }
     }
 

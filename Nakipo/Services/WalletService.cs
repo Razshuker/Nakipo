@@ -1,11 +1,13 @@
-using MongoDB.Driver;
-using Nakipo.Configurations;
 using Nakipo.Models;
 using Nakipo.Repositories;
 
 namespace Nakipo.Services;
 
-public class WalletService(IWalletRepository walletRepository,IUserRepository userRepository, ILogger<WalletService> logger, IEmailService emailService):IWalletService
+public class WalletService(
+    IWalletRepository walletRepository,
+    IUserRepository userRepository,
+    ILogger<WalletService> logger,
+    IEmailService emailService) : IWalletService
 {
     public async Task<int?> GetUserWalletByUserId(string userId)
     {
@@ -18,12 +20,12 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
         }
         catch (Exception e)
         {
-           logger.LogError(e, "failed to get user wallet by userId");
-           throw;
+            logger.LogError(e, "failed to get user wallet by userId");
+            throw;
         }
     }
 
-    public async Task<User?> GetCupon(string userId, int walletAmountToGetCupon,int cuponExpiryMonths)
+    public async Task<User?> GetCupon(string userId, int walletAmountToGetCupon, int cuponExpiryMonths)
     {
         try
         {
@@ -31,15 +33,15 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
             var year = DateTime.Now.Year;
             var cupon = await walletRepository.GetCupon();
             if (cupon != null)
-            { 
+            {
                 cupon.ExpiryDate = DateTime.Now.AddMonths(cuponExpiryMonths);
                 walletRepository.CuponUsed(cupon.Id);
                 if (await userRepository.UpdateUserReports(userId, month, year, walletAmountToGetCupon))
                 {
-                var user = await userRepository.GetUser(userId);
-             user.Cupons.Add(cupon);
-             await emailService.SendCuponCodeEmail(user.Email, cupon.CuponCode);
-            return await userRepository.UpdateUser(user);
+                    var user = await userRepository.GetUser(userId);
+                    user.Cupons.Add(cupon);
+                    await emailService.SendCuponCodeEmail(user.Email, cupon.CuponCode);
+                    return await userRepository.UpdateUser(user);
                 }
             }
 
@@ -47,7 +49,7 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
         }
         catch (Exception e)
         {
-           logger.LogError(e, "failed to get cupon code - walletService");
+            logger.LogError(e, "failed to get cupon code - walletService");
             return null;
         }
     }
@@ -56,11 +58,12 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
     {
         try
         {
-            var UserWallet = await userRepository.GetUserWalletByReports(userId, DateTime.Now.Month, DateTime.Now.Year);
-            if (UserWallet == 30)
+            var userWalletBalance = await userRepository.GetUserWalletByReports(userId, DateTime.Now.Month, DateTime.Now.Year);
+            if (userWalletBalance == 30)
             {
                 return await GetCupon(userId, walletAmountToGetCupon, cuponExpiryMonths);
             }
+
             return null;
         }
         catch (Exception e)
@@ -68,6 +71,5 @@ public class WalletService(IWalletRepository walletRepository,IUserRepository us
             logger.LogError(e, "failed to get cupon for user");
             return null;
         }
-       
     }
 }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nakipo.Models;
-using Nakipo.Repositories;
 using Nakipo.Services;
 
 namespace Nakipo.Controllers;

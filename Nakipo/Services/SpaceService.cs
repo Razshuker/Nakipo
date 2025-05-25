@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Nakipo.Services;
 
