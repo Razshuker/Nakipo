@@ -26,8 +26,8 @@ public class ApplicationConfiguration
         public static string SmtpHost { get; } = Get("SmtpHost");
         public static string SmtpPort { get; } = Get("SmtpPort");
         public static string SmtpUsername { get; } = Get("SmtpUsername");
-        public static string SmtpPassword { get; } = Get("SmtpPassword");
-        public static string FromEmail { get; } = Get("FromEmail");
+        public static string RefreshToken { get; } = Get("RefreshToken");
+        
         
     }
 

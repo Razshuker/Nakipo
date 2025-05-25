@@ -17,6 +17,7 @@
         <PackageReference Include="AWSSDK.S3" Version="4.0.0.3" />
         <PackageReference Include="Dapper" Version="2.1.66" />
         <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
+        <PackageReference Include="MailKit" Version="4.12.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="9.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
@@ -46,7 +47,7 @@
         <_ContentIncludedByDefault Remove="publish_output\nakipo.runtimeconfig.json" />
         <_ContentIncludedByDefault Remove="publish_output\wwwroot\asset-manifest.json" />
         <_ContentIncludedByDefault Remove="publish_output\wwwroot\manifest.json" />
-        <_ContentIncludedByDefault Remove="publish_output\nlog.config" />
+<!--        <_ContentIncludedByDefault Remove="publish_output\nlog.config" />-->
     </ItemGroup>
     
     <ItemGroup>
