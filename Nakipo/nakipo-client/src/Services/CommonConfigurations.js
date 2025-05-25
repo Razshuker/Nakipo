@@ -1,6 +1,9 @@
 
-export const baseUrl = 'https://wedogood.co.il/';
-// export const baseUrl = 'http://localhost:5195/';
+// export const baseUrl = 'https://wedogood.co.il/';
+export const baseUrl = 'http://localhost:5195/';
+// export const baseUrl = 'https://localhost:7033/';
+export const s3Url = "https://dogood-users-photos.ams3.cdn.digitaloceanspaces.com/"
+export const s3PublicFilesUrl = "https://dogood-users-photos.ams3.cdn.digitaloceanspaces.com/public/"
 
 
 export function getCookie(name) {

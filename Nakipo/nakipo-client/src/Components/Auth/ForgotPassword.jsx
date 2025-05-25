@@ -4,6 +4,7 @@ import { TextField } from '@mui/material';
 import { useForgotPasswordMutation } from './AuthApiSlice';
 import '../../CSS/auth.css';
 import Loading from "../Loading";
+import {s3PublicFilesUrl} from "../../Services/CommonConfigurations";
 
 export default function ForgotPassword() {
     const {
@@ -30,7 +31,7 @@ export default function ForgotPassword() {
     return (
         <div className="auth-container">
             <div className="row justify-content-end w-100 m-0 pe-5 pt-0">
-                <img className="flipped col-auto" src={"/files/Face_02.gif"} height={100}/>
+                <img className="flipped col-auto" src={s3PublicFilesUrl + "Face_02.gif"} height={100}/>
             </div>
                 {submitted ?   <div className="auth-form text-center p-4 mt-4">
                     <h2>בדוק בתיבת הדואר הנכנס שלך</h2>

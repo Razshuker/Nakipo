@@ -6,6 +6,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useValidateResetTokenMutation, useResetPasswordMutation } from './AuthApiSlice';
 import '../../CSS/auth.css';
 import Loading from "../Loading";
+import {s3PublicFilesUrl} from "../../Services/CommonConfigurations";
 
 export default function ResetPassword() {
     const [searchParams] = useSearchParams();
@@ -78,7 +79,7 @@ export default function ResetPassword() {
     return (
         <div className="auth-container">
             <div className="row justify-content-end w-100 m-0 pe-5 pt-0">
-                <img className="flipped col-auto" src={"/files/Face_02.gif"} height={100}/>
+                <img className="flipped col-auto" src={s3PublicFilesUrl + "Face_02.gif"} height={100}/>
             </div>
             {!isValidToken ?  <div className="auth-form text-center mt-5">
                 <h2>קישור לא תקין</h2>

@@ -1,17 +1,17 @@
 import {useNavigate} from "react-router-dom";
 
-export default function MenuItem({label ,href ,icon ,setOpen, target = null }) {
+export default function MenuItem({label, href, icon, setOpen, target = null}) {
 
     const nav = useNavigate();
 
     console.log(target);
-    const navRedirect =(path)=>{
+    const navRedirect = (path) => {
         if (target === "_blank") {
             window.open(path, "_blank");
         } else {
             nav(path);
         }
-            setOpen(false);
+        setOpen(false);
     }
 
     return (

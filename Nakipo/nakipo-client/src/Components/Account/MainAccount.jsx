@@ -12,18 +12,18 @@ import Loading from "../Loading";
 export default function MainAccount() {
     const location = useLocation();
     let pathname = location.search;
-    const { data: user, isLoading, error } = useGetUserQuery();
+    const {data: user, isLoading} = useGetUserQuery();
 
-    let userReports = user ?  user.reports : [];
+    let userReports = user ? user.reports : [];
 
-    if(isLoading){
-        return <Loading />;
+    if (isLoading) {
+        return <Loading/>;
     }
 
     return (
         <>
-        <AccountHeader />
-            {(pathname === "?wallet" || pathname === "" )&& <Wallet userReports={userReports} />}
+            <AccountHeader/>
+            {(pathname === "?wallet" || pathname === "") && <Wallet userReports={userReports}/>}
             {pathname === "?rating" && <Rating/>}
             {pathname === "?challange" && <Challange/>}
             {pathname === "?feedo" && <Feedo/>}

@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Loading from "../Loading";
+import {s3PublicFilesUrl} from "../../Services/CommonConfigurations";
 
 export default function Register() {
     const {
@@ -93,7 +94,7 @@ export default function Register() {
     return (
         <>
             <div className="row justify-content-center dark-coral w-100 m-0">
-            <img className="flipped col-auto" src={"/files/Face_03.gif"} height={100}/>
+            <img className="flipped col-auto" src={s3PublicFilesUrl + "Face_03.gif"} height={100}/>
             </div>
             {googleUser ?
                 <UpdateAccountDetails user={googleUser} buttonContext={"סיום הרשמה"} />
@@ -104,7 +105,7 @@ export default function Register() {
 
                 <div className="mb-3">
                     <label htmlFor="formFile" className="mx-auto d-flex justify-content-center">
-                        <img src={"/files/profile.png"} alt="profile image" height={80} className={"white rounded-circle p-1 "} />
+                        <img src={s3PublicFilesUrl + "profile.png"} alt="profile image" height={80} className={"white rounded-circle p-1 "} />
                     </label>
                     <input className="" type="file" id="formFile"  {...register("imageFile")}/>
                 </div>
@@ -448,9 +449,6 @@ export default function Register() {
                     כן, אני רוצה
                 </button>
             </form>
-            {/*<img style={{*/}
-            {/*    width: "100%",*/}
-            {/*}} src="/files/q_1_1.png" alt="or" className="my-3"/>*/}
             <div className="mt-3 text-center">
                 <p className="text-center">הרשמה באמצעות</p>
                 <div className="register-with row">

@@ -5,6 +5,7 @@ import '../CSS/takePhoto.css';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
+import {s3PublicFilesUrl} from "../Services/CommonConfigurations";
 
 export default function TakePhoto() {
     const [uploadPhoto, { isLoading }] = useUploadPhotoMutation();
@@ -84,7 +85,7 @@ export default function TakePhoto() {
                     HandleTakePhoto();
                 }}>
                     <label htmlFor="formFile" className="mx-auto d-flex flex-column justify-content-center text-center">
-                        <img className="col-4 mx-auto" src={"/files/Face_01.gif"} alt="camera" />
+                        <img className="col-4 mx-auto" src={s3PublicFilesUrl + "Face_01.gif"} alt="camera" />
                         <h1 className="text-dark-coral take-photo-title">צלם תמונה</h1>
                     </label>
 

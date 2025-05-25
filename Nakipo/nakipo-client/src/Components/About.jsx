@@ -1,13 +1,14 @@
 import Header from "./Headers/Header";
 import '../CSS/About.css'
 import React from "react";
+import {s3PublicFilesUrl} from "../Services/CommonConfigurations";
 
 export default function About(){
 
     return (
         <>
             <Header/>
-            <img src={"/files/Logo_1.png"} height={55} className="d-flex mx-auto mt-4"/>
+            <img src={s3PublicFilesUrl + "Logo_1.png"} height={55} className="d-flex mx-auto mt-4"/>
             <div className="about px-3 py-2">
             <p className="text-center">תכנית נאמנות לבעלי כלבים, השתתפות בהגרלות, הנחות שוות ואפילו מוצרים במתנה!</p>
             <p className="bold">שומרים יחד על עיר נקייה – בכל טיול!

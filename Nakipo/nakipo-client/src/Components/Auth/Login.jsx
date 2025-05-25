@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Loading from "../Loading";
+import {s3PublicFilesUrl} from "../../Services/CommonConfigurations";
 
 
 
@@ -68,7 +69,7 @@ export default function Login() {
     return (
         <div className="login-page dark-coral">
         <div className="row justify-content-end w-100 m-0 pe-5 pt-0">
-            <img className="flipped col-auto" src={"/files/Face_02.gif"} height={100}/>
+            <img className="flipped col-auto" src={s3PublicFilesUrl + "Face_02.gif"} height={100}/>
         </div>
 
             <div className="pt-2 px-5">
@@ -177,7 +178,7 @@ export default function Login() {
 
                 <img style={{
                     width: "100%",
-                }} src="/files/q_1_1.png" alt="or" className="my-3"/>
+                }} src={s3PublicFilesUrl+ "q_1_1.png"} alt="or" className="my-3"/>
 
                 <div className="mt-2 text-center">
                     <p className="text-center">התחברות באמצעות</p>

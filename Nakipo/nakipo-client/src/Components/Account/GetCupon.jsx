@@ -2,6 +2,7 @@ import Header from "../Headers/Header";
 import {useGetUserQuery} from "../Auth/AuthApiSlice";
 import {useEffect, useState} from "react";
 import Loading from "../Loading";
+import {s3PublicFilesUrl} from "../../Services/CommonConfigurations";
 
 export default function GetCupon() {
     const { data: user, isLoading } = useGetUserQuery();
@@ -42,14 +43,14 @@ export default function GetCupon() {
             <img style={{
                 position:"absolute",
                 top: "-35px"
-            }} src="/files/share.png" height="75"  alt="share" />
+            }} src={s3PublicFilesUrl + "share.png"} height="75"  alt="share" />
             </div>
             <div>
                 <div style={{
                     marginTop:"100px"
                 }} className="row w-75 justify-content-center mb-4 align-items-center mx-auto">
                     <div className="col-3 copy-btn p-3 denim text-center text-white" onClick={copyToClipboard}>
-                        <img src="/files/copy.png" alt="copy" height={25}/>
+                        <img src={s3PublicFilesUrl + "copy.png"} alt="copy" height={25}/>
                     </div>
                     <div className="col-9 cupon blue-dianne text-dark-blue p-3 text-center">
                         {cuponCode}

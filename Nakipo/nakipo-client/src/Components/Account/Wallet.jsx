@@ -1,6 +1,6 @@
 import '../../CSS/wallet.css'
 import React, {useEffect, useState} from "react";
-import {s3Url} from "../../Services/CommonConfigurations";
+import {s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
 
 
 
@@ -62,7 +62,7 @@ export default function Wallet({ userReports = [] }) {
                                     </div>
                                 </td>
                                 <td className="row justify-content-center text-dark">
-                                    <img src="/files/3.png" height={25} className="col-auto p-0" alt="currency"/>
+                                    <img src={s3PublicFilesUrl + "3.png"} height={25} className="col-auto p-0" alt="currency"/>
                                     <p className="col-8 text-center">מטבע</p>
                                 </td>
                             </tr>

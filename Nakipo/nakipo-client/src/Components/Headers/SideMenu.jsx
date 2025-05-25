@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import MenuItem from "./MenuItem";
 import {useGetUserQuery, useGetUserWalletQuery, useLogoutMutation} from "../Auth/AuthApiSlice";
-import {baseUrl, s3Url} from "../../Services/CommonConfigurations";
+import {baseUrl, s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
 import {useNavigate} from "react-router-dom";
 
 export default function SideMenu({ open, setOpen }) {
@@ -9,39 +9,39 @@ export default function SideMenu({ open, setOpen }) {
         {
             label: 'הארנק שלי',
             href: '/?wallet',
-            iconPath: "/files/5_1_off.png"
+            iconPath: s3PublicFilesUrl + "5_1_off.png"
         },
         {
             label: 'טבלת העיר',
             href: '/?rating',
-            iconPath: "/files/5_2_off.png"
+            iconPath: s3PublicFilesUrl + "5_2_off.png"
         },
         {
             label: 'אתגר החודש',
             href: '/?challange',
-            iconPath: "/files/5_3_off.png"
+            iconPath: s3PublicFilesUrl + "5_3_off.png"
         },
         {
             label: 'מוצרים לכלבים',
             href: 'https://peteat.co.il/',
             target:'_blank',
-            iconPath: "/files/6_4.png"
+            iconPath: s3PublicFilesUrl + "6_4.png"
         },
         {
             label: 'עקבו אחרינו',
             href: 'https://www.facebook.com/people/dogood/61575715186147/',
             target:'_blank',
-            iconPath: "/files/6_5.png"
+            iconPath: s3PublicFilesUrl + "6_5.png"
         },
         {
             label: 'קצת עלינו',
             href: '/about-us',
-            iconPath: "/files/6_6.png"
+            iconPath: s3PublicFilesUrl + "6_6.png"
         },
         {
             label: 'הגדרות',
             href: '/settings',
-            iconPath: "/files/6_7.png"
+            iconPath: s3PublicFilesUrl + "6_7.png"
         },
     ]
     const { data:user, isLoading: userLoading } = useGetUserQuery();
@@ -88,7 +88,7 @@ export default function SideMenu({ open, setOpen }) {
                         }}
                     >
                         <button onClick={() => setOpen(false)} className="close btn" style={{zIndex: 999}}>
-                            <img src="/files/1_1.png" alt="mobile-menu" height={25}/>
+                            <img src={s3PublicFilesUrl + "1_1.png"} alt="mobile-menu" height={25}/>
                         </button>
                     </div>
 
@@ -113,7 +113,7 @@ export default function SideMenu({ open, setOpen }) {
                                 <img 
                                     src={user.image ? 
                                         (user.image.startsWith('https://') ? user.image : s3Url + user.image) 
-                                        : "/files/profile.png"} 
+                                        : s3PublicFilesUrl + "profile.png"}
                                     alt="user-image" 
                                     width={70} 
                                     height={70} 

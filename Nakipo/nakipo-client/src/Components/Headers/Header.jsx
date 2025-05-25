@@ -4,6 +4,7 @@ import SideMenu from "./SideMenu";
 import {useGetUserWalletQuery} from "../Auth/AuthApiSlice";
 import {useNavigate} from "react-router-dom";
 import Loading from "../Loading";
+import {s3PublicFilesUrl} from "../../Services/CommonConfigurations";
 
 
 export default function Header() {
@@ -20,10 +21,10 @@ export default function Header() {
         <header className="header dark-blue text-center text-white">
             <div className="top-bar row justify-content-between align-items-center dark-blue py-3">
                 <div className="col-auto side-menu px-4" onClick={() => setOpen(true)}>
-                   <img src="/files/1.png" alt="mobile-menu" height={25} />
+                   <img src={s3PublicFilesUrl+"1.png"} alt="mobile-menu" height={25} />
                 </div>
                 <div className="col-auto right row px-4 header-wallet align-items-center">
-                    <img onClick={()=> nav("/takePhoto")} className="col-auto" src={"/files/Face_02.gif"} height={30}/>
+                    <img onClick={()=> nav("/takePhoto")} className="col-auto" src={s3PublicFilesUrl + "Face_02.gif"} height={30}/>
                     <div onClick={()=>nav("/?wallet")} className="col-auto wallet white text-dark-blue d-flex align-items-center">{userWallet} מטבעות</div>
                 </div>
 

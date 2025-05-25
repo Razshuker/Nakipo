@@ -1,6 +1,6 @@
 import '../../CSS/wallet.css'
 import {useGetRatingQuery} from "./ratingApiSlice";
-import {formatDate, s3Url} from "../../Services/CommonConfigurations";
+import {formatDate, s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
 import React from "react";
 import Loading from "../Loading";
 import {useGetUserQuery} from "../Auth/AuthApiSlice";
@@ -29,7 +29,7 @@ if(isLoading || userLoading){
                         <td className="row align-items-center">
                             <div className="col-4 p-0 mx-auto text-center">
                             <img src={user.image ?  (user.image.startsWith('https://') ? user.image : s3Url + user.image)
-                                : "/files/profile.png"} alt="user-image" height={45} width={45} className="rounded-circle"/>
+                                : s3PublicFilesUrl + "profile.png"} alt="user-image" height={45} width={45} className="rounded-circle"/>
                             </div>
                             <div className="col-8">
                             <p>{user.dogName}</p>
@@ -38,7 +38,7 @@ if(isLoading || userLoading){
                             </div>
                         </td>
                         <td className="row justify-content-center text-dark">
-                            <img src="/files/4.png" height={25} className="col-auto p-0" alt="rating"/>
+                            <img src={s3PublicFilesUrl+"4.png"} height={25} className="col-auto p-0" alt="rating"/>
                             <p className="col-8 text-center">מקום {index + 1}</p>
                         </td>
                     </tr>

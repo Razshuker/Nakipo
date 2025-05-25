@@ -3,6 +3,7 @@ import Header from "./Headers/Header";
 import '../CSS/missionDone.css'
 import {useGetUserQuery} from "./Auth/AuthApiSlice";
 import Loading from "./Loading";
+import {s3PublicFilesUrl} from "../Services/CommonConfigurations";
 
 
 export default function MissionDone() {
@@ -21,7 +22,7 @@ if(isLoading){
            תודה {username}!
     <br/>
            צברת עוד מטבע לשימוש</h1>
-            <img className="col-6 mx-auto" src={"/files/Face_05.gif"} />
+            <img className="col-6 mx-auto" src={s3PublicFilesUrl + "Face_05.gif"} />
             </div>
 
         </div>

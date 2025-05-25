@@ -1,5 +1,5 @@
 import {useGetBrandsQuery} from "./brandApiSlice";
-import {formatDate, s3Url} from "../../Services/CommonConfigurations";
+import {formatDate, s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
 import React from "react";
 import {useGetCuponMutation, useGetUserWalletQuery} from "../Auth/AuthApiSlice";
 import {useNavigate} from "react-router-dom";
@@ -62,7 +62,7 @@ export default function Challange() {
                                 zIndex: 10,
                                 pointerEvents: "all",
                             }}>
-                                <img src="/files/Lock.png" alt="Locked" height={50} />
+                                <img src={s3PublicFilesUrl + "Lock.png"} alt="Locked" height={50} />
                             </div>
                         )}
                     </div>

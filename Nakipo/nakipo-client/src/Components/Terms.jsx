@@ -1,10 +1,11 @@
 import React from "react";
 import '../CSS/terms.css'
+import {s3PublicFilesUrl} from "../Services/CommonConfigurations";
 
 export default function Terms(){
     return (
         <div className="py-2 px-3">
-            <img src={"/files/Logo_1.png"} height={55} className="d-flex mx-auto mt-4"/>
+            <img src={s3PublicFilesUrl + "Logo_1.png"} height={55} className="d-flex mx-auto mt-4"/>
             <p className="h1 text-center mt-3">תקנון השימוש בשירות "Dogood"</p>
 
             <div className="section">
