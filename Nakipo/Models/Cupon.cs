@@ -9,12 +9,8 @@ public class Cupon
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
 
-    [BsonElement("cupon-code")]
-    public string CuponCode { get; set; }
+    [BsonElement("cupon-code")] public string CuponCode { get; set; }
 
-    [BsonElement("used")]
-    public bool Used { get; set; }
-    [BsonElement("expiry_date")]
-    public DateTime ExpiryDate { get; set; }
-    
+    [BsonElement("used")] public bool Used { get; set; }
+    [BsonElement("expiry_date")] public DateTime ExpiryDate { get; set; }
 }

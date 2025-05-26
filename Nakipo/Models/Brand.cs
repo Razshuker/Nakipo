@@ -8,22 +8,15 @@ public class Brand
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
-    
-    [BsonElement("name")]
-    public string Name { get; set; } 
-    
-    [BsonElement("logo")]
-    public string? Logo { get; set; }
-    
-    [BsonElement("site_link")]
-    public string? SiteLink { get; set; }
-    
-    [BsonElement("gift")]
-    public string Gift { get; set; }
-    
-       [BsonElement("walletAmountToGetCupon")]
+
+    [BsonElement("name")] public string Name { get; set; }
+
+    [BsonElement("logo")] public string? Logo { get; set; }
+
+    [BsonElement("site_link")] public string? SiteLink { get; set; }
+
+    [BsonElement("gift")] public string Gift { get; set; }
+
+    [BsonElement("walletAmountToGetCupon")]
     public string WalletAmountToGetCupon { get; set; }
-    
-    
-    
 }
