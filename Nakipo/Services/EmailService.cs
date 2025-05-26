@@ -43,7 +43,9 @@ public class EmailService(ILogger<EmailService> logger, IBrandRepository brandRe
         try
         {
             var resetLink = $"{_domain}reset-password?token={resetToken}&email={Uri.EscapeDataString(email)}";
-            var expirationTime = DateTime.Now.AddHours(1).ToString("HH:mm");
+            var israelTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Israel Standard Time");
+            var israelTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow.AddHours(1), israelTimeZone);
+            var expirationTime = israelTime.ToString("HH:mm");
 
             var message = new MimeMessage();
             message.From.Add(MailboxAddress.Parse(ApplicationConfiguration.EmailSettings.SmtpUsername));
