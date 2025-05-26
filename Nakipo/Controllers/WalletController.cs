@@ -26,7 +26,7 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
         catch (Exception e)
         {
             logger.LogError(e, e.Message);
-            throw;
+            return BadRequest(e);
         }
      
     }
@@ -52,7 +52,7 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
         catch (Exception e)
         {
            logger.LogError(e, e.Message);
-            return null;
+            return BadRequest(e);
         }
     }
    

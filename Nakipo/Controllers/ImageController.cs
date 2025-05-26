@@ -48,7 +48,7 @@ public class ImageController(IImageService imageService, ILogger<ImageController
         catch (Exception e)
         {
            logger.LogError(e.Message);
-            throw;
+            return BadRequest(e);
         }
     }
 }

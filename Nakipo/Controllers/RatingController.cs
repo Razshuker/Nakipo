@@ -17,7 +17,7 @@ public class RatingController(ILogger<RatingController> logger, IRatingService r
         catch (Exception e)
         {
             logger.LogError(e.Message);
-            throw;
+            return BadRequest(e);
         }
     }
     
@@ -32,7 +32,7 @@ public class RatingController(ILogger<RatingController> logger, IRatingService r
         catch (Exception e)
         {
             logger.LogError(e.Message);
-            throw;
+            return BadRequest(e);
         }
     }
     
