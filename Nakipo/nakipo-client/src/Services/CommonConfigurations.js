@@ -5,6 +5,11 @@ export const baseUrl = 'http://localhost:5195/';
 export const s3Url = "https://dogood-users-photos.ams3.cdn.digitaloceanspaces.com/"
 export const s3PublicFilesUrl = "https://dogood-users-photos.ams3.cdn.digitaloceanspaces.com/public/"
 
+export const getImageUrl = (imageName) =>{
+    let now = new Date();
+    const timestamp = now.toISOString().replace(/[-:.TZ]/g, '').slice(0, 15);
+    return s3Url + imageName + "?t="+timestamp;
+}
 
 export function getCookie(name) {
     const cookies = document.cookie.split(';');

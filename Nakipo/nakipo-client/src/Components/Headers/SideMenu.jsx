@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import MenuItem from "./MenuItem";
 import {useGetUserQuery, useGetUserWalletQuery, useLogoutMutation} from "../Auth/AuthApiSlice";
-import {baseUrl, s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
+import {baseUrl, getImageUrl, s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
 import {useNavigate} from "react-router-dom";
 
 export default function SideMenu({ open, setOpen }) {
@@ -112,7 +112,7 @@ export default function SideMenu({ open, setOpen }) {
                             <div className="col-4">
                                 <img 
                                     src={user.image ? 
-                                        (user.image.startsWith('https://') ? user.image : s3Url + user.image) 
+                                        (user.image.startsWith('https://') ? user.image : getImageUrl(user.image))
                                         : s3PublicFilesUrl + "profile.png"}
                                     alt="user-image" 
                                     width={70} 

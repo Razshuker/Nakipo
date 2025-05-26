@@ -1,6 +1,6 @@
 import '../../CSS/wallet.css'
 import {useGetRatingQuery} from "./ratingApiSlice";
-import {formatDate, s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
+import {formatDate, getImageUrl, s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
 import React from "react";
 import Loading from "../Loading";
 import {useGetUserQuery} from "../Auth/AuthApiSlice";
@@ -28,7 +28,7 @@ if(isLoading || userLoading){
                     <tr key={index}>
                         <td className="row align-items-center">
                             <div className="col-4 p-0 mx-auto text-center">
-                            <img src={user.image ?  (user.image.startsWith('https://') ? user.image : s3Url + user.image)
+                            <img src={user.image ?  (user.image.startsWith('https://') ? user.image : getImageUrl(user.image))
                                 : s3PublicFilesUrl + "profile.png"} alt="user-image" height={45} width={45} className="rounded-circle"/>
                             </div>
                             <div className="col-8">
