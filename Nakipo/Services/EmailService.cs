@@ -14,7 +14,8 @@ public class EmailService(ILogger<EmailService> logger, IBrandRepository brandRe
 {
     private readonly string _domain = "https://wedogood.co.il/";
     private readonly string _imgSrc = "https://wedogood.co.il/files/Share_image.jpg";
-  private async Task<SmtpClient> GetAuthenticatedClientAsync()
+
+    private async Task<SmtpClient> GetAuthenticatedClientAsync()
     {
         var flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
         {
@@ -30,12 +31,14 @@ public class EmailService(ILogger<EmailService> logger, IBrandRepository brandRe
         await credential.RefreshTokenAsync(CancellationToken.None);
 
         var client = new SmtpClient();
-        await client.ConnectAsync(ApplicationConfiguration.EmailSettings.SmtpHost, int.Parse(ApplicationConfiguration.EmailSettings.SmtpPort), SecureSocketOptions.StartTls);
-        await client.AuthenticateAsync(new SaslMechanismOAuth2(ApplicationConfiguration.EmailSettings.SmtpUsername, credential.Token.AccessToken));
+        await client.ConnectAsync(ApplicationConfiguration.EmailSettings.SmtpHost,
+            int.Parse(ApplicationConfiguration.EmailSettings.SmtpPort), SecureSocketOptions.StartTls);
+        await client.AuthenticateAsync(new SaslMechanismOAuth2(ApplicationConfiguration.EmailSettings.SmtpUsername,
+            credential.Token.AccessToken));
         return client;
     }
 
-    public async Task SendPasswordResetEmailAsync(string email, string resetToken)
+    public async Task SendPasswordResetEmailAsync(string email, string? resetToken)
     {
         try
         {
@@ -110,4 +113,4 @@ public class EmailService(ILogger<EmailService> logger, IBrandRepository brandRe
             logger.LogError(e, "Failed to send cupon email to {Email}", email);
         }
     }
-} 
+}

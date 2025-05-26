@@ -11,7 +11,7 @@ namespace Nakipo.Controllers;
 public class WalletController(IWalletService walletService, ILogger<WalletController> logger) : ControllerBase
 {
     [HttpGet("getWallet")]
-    public async Task<ActionResult<int>>GetUserWallet([FromHeader(Name = "userId")]string userId)
+    public async Task<ActionResult<int>> GetUserWallet([FromHeader(Name = "userId")] string userId)
     {
         try
         {
@@ -21,6 +21,7 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
             {
                 return Ok(wallet);
             }
+
             return Unauthorized("user not found");
         }
         catch (Exception e)
@@ -28,11 +29,11 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
             logger.LogError(e, e.Message);
             return BadRequest(e);
         }
-     
     }
 
     [HttpPost("getCuponCode")]
-    public async Task<ActionResult<User?>> getCuponCode([FromHeader] string userId, int walletAmountToGetCupon, int cuponExpiryMonths = 3)
+    public async Task<ActionResult<User?>> getCuponCode([FromHeader] string userId, int walletAmountToGetCupon,
+        int cuponExpiryMonths = 3)
     {
         try
         {
@@ -40,21 +41,20 @@ public class WalletController(IWalletService walletService, ILogger<WalletContro
             var wallet = await walletService.GetUserWalletByUserId(userId);
             if (wallet != null)
             {
-                if(wallet< walletAmountToGetCupon) return Content("No enough money");
-                var user = await walletService.GetCupon(userId,walletAmountToGetCupon,cuponExpiryMonths);
-                if(user == null) return NotFound("no cupon found");
+                if (wallet < walletAmountToGetCupon) return Content("No enough money");
+                var user = await walletService.GetCupon(userId, walletAmountToGetCupon, cuponExpiryMonths);
+                if (user == null) return NotFound("no cupon found");
                 user.Password = null;
                 if (user != null) return Ok(user);
                 return NotFound("No cupon code");
             }
+
             return Unauthorized("user not found");
         }
         catch (Exception e)
         {
-           logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest(e);
         }
     }
-   
-    
 }

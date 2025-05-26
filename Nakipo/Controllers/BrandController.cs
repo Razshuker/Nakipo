@@ -6,7 +6,7 @@ namespace Nakipo.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class BrandController(ILogger<BrandController> logger, IBrandService brandService):ControllerBase
+public class BrandController(ILogger<BrandController> logger, IBrandService brandService) : ControllerBase
 {
     [HttpGet("getBrands")]
     public async Task<ActionResult<List<Brand>>> GetBrands()
@@ -18,9 +18,8 @@ public class BrandController(ILogger<BrandController> logger, IBrandService bran
         }
         catch (Exception e)
         {
-        logger.LogError(e.Message);
+            logger.LogError(e.Message);
             return BadRequest(e);
         }
     }
-    
 }

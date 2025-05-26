@@ -4,7 +4,7 @@ using Nakipo.Services;
 
 namespace Nakipo.Controllers;
 
-public class RatingController(ILogger<RatingController> logger, IRatingService ratingService):ControllerBase
+public class RatingController(ILogger<RatingController> logger, IRatingService ratingService) : ControllerBase
 {
     [HttpGet("rating")]
     public async Task<ActionResult<List<User>>> GetRating(string city)
@@ -20,7 +20,7 @@ public class RatingController(ILogger<RatingController> logger, IRatingService r
             return BadRequest(e);
         }
     }
-    
+
     [HttpGet("GetRatingByMonth")]
     public async Task<ActionResult<List<User>>> GetRatingByMonth(int month, int year, string city)
     {
@@ -35,5 +35,4 @@ public class RatingController(ILogger<RatingController> logger, IRatingService r
             return BadRequest(e);
         }
     }
-    
 }

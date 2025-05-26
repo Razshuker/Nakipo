@@ -1,4 +1,3 @@
-
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +6,11 @@ using Nakipo.Services;
 using Nakipo.Utillties;
 
 namespace Nakipo.Controllers;
+
 [ApiController]
 [Route("[controller]")]
-public class AuthController(ILogger<AuthController> logger, IAuthService authService):ControllerBase
+public class AuthController(ILogger<AuthController> logger, IAuthService authService) : ControllerBase
 {
-    
     [HttpPost("login")]
     public async Task<ActionResult<User>> Login([FromBody] LoginUser user)
     {
@@ -25,6 +24,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
                 Response.SetTokenCookie(jwtToken);
                 return Ok(registerUser);
             }
+
             return Unauthorized();
         }
         catch (Exception e)
@@ -33,8 +33,8 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
             return BadRequest(e);
         }
     }
-    
-    [ApiExplorerSettings(IgnoreApi = true)] 
+
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpPost("register")]
     public async Task<ActionResult<User>> Register([FromForm] User user)
     {
@@ -44,12 +44,13 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         {
             return Conflict("User already exists");
         }
+
         var jwtToken = registerUser.GenerateJwtToken();
         Response.SetAccessToken(jwtToken);
         Response.SetTokenCookie(jwtToken);
         return Ok(registerUser);
     }
-    
+
     [HttpPost("logout")]
     public ActionResult Logout()
     {
@@ -65,16 +66,16 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
             return BadRequest(e);
         }
     }
-    
+
     [Authorize]
     [HttpGet("getUser")]
-    public async Task<ActionResult<User>> GetUser([FromHeader(Name = "userId")]string userId)
+    public async Task<ActionResult<User>> GetUser([FromHeader(Name = "userId")] string userId)
     {
         try
         {
-            if(string.IsNullOrEmpty(userId)) return Unauthorized();
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
             var user = await authService.GetUser(userId);
-            if(user!= null) user.Password = null;
+            if (user != null) user.Password = null;
             return user;
         }
         catch (Exception e)
@@ -85,9 +86,9 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
     }
 
     [Authorize]
-    [ApiExplorerSettings(IgnoreApi = true)] 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpPost("updateUser")]
-    public async Task<ActionResult<User?>> UpdateUser([FromForm] User user,[FromForm] string? Cupons)
+    public async Task<ActionResult<User?>> UpdateUser([FromForm] User user, [FromForm] string? Cupons)
     {
         try
         {
@@ -95,8 +96,8 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
             if (!string.IsNullOrWhiteSpace(Cupons))
             {
                 user.Cupons = JsonSerializer.Deserialize<List<Cupon>>(Cupons);
-
             }
+
             var updatedUser = await authService.Update(user);
             if (updatedUser == null) return BadRequest();
             updatedUser.Password = null;
@@ -104,35 +105,36 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         }
         catch (Exception e)
         {
-           logger.LogError(e,"Failed to update user");
+            logger.LogError(e, "Failed to update user");
             return BadRequest(e);
         }
     }
 
     [Authorize]
     [HttpPost("updateUserPassword")]
-    public async Task<ActionResult<User?>> UpdateUserPassword([FromHeader(Name = "userId")] string userId, UpdatePassword passwords)
+    public async Task<ActionResult<User?>> UpdateUserPassword([FromHeader(Name = "userId")] string userId,
+        UpdatePassword passwords)
     {
         try
         {
-         var user = await authService.UpdatePassword(userId, passwords);
-         if (user != null)
-         {
-             var jwtToken = user.GenerateJwtToken();
-             Response.SetAccessToken(jwtToken);
-             Response.SetTokenCookie(jwtToken);
-             return Ok(user);
-         }
+            var user = await authService.UpdatePassword(userId, passwords);
+            if (user != null)
+            {
+                var jwtToken = user.GenerateJwtToken();
+                Response.SetAccessToken(jwtToken);
+                Response.SetTokenCookie(jwtToken);
+                return Ok(user);
+            }
 
-         return null;
+            return null;
         }
         catch (Exception e)
         {
-           logger.LogError(e.Message);
+            logger.LogError(e.Message);
             return BadRequest(e);
         }
     }
-    
+
     [HttpPost("google")]
     public async Task<ActionResult<User>> GoogleLogin([FromBody] GoogleLoginDto dto)
     {
@@ -192,6 +194,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
             {
                 return Ok(new { message = "Password has been reset successfully." });
             }
+
             return BadRequest(new { message = "Failed to reset password. Token may be invalid or expired." });
         }
         catch (Exception e)

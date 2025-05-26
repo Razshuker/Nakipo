@@ -4,16 +4,17 @@ using System.Text;
 
 namespace Nakipo.Services;
 
-public class SpaceService:ISpaceService
+public class SpaceService : ISpaceService
 
 {
     private const string AccessKey = "DO00Y89GWCZ3QMFUJA8D";
-private const string SecretKey = "5BafLXH3iHS2R0E2ixt7DM+viV1TbozKH1qpxBk6+i8";
-private const string Region = "ams3";
-private const string Service = "s3";
-private const string Bucket = "dogood-users-photos";
-private const string Host = Bucket + ".ams3.digitaloceanspaces.com";
- public async Task UploadFileAsync(IFormFile file, string userId, string fileImageName)
+    private const string SecretKey = "5BafLXH3iHS2R0E2ixt7DM+viV1TbozKH1qpxBk6+i8";
+    private const string Region = "ams3";
+    private const string Service = "s3";
+    private const string Bucket = "dogood-users-photos";
+    private const string Host = Bucket + ".ams3.digitaloceanspaces.com";
+
+    public async Task UploadFileAsync(IFormFile file, string userId, string fileImageName)
     {
         var fileName = fileImageName;
         var filePath = $"/{userId}/{fileName}";
@@ -60,7 +61,8 @@ private const string Host = Bucket + ".ams3.digitaloceanspaces.com";
         }
     }
 
-    private static string CreateCanonicalRequest(string method, string uri, string host, string payloadHash, string amzDate)
+    private static string CreateCanonicalRequest(string method, string uri, string host, string payloadHash,
+        string amzDate)
     {
         var canonicalHeaders =
             $"host:{host}\n" +
@@ -69,6 +71,7 @@ private const string Host = Bucket + ".ams3.digitaloceanspaces.com";
         var signedHeaders = "host;x-amz-content-sha256;x-amz-date";
         return $"{method}\n{uri}\n\n{canonicalHeaders}\n{signedHeaders}\n{payloadHash}";
     }
+
     private static string CreateStringToSign(string canonicalRequest, string amzDate, string dateStamp)
     {
         var scope = $"{dateStamp}/{Region}/{Service}/aws4_request";
@@ -76,7 +79,8 @@ private const string Host = Bucket + ".ams3.digitaloceanspaces.com";
         return $"AWS4-HMAC-SHA256\n{amzDate}\n{scope}\n{hashedRequest}";
     }
 
-    private static string CalculateSignature(string key, string dateStamp, string region, string service, string stringToSign)
+    private static string CalculateSignature(string key, string dateStamp, string region, string service,
+        string stringToSign)
     {
         byte[] kDate = HmacSHA256(Encoding.UTF8.GetBytes("AWS4" + key), dateStamp);
         byte[] kRegion = HmacSHA256(kDate, region);

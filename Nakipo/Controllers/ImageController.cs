@@ -4,12 +4,13 @@ using Nakipo.Models;
 using Nakipo.Services;
 
 namespace Nakipo.Controllers;
+
 [ApiController]
 [Authorize]
 [Route("[controller]")]
 public class ImageController(IImageService imageService, ILogger<ImageController> logger) : ControllerBase
 {
-[ApiExplorerSettings(IgnoreApi = true)] 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpPost("upload")]
     public async Task<ActionResult<User>> UploadPhoto([FromForm] IFormFile photo,
         [FromForm] double latitude,
@@ -18,38 +19,39 @@ public class ImageController(IImageService imageService, ILogger<ImageController
     {
         try
         {
-            if(userId == null) return Unauthorized();
-        if (photo == null || photo.Length == 0)
-        {
-            return BadRequest("no photo uploaded");
-        }
-        var userHasReportToday = await imageService.HasUserUploadedToday(userId);
-        if(userHasReportToday) return Ok(new
-        {
-            success = false,
-            message = "User already uploaded photo today",
-        });
+            if (userId == null) return Unauthorized();
+            if (photo == null || photo.Length == 0)
+            {
+                return BadRequest("no photo uploaded");
+            }
 
-        var location = new Location
-        {
-            Latitude = latitude,
-            Longitude = longitude
-        };
-        
-        var updatedUser = await imageService.InsertUserReport(photo,location,userId);
-        
-       
-        return Ok(new
-        {
-            success = true,
-            updatedUser
-        });
+            var userHasReportToday = await imageService.HasUserUploadedToday(userId);
+            if (userHasReportToday)
+                return Ok(new
+                {
+                    success = false,
+                    message = "User already uploaded photo today",
+                });
+
+            var location = new Location
+            {
+                Latitude = latitude,
+                Longitude = longitude
+            };
+
+            var updatedUser = await imageService.InsertUserReport(photo, location, userId);
+
+
+            return Ok(new
+            {
+                success = true,
+                updatedUser
+            });
         }
         catch (Exception e)
         {
-           logger.LogError(e.Message);
+            logger.LogError(e.Message);
             return BadRequest(e);
         }
     }
 }
-

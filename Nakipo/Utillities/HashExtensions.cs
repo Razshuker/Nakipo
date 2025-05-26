@@ -20,10 +20,11 @@ public static class HashExtensions
         {
             sb.Append(t.ToString("x2"));
         }
+
         return sb.ToString();
     }
-    
-     public static string GenerateJwtToken(this User user)
+
+    public static string GenerateJwtToken(this User? user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(ApplicationConfiguration.HashToken);
@@ -36,13 +37,14 @@ public static class HashExtensions
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             }),
             Expires = DateTime.UtcNow.AddDays(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
-     
+
     public static string ReGenerateJwtToken(this JwtSecurityToken token)
     {
         var handler = new JwtSecurityTokenHandler();
@@ -54,13 +56,15 @@ public static class HashExtensions
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(1), 
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            Expires = DateTime.UtcNow.AddDays(1),
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
         var newToken = handler.CreateToken(tokenDescriptor);
         return handler.WriteToken(newToken);
     }
+
     public static void SetAccessToken(this HttpResponse response, string token)
     {
         response.Headers["Authorization"] = $"Bearer {token}";
@@ -71,12 +75,12 @@ public static class HashExtensions
         var cookieOptions = new CookieOptions
         {
             // HttpOnly = true, 
-            Secure = true, 
+            Secure = true,
             SameSite = SameSiteMode.None, // Prevents cross-site requests from sending the cookie
             Expires = DateTime.UtcNow.AddDays(1) // Expiry date for the cookie
         };
 
-        response.Cookies.Append("accessToken", token , cookieOptions);
+        response.Cookies.Append("accessToken", token, cookieOptions);
     }
 
     public static void RemoveTokenCookie(this HttpResponse response)
@@ -101,5 +105,4 @@ public static class HashExtensions
             Username = username,
         };
     }
-    
 }

@@ -3,9 +3,9 @@ using Nakipo.Repositories;
 
 namespace Nakipo.Services;
 
-public class BrandService(ILogger<BrandService> logger, IBrandRepository brandRepository):IBrandService
+public class BrandService(ILogger<BrandService> logger, IBrandRepository brandRepository) : IBrandService
 {
-    public async Task<List<Brand>> GetAllBrands()
+    public async Task<List<Brand>?> GetAllBrands()
     {
         try
         {
@@ -13,8 +13,8 @@ public class BrandService(ILogger<BrandService> logger, IBrandRepository brandRe
         }
         catch (Exception e)
         {
-           logger.LogError(e.Message, "Failed to get all brands - brandService");
-            throw;
+            logger.LogError(e.Message, "Failed to get all brands - brandService");
+            return null;
         }
     }
 }
