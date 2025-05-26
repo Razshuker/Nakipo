@@ -53,9 +53,17 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
     [HttpPost("logout")]
     public ActionResult Logout()
     {
-        Response.RemoveAccessToken();
-        Response.RemoveTokenCookie();
-        return Unauthorized();
+        try
+        {
+            Response.RemoveAccessToken();
+            Response.RemoveTokenCookie();
+            return Unauthorized();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return BadRequest(e);
+        }
     }
     
     [Authorize]
@@ -97,7 +105,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         catch (Exception e)
         {
            logger.LogError(e,"Failed to update user");
-            return null;
+            return BadRequest(e);
         }
     }
 
@@ -121,7 +129,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         catch (Exception e)
         {
            logger.LogError(e.Message);
-            return null;
+            return BadRequest(e);
         }
     }
     
@@ -139,7 +147,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         catch (Exception e)
         {
             logger.LogError(e, "Failed to login - google");
-            throw;
+            return BadRequest(e);
         }
     }
 
@@ -189,7 +197,7 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
         catch (Exception e)
         {
             logger.LogError(e, "Failed to reset password");
-            return BadRequest(new { message = "Failed to reset password." });
+            return BadRequest(e);
         }
     }
 }
