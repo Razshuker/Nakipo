@@ -3,15 +3,19 @@ using Nakipo.Repositories;
 
 namespace Nakipo.Services;
 
-public class ImageService(ILogger<ImageService> logger, IWebHostEnvironment env, IUserRepository userRepository, ISpaceService spaceService, IWalletService walletService):IImageService
+public class ImageService(
+    ILogger<ImageService> logger,
+    IWebHostEnvironment env,
+    IUserRepository userRepository,
+    ISpaceService spaceService,
+    IWalletService walletService) : IImageService
 {
-    public async Task<User> InsertUserReport(IFormFile photo, Location location, string userId)
+    public async Task<User?> InsertUserReport(IFormFile photo, Location location, string userId)
     {
         try
         {
-          
             var fileName = $"photo_{DateTime.Now.Ticks}.jpg";
-          
+
             await spaceService.UploadFileAsync(photo, userId, fileName);
 
             var report = new WalletReport
@@ -23,31 +27,38 @@ public class ImageService(ILogger<ImageService> logger, IWebHostEnvironment env,
                 ReportUsed = false
             };
 
-                var user = await userRepository.InsertReport(report, userId);
-                var walletAmountToGetCupon = 30;
-                var cuponExpiryMonth = 3;
-                   var userWithCupon =  await walletService.GetAutoCupon(userId,walletAmountToGetCupon,cuponExpiryMonth);
-                 return userWithCupon != null ? userWithCupon : user;
-           
+            var user = await userRepository.InsertReport(report, userId);
+            var walletAmountToGetCupon = 30;
+            var cuponExpiryMonth = 3;
+            var userWithCupon = await walletService.GetAutoCupon(userId, walletAmountToGetCupon, cuponExpiryMonth);
+            return userWithCupon ?? user;
         }
         catch (Exception e)
         {
-         logger.LogError(e, e.Message);
-            throw;
+            logger.LogError(e, e.Message);
+            return null;
         }
     }
-    
+
     public async Task<bool> HasUserUploadedToday(string userId)
     {
-        var user = await userRepository.GetUser(userId); 
+        try
+        {
+            var user = await userRepository.GetUser(userId);
 
-        if (user?.Reports == null || user.Reports.Count == 0)
+            if (user?.Reports == null || user.Reports.Count == 0)
+                return false;
+
+            var today = DateTime.Now.Date;
+
+            var hasReportToday = user.Reports.Any(r => r.Date.Date == today);
+
+            return hasReportToday;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "failed to HasUserUploadedToday - image service");
             return false;
-
-        var today = DateTime.Now.Date;
-
-        var hasReportToday = user.Reports.Any(r => r.Date.Date == today);
-
-        return hasReportToday;
+        }
     }
 }

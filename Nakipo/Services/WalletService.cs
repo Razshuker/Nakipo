@@ -21,7 +21,7 @@ public class WalletService(
         catch (Exception e)
         {
             logger.LogError(e, "failed to get user wallet by userId");
-            throw;
+            return null;
         }
     }
 
@@ -58,7 +58,8 @@ public class WalletService(
     {
         try
         {
-            var userWalletBalance = await userRepository.GetUserWalletByReports(userId, DateTime.Now.Month, DateTime.Now.Year);
+            var userWalletBalance =
+                await userRepository.GetUserWalletByReports(userId, DateTime.Now.Month, DateTime.Now.Year);
             if (userWalletBalance == 30)
             {
                 return await GetCupon(userId, walletAmountToGetCupon, cuponExpiryMonths);

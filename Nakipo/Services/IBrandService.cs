@@ -4,5 +4,5 @@ namespace Nakipo.Services;
 
 public interface IBrandService
 {
-    Task<List<Brand>> GetAllBrands();
+    Task<List<Brand>?> GetAllBrands();
 }

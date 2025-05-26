@@ -4,9 +4,9 @@ using Nakipo.Models;
 
 namespace Nakipo.Repositories;
 
-public class WalletRepository (ILogger<WalletRepository> logger, MongoDbContext mongoContext): IWalletRepository
+public class WalletRepository(ILogger<WalletRepository> logger, MongoDbContext mongoContext) : IWalletRepository
 {
-    public async Task<Cupon> GetCupon()
+    public async Task<Cupon?> GetCupon()
     {
         try
         {
@@ -15,23 +15,21 @@ public class WalletRepository (ILogger<WalletRepository> logger, MongoDbContext 
         catch (Exception e)
         {
             logger.LogError(e, e.Message);
-            throw;
+            return null;
         }
-      
     }
 
-    public async void CuponUsed(string cuponId)
+    public async void CuponUsed(string? cuponId)
     {
         try
         {
-            var filter = Builders<Cupon>.Filter.Eq(x => x.Id, cuponId);
-            var update = Builders<Cupon>.Update.Set(c => c.Used, true);
+            FilterDefinition<Cupon?> filter = Builders<Cupon>.Filter.Eq(x => x.Id, cuponId);
+            UpdateDefinition<Cupon?> update = Builders<Cupon>.Update.Set(c => c.Used, true);
             await mongoContext.Cupons.UpdateOneAsync(filter, update);
         }
         catch (Exception e)
         {
-           logger.LogError(e, e.Message);
-            throw;
+            logger.LogError(e, e.Message);
         }
     }
 }

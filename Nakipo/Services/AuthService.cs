@@ -7,7 +7,7 @@ namespace Nakipo.Services;
 
 public class AuthService(
     ILogger<AuthService> logger,
-    IUserRepository userRepository, 
+    IUserRepository userRepository,
     ISpaceService spaceService,
     IEmailService emailService) : IAuthService
 {
@@ -20,16 +20,17 @@ public class AuthService(
             {
                 return null;
             }
+
             return userToVerify;
         }
         catch (Exception e)
         {
             logger.LogError(e, "Failed to login {Username} - authService", username);
-            throw;
+            return null;
         }
     }
 
-    public async Task<User> Register(User user)
+    public async Task<User?> Register(User user)
     {
         try
         {
@@ -37,28 +38,33 @@ public class AuthService(
             if (userToRegister == null)
             {
                 var photoPath = $"profile.jpg";
-                var hashedPassword = user.Password.ComputeMD5Hash();
-                user.Password = hashedPassword;
-                user.Wallet = 0;
-                    var newUser = await userRepository.InsertUser(user);
-                    if (user.ImageFile != null)
-                    {
-                    await spaceService.UploadFileAsync(user.ImageFile,newUser.Id, photoPath);
+                if (user.Password != null)
+                {
+                    var hashedPassword = user.Password.ComputeMD5Hash();
+                    user.Password = hashedPassword;
+                }
+
+                var newUser = await userRepository.InsertUser(user);
+                if (newUser != null && user.ImageFile != null)
+                {
+                    await spaceService.UploadFileAsync(user.ImageFile, newUser.Id, photoPath);
                     newUser.Image = $"{newUser.Id}/{photoPath}";
-                    }
-                   return await userRepository.UpdateUser(newUser);
-                
+                    return await userRepository.UpdateUser(newUser);
+                }
+
+                return newUser;
             }
-            return null;
+
+            return userToRegister;
         }
         catch (Exception e)
         {
-            logger.LogError(e,"Failed to register user - authService");
-            throw;
+            logger.LogError(e, "Failed to register user - authService");
+            return null;
         }
     }
 
-    public async Task<User> GetUser(string userId)
+    public async Task<User?> GetUser(string userId)
     {
         try
         {
@@ -66,8 +72,8 @@ public class AuthService(
         }
         catch (Exception e)
         {
-           logger.LogError(e, $"Failed to get user with id {userId}");
-            throw;
+            logger.LogError(e, $"Failed to get user with id {userId}");
+            return null;
         }
     }
 
@@ -78,10 +84,11 @@ public class AuthService(
             if (user.ImageFile != null)
             {
                 var photoPath = $"profile.jpg";
-                await spaceService.UploadFileAsync(user.ImageFile,user.Id, photoPath);
+                await spaceService.UploadFileAsync(user.ImageFile, user.Id, photoPath);
                 user.Image = $"{user.Id}/{photoPath}";
             }
-          return await userRepository.UpdateUser(user);
+
+            return await userRepository.UpdateUser(user);
         }
         catch (Exception e)
         {
@@ -97,11 +104,12 @@ public class AuthService(
             var user = await userRepository.GetUser(userId);
             if (user != null && user.Password == passwords.CurrentPassword.ComputeMD5Hash())
             {
-            var hashedPassword = passwords.NewPassword.ComputeMD5Hash();
-           var newPassword = hashedPassword;
-               var updatedUser = await userRepository.UpdateUserPassword(userId, newPassword);
-               return updatedUser;
+                var hashedPassword = passwords.NewPassword.ComputeMD5Hash();
+                var newPassword = hashedPassword;
+                var updatedUser = await userRepository.UpdateUserPassword(userId, newPassword);
+                return updatedUser;
             }
+
             return null;
         }
         catch (Exception e)
@@ -111,7 +119,7 @@ public class AuthService(
         }
     }
 
-    public async Task<User> LoginOrRegisterWithGoogle(GoogleLoginDto dto)
+    public async Task<User?> LoginOrRegisterWithGoogle(GoogleLoginDto dto)
     {
         try
         {
@@ -128,20 +136,19 @@ public class AuthService(
                     Image = payload.Picture,
                     Provider = "Google"
                 };
-                    return await userRepository.InsertUser(newUser);
+                return await userRepository.InsertUser(newUser);
             }
 
             return user;
-
         }
         catch (Exception e)
         {
-           logger.LogError(e,"Failed to login or create user - google");
-           return null;
+            logger.LogError(e, "Failed to login or create user - google");
+            return null;
         }
     }
 
-    public async Task<string> RequestPasswordResetAsync(string email)
+    public async Task<string?> RequestPasswordResetAsync(string email)
     {
         try
         {
@@ -153,21 +160,21 @@ public class AuthService(
 
             // Generate a random token
             var token = Guid.NewGuid().ToString("N");
-            
+
             // Store the reset request
             var resetRequest = new ResetPasswordRequest
             {
                 Email = email,
                 Token = token,
-                ExpiryDate = DateTime.UtcNow.AddHours(1),
+                ExpiryDate = DateTime.Now.AddHours(1),
                 IsUsed = false
             };
-            
+
             await userRepository.SaveResetPasswordRequest(resetRequest);
-            
+
             // Send the reset email
             await emailService.SendPasswordResetEmailAsync(email, token);
-            
+
             return token;
         }
         catch (Exception e)
@@ -182,8 +189,8 @@ public class AuthService(
         try
         {
             var request = await userRepository.GetResetPasswordRequest(email, token);
-            return request != null && 
-                   !request.IsUsed && 
+            return request != null &&
+                   !request.IsUsed &&
                    request.ExpiryDate > DateTime.UtcNow;
         }
         catch (Exception e)
@@ -210,13 +217,13 @@ public class AuthService(
 
             // Hash the new password
             var hashedPassword = newPassword.ComputeMD5Hash();
-            
+
             // Update the password
             await userRepository.UpdateUserPassword(user.Id, hashedPassword);
-            
+
             // Mark the reset request as used
             await userRepository.MarkResetRequestAsUsed(email, token);
-            
+
             return true;
         }
         catch (Exception e)

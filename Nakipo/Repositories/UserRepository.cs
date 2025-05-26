@@ -26,26 +26,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
             return null;
         }
     }
-
-
-    // public async void UpdateUserWallet(string userId ,int? newWalletValue)
-    // {
-    //     try
-    //     {
-    //         var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
-    //         var update = Builders<User>.Update.Set(u => u.Wallet, newWalletValue);
-    //
-    //         var usersCollection = mongoContext.Users;
-    //         
-    //         await usersCollection.UpdateOneAsync(filter, update);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //        logger.LogError(e,"failed to update userWallet by report");
-    //         throw;
-    //     }
-    // }
-
+    
     public async Task<int?> GetUserWalletByReports(string userIdentify, int month, int year)
     {
         try
@@ -101,7 +82,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         catch (Exception e)
         {
             logger.LogError(e, "failed to get user wallet by reports - userRepository");
-            throw;
+            return null;
         }
     }
 
@@ -132,18 +113,21 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
 
             if (user == null)
             {
-                throw new Exception("User not found");
+               return false;
             }
 
-            var reportsToUpdate = user.Reports
-                .Where(r => r.Date >= startOfMonth && r.Date < startOfNextMonth && r.ReportUsed == false)
-                .Take(usedReportsForCupon)
-                .ToList();
-
-
-            foreach (var report in reportsToUpdate)
+            if (user.Reports != null)
             {
-                report.ReportUsed = true;
+                var reportsToUpdate = user.Reports
+                    .Where(r => r.Date >= startOfMonth && r.Date < startOfNextMonth && r.ReportUsed == false)
+                    .Take(usedReportsForCupon)
+                    .ToList();
+
+
+                foreach (var report in reportsToUpdate)
+                {
+                    report.ReportUsed = true;
+                }
             }
 
 
@@ -153,12 +137,14 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         catch (Exception e)
         {
             logger.LogError(e, "failed to update user - userRepository");
-            throw;
+            return false;
         }
     }
 
-    public async Task<List<User>> GetTopUsersForMonth(int month, int year, string city)
+    public async Task<List<User>?> GetTopUsersForMonth(int month, int year, string city)
     {
+        try
+        {
         var startOfMonth = new DateTime(year, month, 1);
         var startOfNextMonth = startOfMonth.AddMonths(1);
 
@@ -171,7 +157,8 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
 
         foreach (var user in cityUsers)
         {
-            user.Wallet = user.Reports.Count(r => r.Date >= startOfMonth && r.Date < startOfNextMonth);
+            if (user.Reports != null)
+                user.Wallet = user.Reports.Count(r => r.Date >= startOfMonth && r.Date < startOfNextMonth);
         }
 
         var topUsers = cityUsers
@@ -180,9 +167,15 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
             .ToList();
 
         return topUsers;
+        }
+        catch (Exception e)
+        {
+           logger.LogError(e, "failed to get top users - userRepository");
+           return null;
+        }
     }
 
-    public async Task<User> InsertReport(WalletReport report, string userId)
+    public async Task<User?> InsertReport(WalletReport report, string userId)
     {
         try
         {
@@ -200,7 +193,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         catch (Exception e)
         {
             logger.LogError(e, "failed to insert report - userRepository");
-            throw;
+            return null;
         }
     }
 
@@ -256,7 +249,7 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         catch (Exception e)
         {
             logger.LogError(e, "failed to update user password - userRepository");
-            throw;
+            return null;
         }
     }
 
@@ -275,7 +268,6 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         catch (Exception e)
         {
             logger.LogError(e, "Failed to save reset password request for {Email}", request.Email);
-            return;
         }
     }
 
@@ -308,7 +300,6 @@ public class UserRepository(ILogger<UserRepository> logger, MongoDbContext mongo
         catch (Exception e)
         {
             logger.LogError(e, "Failed to mark reset request as used for {Email}", email);
-            return;
         }
     }
 }
