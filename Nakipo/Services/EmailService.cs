@@ -38,7 +38,7 @@ public class EmailService(ILogger<EmailService> logger, IBrandRepository brandRe
         return client;
     }
 
-    public async Task SendPasswordResetEmailAsync(string email, string? resetToken)
+    public async Task SendPasswordResetEmailAsync(string email, string resetToken)
     {
         try
         {
