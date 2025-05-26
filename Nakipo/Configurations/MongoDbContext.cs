@@ -16,5 +16,7 @@ public class MongoDbContext
     public IMongoCollection<User> Users => _database.GetCollection<User>("users");
     public IMongoCollection<Cupon> Cupons => _database.GetCollection<Cupon>("cupons");
     public IMongoCollection<Brand> Brands => _database.GetCollection<Brand>("brands");
-    public IMongoCollection<ResetPasswordRequest> ResetPasswordRequests => _database.GetCollection<ResetPasswordRequest>("resetPasswordRequests");
+
+    public IMongoCollection<ResetPasswordRequest> ResetPasswordRequests =>
+        _database.GetCollection<ResetPasswordRequest>("resetPasswordRequests");
 }
