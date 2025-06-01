@@ -85,6 +85,7 @@ try
     builder.Services.AddHttpClient();
     builder.Services.AddSingleton<ISpaceService, SpaceService>();
     builder.Services.AddSingleton<IEmailService, EmailService>();
+    builder.Services.AddSingleton<ILocationService, LocationService>();
 
 
     builder.Services.AddCors(options =>

@@ -8,7 +8,8 @@ public class ImageService(
     IWebHostEnvironment env,
     IUserRepository userRepository,
     ISpaceService spaceService,
-    IWalletService walletService) : IImageService
+    IWalletService walletService,
+    ILocationService locationService) : IImageService
 {
     public async Task<User?> InsertUserReport(IFormFile photo, Location location, string userId)
     {
@@ -17,11 +18,13 @@ public class ImageService(
             var fileName = $"photo_{DateTime.Now.Ticks}.jpg";
 
             await spaceService.UploadFileAsync(photo, userId, fileName);
+            var reportCity = await locationService.GetCityNameAsync(location.Latitude, location.Longitude);
 
             var report = new WalletReport
             {
                 Image = $"{userId}/{fileName}",
                 Location = location,
+                City = reportCity,
                 Date = DateTime.Now,
                 ExpirationDate = DateTime.Now.AddMonths(1),
                 ReportUsed = false

@@ -5,6 +5,7 @@ namespace Nakipo.Models;
 public class WalletReport
 {
     [BsonElement("image")] public string Image { get; set; }
+    [BsonElement("city")] public string City { get; set; }
 
     [BsonElement("date")] public DateTime Date { get; set; }
     [BsonElement("expiration-date")] public DateTime ExpirationDate { get; set; }

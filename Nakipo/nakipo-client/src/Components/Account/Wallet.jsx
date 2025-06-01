@@ -1,22 +1,29 @@
 import '../../CSS/wallet.css'
 import React, {useEffect, useState} from "react";
 import {s3PublicFilesUrl, s3Url} from "../../Services/CommonConfigurations";
+import { useLazyGetCityLocationQuery} from "./locationApiSlice";
 
 
 
 export default function Wallet({ userReports = [] }) {
     console.log(userReports);
+    const [triggerCityLocation] = useLazyGetCityLocationQuery();
     const [cities, setCities] = useState({});
 
-    const fetchCityName = async (latitude =0 , longitude =0, index) => {
+    const fetchCityName = async (latitude = 0, longitude = 0, index, report) => {
         try {
-            if(latitude ==0 && longitude ==0) {
+            if (latitude === 0 || longitude === 0) {
                 setCities(prev => ({ ...prev, [index]: "לא נרשם מיקום" }));
                 return;
             }
-            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=he`);
-            const data = await response.json();
-            const city = data.address?.city || data.address?.town || data.address?.village || "לא ידוע";
+
+            if (report.city) {
+                setCities(prev => ({ ...prev, [index]: `ב${report.city}` }));
+                return;
+            }
+
+            const result = await triggerCityLocation({ latitude, longitude }).unwrap();
+            const city = result.city || "לא ידוע";
             setCities(prev => ({ ...prev, [index]: `ב${city}` }));
         } catch (error) {
             console.error('Error fetching city name:', error);
@@ -24,9 +31,10 @@ export default function Wallet({ userReports = [] }) {
         }
     };
 
+
     useEffect(() => {
         userReports.forEach((report, index) => {
-            fetchCityName(report.location?.latitude, report.location?.longitude, index);
+            fetchCityName(report.location?.latitude, report.location?.longitude, index,report);
         });
     }, [userReports]);
 
