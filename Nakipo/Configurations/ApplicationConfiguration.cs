@@ -20,6 +20,13 @@ public class ApplicationConfiguration
         public static string GoogleClientId { get; } = Get("GoogleClientId");
         public static string GoogleClientSecret { get; } = Get("GoogleClientSecret");
     }
+    public static class TiktokSettings
+    {
+        public static string TiktokClientKey { get; } = Get("TiktokClientKey");
+        public static string TiktokClientSecret { get; } = Get("TiktokClientSecret");
+        public static string TiktokRedirectUri { get; } = Get("TiktokRedirectUri");
+
+    }
 
     public static class EmailSettings
     {

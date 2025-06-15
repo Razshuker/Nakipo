@@ -83,6 +83,7 @@ try
     builder.Services.AddSingleton<IRatingService, RatingService>();
     builder.Services.AddSingleton<IImageService, ImageService>();
     builder.Services.AddHttpClient();
+    builder.Services.AddSingleton<ITiktokService, TikTokService>();
     builder.Services.AddSingleton<ISpaceService, SpaceService>();
     builder.Services.AddSingleton<IEmailService, EmailService>();
     builder.Services.AddSingleton<ILocationService, LocationService>();

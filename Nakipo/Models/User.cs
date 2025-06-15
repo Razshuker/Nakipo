@@ -39,6 +39,9 @@ namespace Nakipo.Models
     [BsonElement("dog_name")]
     public string? DogName { get; set; }
     
+      [BsonElement("tiktok_open_id")]
+    public string? TiktokOpenId { get; set; }
+    
     [BsonElement("cupons")]
     public List<Cupon>? Cupons { get; set; } = new();
 
