@@ -85,6 +85,10 @@ export default function Register() {
         }
     };
 
+    const handleTikTokRegister = () => {
+        console.log("tiktok")
+    };
+
     if(registerLoading || googleLoading){
         return (
             <Loading backgroundColor={"white"}/>
@@ -451,13 +455,13 @@ export default function Register() {
             </form>
             <div className="mt-3 text-center">
                 <p className="text-center">הרשמה באמצעות</p>
-                <div className="register-with row">
+                <div className="register-with row justify-content-center">
                     <div className="col-6 google">
                         <div className="blue-dianne p-3 m-2" onClick={handleGoogleRegister}>GOOGLE</div>
                     </div>
-                    <div className="col-6 tiktok">
-                        <div className="blue-dianne p-3 m-2" onClick={handleTikTokRegister}>TIKTOK</div>
-                    </div>
+                    {/*<div className="col-6 tiktok">*/}
+                    {/*    <div className="blue-dianne p-3 m-2" onClick={handleTikTokRegister}>TIKTOK</div>*/}
+                    {/*</div>*/}
                 </div>
             </div>
             <div className="mt-3 text-center">

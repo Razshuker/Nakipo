@@ -60,6 +60,10 @@ export default function Login() {
         }
     };
 
+    const handleTikTokLogin = () => {
+        window.location.href = "https://c32b-79-181-170-74.ngrok-free.app/Tiktok/login";
+    };
+
     if(loading){
         return (
             <Loading backgroundColor={"white"}/>
@@ -182,13 +186,13 @@ export default function Login() {
 
                 <div className="mt-2 text-center">
                     <p className="text-center">התחברות באמצעות</p>
-                    <div className="register-with row">
+                    <div className="register-with row justify-content-center">
                         <div className="col-6 google">
                             <div className="blue-dianne p-3 m-2" onClick={handleGoogleLogin}>GOOGLE</div>
                         </div>
-                        <div className="col-6 tiktok">
-                            <div className="blue-dianne p-3 my-2" onClick={handleTikTokLogin}>TIKTOK</div>
-                        </div>
+                        {/*<div className="col-6 tiktok">*/}
+                        {/*    <div className="blue-dianne p-3 my-2" onClick={handleTikTokLogin}>TIKTOK</div>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
             </div>
