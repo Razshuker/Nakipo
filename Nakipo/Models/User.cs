@@ -40,7 +40,7 @@ namespace Nakipo.Models
     public string? DogName { get; set; }
     
     [BsonElement("cupons")]
-    public List<Cupon> Cupons { get; set; } = new();
+    public List<Cupon>? Cupons { get; set; } = new();
 
   
 }
