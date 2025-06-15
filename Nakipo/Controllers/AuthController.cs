@@ -88,14 +88,14 @@ public class AuthController(ILogger<AuthController> logger, IAuthService authSer
     [Authorize]
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpPost("updateUser")]
-    public async Task<ActionResult<User?>> UpdateUser([FromForm] User user, [FromForm] string? Cupons)
+    public async Task<ActionResult<User?>> UpdateUser([FromForm] User user, [FromForm] string? cupons)
     {
         try
         {
             if (user == null) return BadRequest();
-            if (!string.IsNullOrWhiteSpace(Cupons))
+            if (!string.IsNullOrWhiteSpace(cupons))
             {
-                user.Cupons = JsonSerializer.Deserialize<List<Cupon>>(Cupons);
+                user.Cupons = JsonSerializer.Deserialize<List<Cupon>>(cupons);
             }
 
             var updatedUser = await authService.Update(user);
