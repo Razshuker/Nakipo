@@ -191,9 +191,6 @@ export default function Login() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-3 text-center">
-                    <p>חדש פה? <a href="/register" className="text-primary">צור חשבון</a></p>
-                </div>
             </div>
 
         </div>
