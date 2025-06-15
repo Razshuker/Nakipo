@@ -186,8 +186,8 @@ export default function Login() {
                         <div className="col-6 google">
                             <div className="blue-dianne p-3 m-2" onClick={handleGoogleLogin}>GOOGLE</div>
                         </div>
-                        <div className="col-6 facebook">
-                            <div className="blue-dianne p-3 my-2">FACEBOOK</div>
+                        <div className="col-6 tiktok">
+                            <div className="blue-dianne p-3 my-2" onClick={handleTikTokLogin}>TIKTOK</div>
                         </div>
                     </div>
                 </div>

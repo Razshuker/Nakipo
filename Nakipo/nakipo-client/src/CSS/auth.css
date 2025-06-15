@@ -17,7 +17,7 @@ border-left: none;
     min-height: 100vh;
 }
 
-.google div, .facebook div {
+.google div, .tiktok div {
     -webkit-box-shadow: 1px 13px 21px -8px rgba(0,0,0,0.62);
     box-shadow: 1px 13px 21px -8px rgba(0,0,0,0.62);
 }

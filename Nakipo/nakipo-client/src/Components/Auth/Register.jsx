@@ -455,8 +455,8 @@ export default function Register() {
                     <div className="col-6 google">
                         <div className="blue-dianne p-3 m-2" onClick={handleGoogleRegister}>GOOGLE</div>
                     </div>
-                    <div className="col facebook">
-                        <div className="blue-dianne p-3 m-2">FACEBOOK</div>
+                    <div className="col-6 tiktok">
+                        <div className="blue-dianne p-3 m-2" onClick={handleTikTokRegister}>TIKTOK</div>
                     </div>
                 </div>
             </div>
